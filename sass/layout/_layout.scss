@@ -1,0 +1,16 @@
+@import "navigation";
+@import "view";
+
+#main {
+  @include outer-container;
+  #editor {
+    @include span-columns(3);
+  }
+  #view { 
+    @include span-columns(9);
+    .content {
+      display: block;
+      clear: both;
+    }
+  }
+}

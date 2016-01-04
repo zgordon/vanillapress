@@ -1,4 +1,110 @@
 /* SASS */
-body {
-  background: #fff;
+html {
+  box-sizing: border-box;
+}
+
+*, *::after, *::before {
+  box-sizing: inherit;
+}
+
+#view #mainNav {
+  display: block;
+  width: 100%;
+}
+#view #mainNav ul {
+  padding: 0;
+  margin: 0;
+}
+#view #mainNav ul li {
+  display: inline-block;
+  float: left;
+  list-style: none;
+  padding: 0 0 0 5px;
+  margin: 0;
+}
+#view .menuIcon {
+  display: none;
+  background: #000;
+  width: 100%;
+  text-align: center;
+}
+#view .menuIcon:hover {
+  background: #999;
+}
+#view .menuIcon a {
+  width: 100%;
+  display: inline-block;
+  color: #fff;
+}
+#view .menuIcon a img {
+  vertical-align: middle;
+}
+
+@media only screen and (max-width: 767px) {
+  #view #MainNav {
+    max-height: 0;
+    overflow: hidden;
+    float: none;
+    text-align: center;
+    width: 100%;
+    -webkit-transition: max-height 0.5s;
+    -moz-transition: max-height 0.5s;
+    transition: max-height 0.5s;
+  }
+  #view #MainNav.menuOpen {
+    max-height: 1000px;
+    -webkit-transition: max-height 0.5s;
+    -moz-transition: max-height 0.5s;
+    transition: max-height 0.5s;
+  }
+  #view #MainNav ul li {
+    display: block;
+    width: 100%;
+    background: #000;
+    border-top: 1px solid #4d4d4d;
+  }
+  #view #MainNav ul li:hover {
+    background: #999;
+  }
+  #view #MainNav ul li a {
+    color: #fff;
+    text-shadow: #848484 0px 1px 2px;
+    padding: 10px 0;
+    width: 100%;
+  }
+  #view .menuIcon {
+    display: inline-block;
+  }
+}
+#main {
+  max-width: 68em;
+  margin-left: auto;
+  margin-right: auto;
+}
+#main::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+#main #editor {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 23.23176%;
+}
+#main #editor:last-child {
+  margin-right: 0;
+}
+#main #view {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 74.41059%;
+}
+#main #view:last-child {
+  margin-right: 0;
+}
+#main #view .content {
+  display: block;
+  clear: both;
 }
