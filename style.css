@@ -7,6 +7,15 @@ html {
   box-sizing: inherit;
 }
 
+#editor h1, #editor h2, #editor h3, #editor h4, #editor h5 {
+  color: #555;
+  font-weight: lighter;
+}
+
+#editor {
+  font-family: "Open Sans", sans-serif;
+}
+
 #view #mainNav {
   display: block;
   width: 100%;
@@ -22,21 +31,21 @@ html {
   padding: 0 0 0 5px;
   margin: 0;
 }
-#view .menuIcon {
+#view #menuIcon {
   display: none;
   background: #000;
   width: 100%;
   text-align: center;
 }
-#view .menuIcon:hover {
+#view #menuIcon:hover {
   background: #999;
 }
-#view .menuIcon a {
+#view #menuIcon a {
   width: 100%;
   display: inline-block;
   color: #fff;
 }
-#view .menuIcon a img {
+#view #menuIcon a img {
   vertical-align: middle;
 }
 
@@ -72,37 +81,62 @@ html {
     padding: 10px 0;
     width: 100%;
   }
-  #view .menuIcon {
+  #view #menuIcon {
     display: inline-block;
   }
 }
-#main {
-  max-width: 68em;
-  margin-left: auto;
-  margin-right: auto;
+#editor ul {
+  padding: 0;
 }
-#main::after {
-  clear: both;
-  content: "";
-  display: table;
+#editor ul li {
+  list-style-position: inside;
+}
+
+body {
+  margin: 0;
+}
+
+#main {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -moz-box-direction: normal;
+  box-direction: normal;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-direction: row;
+  height: 100vh;
+  background-color: #000;
 }
 #main #editor {
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 23.23176%;
-}
-#main #editor:last-child {
-  margin-right: 0;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #ededed;
+  padding: 20px;
 }
 #main #view {
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 74.41059%;
-}
-#main #view:last-child {
-  margin-right: 0;
+  -webkit-box-flex: 3;
+  -moz-box-flex: 3;
+  box-flex: 3;
+  -webkit-flex: 3;
+  -moz-flex: 3;
+  -ms-flex: 3;
+  flex: 3;
+  background-color: #fff;
 }
 #main #view .content {
   display: block;

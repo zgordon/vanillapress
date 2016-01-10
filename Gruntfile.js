@@ -3,6 +3,17 @@ module.exports = function(grunt) {
     grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
+		jshint: {
+			files: ['Gruntfile.js', 'js/*.js']
+		},
+
+		concat: {
+			dist: {
+				src: ['src/project.js'],
+				dest: 'dist/built.js',
+			},
+		},
+
 		/**
 		 * Sass
 		 */
@@ -23,8 +34,8 @@ module.exports = function(grunt) {
 	  	 */
 		watch: {
 			css: {
-				files: ['theme.html', 'sass/*.scss', 'sass/*/*.scss'],
-				tasks: ['sass'],
+				files: ['theme.html', 'sass/*.scss', 'sass/*/*.scss', 'js/*.js'],
+				tasks: ['sass', 'jshint'],
 				options: {
 					livereload: {
 						host: 'localhost',
@@ -40,5 +51,7 @@ module.exports = function(grunt) {
 	});
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.registerTask('default',['watch']);
-}
+};
