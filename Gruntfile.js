@@ -3,20 +3,26 @@ module.exports = function(grunt) {
     grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
+
 		jshint: {
-			files: ['Gruntfile.js', 'js/*.js']
+			files: ['Gruntfile.js', 'src/js/*.js'],
+      options: {
+        globals: {
+          console: true
+        }
+      }
 		},
 
 		concat: {
+      options: {
+        separator: ';'
+      },
 			dist: {
-				src: ['src/project.js'],
-				dest: 'dist/built.js',
+				src: ['src/js/*.js'],
+				dest: 'dist/js/build.js'
 			},
 		},
 
-		/**
-		 * Sass
-		 */
 		sass: {
 		  dev: {
 		    options: {
@@ -24,28 +30,38 @@ module.exports = function(grunt) {
 		      sourcemap: 'none',
 		    },
 		    files: {
-		      'style.css': 'sass/style.scss'
+		      'style.css': 'src/sass/style.scss'
 		    }
 		  }
 		},
 
-	  	/**
-	  	 * Watch
-	  	 */
+    // Express Server
+    express: {
+      all: {
+        options: {
+          port: 9000,
+          hostname: 'localhost',
+          bases: '.',
+          livereload: true
+        }
+      }
+    },
+
 		watch: {
+      options: {
+        livereload: true
+      },
+      html: {
+        files: ['theme.html'],
+      },
 			css: {
-				files: ['theme.html', 'sass/*.scss', 'sass/*/*.scss', 'js/*.js'],
-				tasks: ['sass', 'jshint'],
-				options: {
-					livereload: {
-						host: 'localhost',
-						port: 35729,
-						//key: grunt.file.read('path/to/ssl.key'),
-						//cert: grunt.file.read('path/to/ssl.crt')
-						// you can pass in any other options you'd like to the https server, as listed here: http://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener
-					}
-				},
-			}
+				files: ['src/sass/*.scss', 'src/sass/*/*.scss'],
+				tasks: ['sass']
+			},
+      js: {
+        files: ['src/js/*.js'],
+        tasks: ['jshint', 'concat']
+      }
 		},
 
 	});
@@ -53,5 +69,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-express');
 	grunt.registerTask('default',['watch']);
+  grunt.registerTask('server',['express', 'watch']);
 };
