@@ -7,6 +7,9 @@ html {
   box-sizing: inherit;
 }
 
+#editor h1 {
+  margin: 1rem 0 2rem;
+}
 #editor h1, #editor h2, #editor h3, #editor h4, #editor h5 {
   color: #555;
   font-weight: lighter;
@@ -14,6 +17,64 @@ html {
 
 #editor {
   font-family: "Open Sans", sans-serif;
+}
+
+#editor ul {
+  padding: 0;
+}
+#editor ul li {
+  list-style-position: inside;
+}
+#editor nav {
+  display: none;
+  margin: -20px;
+  background: #fff;
+  color: #555;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  position: relative;
+}
+#editor nav.active {
+  display: block;
+}
+#editor nav h3 {
+  padding: 20px;
+  text-transform: capitalize;
+}
+#editor nav h3 a {
+  color: #555;
+}
+#editor nav ul {
+  padding: 0;
+  margin: 0;
+}
+#editor nav li {
+  list-style: none;
+}
+#editor nav li:first-child {
+  border-top: 1px solid #eee;
+}
+#editor nav li a {
+  padding: 15px 20px;
+  display: block;
+  border-bottom: 1px solid #eee;
+  color: #555;
+  text-decoration: none;
+  position: relative;
+}
+#editor nav li a:hover {
+  background: #f5f5f5;
+  color: #23282d;
+}
+#editor nav li a:hover:after {
+  color: #23282d;
+}
+#editor nav li a:after {
+  content: ">";
+  position: absolute;
+  right: 20px;
+  color: #a0a5aa;
 }
 
 #view #mainNav {
@@ -85,18 +146,11 @@ html {
     display: inline-block;
   }
 }
-#editor ul {
-  padding: 0;
-}
-#editor ul li {
-  list-style-position: inside;
-}
-
 body {
   margin: 0;
 }
 
-#main {
+#wrapper {
   display: -webkit-box;
   display: -moz-box;
   display: box;
@@ -117,7 +171,7 @@ body {
   height: 100vh;
   background-color: #000;
 }
-#main #editor {
+#wrapper #editor {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   box-flex: 1;
@@ -125,10 +179,11 @@ body {
   -moz-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  background-color: #ededed;
+  background-color: #eee;
   padding: 20px;
+  border-right: 2px #ddd solid;
 }
-#main #view {
+#wrapper #view {
   -webkit-box-flex: 3;
   -moz-box-flex: 3;
   box-flex: 3;
@@ -136,9 +191,40 @@ body {
   -moz-flex: 3;
   -ms-flex: 3;
   flex: 3;
+  padding: 0 10px;
   background-color: #fff;
 }
-#main #view .content {
+#wrapper #view .content {
   display: block;
   clear: both;
+}
+
+.edit label {
+  padding: 10px 10px 0;
+  display: block;
+  color: #999;
+  font-weight: lighter;
+}
+.edit input,
+.edit textarea,
+.edit iframe.wysiwyg {
+  display: block;
+  color: #555;
+  font-size: 1.4rem;
+  font-family: "Helvetica Neue", "Open Sans", sans-serif;
+  width: calc(100% - 20px);
+  margin: 5px 10px 10px;
+  padding: 10px;
+  border: 1px #eee solid;
+}
+.edit input:focus,
+.edit textarea:focus,
+.edit iframe.wysiwyg:focus {
+  border-color: #555;
+}
+.edit textarea, .edit iframe.wysiwyg {
+  min-height: 10rem;
+  font-size: 1.1rem;
+  line-height: 1.8rem;
+  padding: 5px;
 }

@@ -1,6 +1,12 @@
 // Colors
-$editor-color: #ededed;
+$editor-background-color: #eee;
+$editor-background-color-hover: #f5f5f5;
 $header-color: #555;
+$editor-dark-link: #555;
+$editor-light-link: #999;
+$editor-hover-link: #23282d;
+$editor-border-color: #eee;
 
 // Fonts
 $editor-header-fonts: "Open Sans",sans-serif;
+$editor-form-fonts: "Helvetica Neue", $editor-header-fonts;

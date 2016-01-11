@@ -1,3 +1,4 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Posts = [
   {
     id:1,
@@ -518,3 +519,358 @@ var editor = {
 
 }
 init();
+
+},{"wysiwyg":2}],2:[function(require,module,exports){
+var editable = require("make-editable");
+var pubsub = require("pubsub");
+var debounce = require("debounce-fn");
+var classes = require("dom-classes");
+
+var counter = 1;
+
+module.exports = create;
+
+function create (textarea) {
+  var iframe = replace(textarea);
+  var api = editable(iframe.contentWindow.document);
+
+  api.iframe = iframe;
+  api.onUpdate = pubsub();
+  api.read = read;
+
+  watch(api, function () {
+    textarea.value = read();
+    api.onUpdate.publish();
+  });
+
+  return api;
+
+  function read () {
+    return iframe.contentWindow.document.body.innerHTML;
+  };
+}
+
+function replace (textarea) {
+  var id = counter++;
+  var iframe = document.createElement('iframe');
+  iframe.setAttribute('class', 'wysiwyg wysiwyg-' + id);
+
+  textarea.style.display = 'none';
+  textarea.parentNode.insertBefore(iframe, textarea);
+
+  iframe.contentWindow.document.body.innerHTML = textarea.value;
+
+  iframe.contentWindow.addEventListener('focus', function () {
+    classes.add(iframe, 'focus');
+  }, false);
+
+  iframe.contentWindow.addEventListener('blur', function () {
+    classes.remove(iframe, 'focus');
+  }, false);
+
+  return iframe;
+}
+
+function watch (api, callback) {
+  api.iframe.contentWindow.document.body.addEventListener('input', debounce(callback, 500), false);
+}
+
+},{"debounce-fn":3,"dom-classes":4,"make-editable":6,"pubsub":7}],3:[function(require,module,exports){
+module.exports = debounce;
+
+function debounce (fn, wait) {
+  var timer;
+  var args;
+
+  return function () {
+    if (timer != undefined) {
+      clearTimeout(timer);
+      timer = undefined;
+    }
+
+    args = arguments;
+
+    timer = setTimeout(function () {
+      fn.apply(undefined, args);
+    }, wait);
+  };
+}
+
+},{}],4:[function(require,module,exports){
+/**
+ * Module dependencies.
+ */
+
+var index = require('indexof');
+
+/**
+ * Whitespace regexp.
+ */
+
+var whitespaceRe = /\s+/;
+
+/**
+ * toString reference.
+ */
+
+var toString = Object.prototype.toString;
+
+module.exports = classes;
+module.exports.add = add;
+module.exports.contains = has;
+module.exports.has = has;
+module.exports.toggle = toggle;
+module.exports.remove = remove;
+module.exports.removeMatching = removeMatching;
+
+function classes (el) {
+  if (el.classList) {
+    return el.classList;
+  }
+
+  var str = el.className.replace(/^\s+|\s+$/g, '');
+  var arr = str.split(whitespaceRe);
+  if ('' === arr[0]) arr.shift();
+  return arr;
+}
+
+function add (el, name) {
+  // classList
+  if (el.classList) {
+    el.classList.add(name);
+    return;
+  }
+
+  // fallback
+  var arr = classes(el);
+  var i = index(arr, name);
+  if (!~i) arr.push(name);
+  el.className = arr.join(' ');
+}
+
+function has (el, name) {
+  return el.classList
+    ? el.classList.contains(name)
+    : !! ~index(classes(el), name);
+}
+
+function remove (el, name) {
+  if ('[object RegExp]' == toString.call(name)) {
+    return removeMatching(el, name);
+  }
+
+  // classList
+  if (el.classList) {
+    el.classList.remove(name);
+    return;
+  }
+
+  // fallback
+  var arr = classes(el);
+  var i = index(arr, name);
+  if (~i) arr.splice(i, 1);
+  el.className = arr.join(' ');
+}
+
+function removeMatching (el, re, ref) {
+  var arr = Array.prototype.slice.call(classes(el));
+  for (var i = 0; i < arr.length; i++) {
+    if (re.test(arr[i])) {
+      remove(el, arr[i]);
+    }
+  }
+}
+
+function toggle (el, name) {
+  // classList
+  if (el.classList) {
+    return el.classList.toggle(name);
+  }
+
+  // fallback
+  if (has(el, name)) {
+    remove(el, name);
+  } else {
+    add(el, name);
+  }
+}
+
+},{"indexof":5}],5:[function(require,module,exports){
+
+var indexOf = [].indexOf;
+
+module.exports = function(arr, obj){
+  if (indexOf) return arr.indexOf(obj);
+  for (var i = 0; i < arr.length; ++i) {
+    if (arr[i] === obj) return i;
+  }
+  return -1;
+};
+},{}],6:[function(require,module,exports){
+module.exports = enable;
+
+function enable (doc) {
+  doc.body.contentEditable = true;
+
+  return {
+    exec: call(doc),
+    bold: call(doc, 'bold'),
+    italic: call(doc, 'italic'),
+    underline: call(doc, 'underline'),
+    color: call(doc, 'foreColor'),
+    bgcolor: call(doc, 'backColor'),
+    img: call(doc, 'insertImage'),
+    link: call(doc, 'createLink'),
+    unlink: call(doc, 'unlink'),
+    plain: call(doc, 'removeFormat'),
+    undo: call(doc, 'undo'),
+    redo: call(doc, 'redo'),
+    indent: call(doc, 'indent'),
+    outdent: call(doc, 'outdent'),
+    selectAll: call(doc, 'selectAll'),
+    orderedList: call(doc, 'insertOrderedList'),
+    unorderedList: call(doc, 'insertUnorderedList'),
+    copy: call(doc, 'copy'),
+    paste: call(doc, 'paste'),
+    delete: call(doc, 'delete'),
+    fontName: call(doc, 'fontName'),
+    fontSize: call(doc, 'fontSize'),
+    center: call(doc, 'justifyCenter'),
+    justify: call(doc, 'justifyFull'),
+    left: call(doc, 'justifyLeft'),
+    right: call(doc, 'justifyRight'),
+    heading: call(doc, 'heading')
+  };
+}
+
+function exec (doc, cmd, value, showDefaultUI) {
+  doc.execCommand(cmd, showDefaultUI || false, value);
+};
+
+function call (doc, commandName) {
+  return arguments.length == 1 ? custom : command;
+
+  function custom (commandName, value, ui) {
+    return exec(doc, commandName, value, ui);
+  }
+
+  function command (value, ui) {
+    return exec(doc, commandName, value, ui);
+  }
+}
+
+},{}],7:[function(require,module,exports){
+module.exports = pubsub;
+
+function pubsub (mix) {
+  var subscribers;
+  var subscribersForOnce;
+
+  mix || (mix = function (fn) {
+    if (fn) mix.subscribe(fn);
+  });
+
+  mix.subscribe = function (fn) {
+    if (!subscribers) return subscribers = fn;
+    if (typeof subscribers == 'function') subscribers = [subscribers];
+    subscribers.push(fn);
+  };
+
+  mix.subscribe.once = function (fn) {
+    if (!subscribersForOnce) return subscribersForOnce = fn;
+    if (typeof subscribersForOnce == 'function') subscribersForOnce = [subscribersForOnce];
+    subscribersForOnce.push(fn);
+  };
+
+  mix.unsubscribe = function (fn) {
+    if (!subscribers) return;
+
+    if (typeof subscribers == 'function') {
+      if (subscribers != fn) return;
+      subscribers = undefined;
+      return;
+    }
+
+    var i = subscribers.length;
+
+    while (i--) {
+      if (subscribers[i] && subscribers[i] == fn){
+        subscribers[i] = undefined;
+        return;
+      }
+    }
+  };
+
+  mix.unsubscribe.once = function (fn) {
+    if (!subscribersForOnce) return;
+
+    if (typeof subscribersForOnce == 'function') {
+      if (subscribersForOnce != fn) return;
+      subscribersForOnce = undefined;
+      return;
+    }
+
+    var i = subscribersForOnce.length;
+
+    while (i--) {
+      if (subscribersForOnce[i] && subscribersForOnce[i] == fn){
+        subscribersForOnce[i] = undefined;
+        return;
+      }
+    }
+  };
+
+  mix.publish = function () {
+    var params = arguments;
+    var i, len;
+
+    if (subscribers && typeof subscribers != 'function' && subscribers.length) {
+      i = -1;
+      len = subscribers.length;
+
+      while (++i < len) {
+        if (!subscribers[i] || typeof subscribers[i] != 'function') continue;
+
+        try {
+          subscribers[i].apply(undefined, params);
+        } catch(err) {
+          setTimeout(function () { throw err; }, 0);
+        }
+      };
+    } else if (typeof subscribers == 'function') {
+      try {
+        subscribers.apply(undefined, params);
+      } catch(err) {
+        setTimeout(function () { throw err; }, 0);
+      }
+    }
+
+    if (subscribersForOnce && typeof subscribersForOnce != 'function' && subscribersForOnce.length) {
+      i = -1;
+      len = subscribersForOnce.length;
+
+      while (++i < len) {
+        if (!subscribersForOnce[i] || typeof subscribersForOnce[i] != 'function') continue;
+
+        try {
+          subscribersForOnce[i].apply(undefined, params);
+        } catch(err) {
+          setTimeout(function () { throw err; }, 0);
+        }
+      };
+
+      subscribersForOnce = undefined;
+    } else if (typeof subscribersForOnce == 'function') {
+      try {
+        subscribersForOnce.apply(undefined, params);
+      } catch(err) {
+        setTimeout(function () { throw err; }, 0);
+      }
+      subscribersForOnce = undefined;
+    }
+  };
+
+  return mix;
+}
+
+},{}]},{},[1]);

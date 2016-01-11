@@ -1,0 +1,31 @@
+.edit {
+  label {
+    padding: 10px 10px 0;
+    display: block;
+    color: $editor-light-link;
+    font-weight: lighter;
+  }
+  input,
+  textarea,
+  iframe.wysiwyg {
+    display: block;
+    color: $editor-dark-link;
+    font-size: 1.4rem;
+    // font-weight: lighter;
+    font-family: $editor-form-fonts;
+    width: calc(100% - 20px);
+    margin: 5px 10px 10px;
+    padding: 10px;
+    border: 1px $editor-border-color solid;
+    &:focus {
+      border-color: $editor-dark-link;
+    }
+  }
+  textarea, iframe.wysiwyg {
+    min-height: 10rem;
+    font-size: 1.1rem;
+    line-height: 1.8rem;
+    padding: 5px;
+  }
+
+}

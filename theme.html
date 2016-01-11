@@ -1,54 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>VanillaPress</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>VanillaPress</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<section id="main">
+  <section id="wrapper">
 
     <section id="editor">
 
-        <h3>Posts</h3>
-        <ul id="postList">
-            <li><a href="#">Hello World</a></li>
+      <h1>VanillaPress</h1>
+
+      <nav class="primary">
+        <h3>Admin</h3>
+        <ul>
+          <li><a href="#edit/posts">Posts</a></li>
+          <li><a href="#edit/pages">Pages</a></li>
+          <li><a href="#edit/settings">Settings</a></li>
         </ul>
+      </nav>
+
+      <nav class="secondary">
+        <h3>
+          <a class="go-home" href="#edit">Admin</a> /
+          <span>Title</span>
+        </h3>
+        <ul>
+        </ul>
+      </nav>
+
+      <nav class="edit">
+        <h3>
+          <a class="go-home" href="#edit">Admin</a> /
+          <span><a href="#edit">Title</a></span>
+        </h3>
+        <form action="">
+          <ul>
+            <li>
+              <label for="editTitle">Title</label>
+              <input type="text" name="editTitle" id="editTitle">
+            </li>
+            <li>
+              <label for="editContent">Content</label>
+              <textarea name="editContent" id="editContent"></textarea>
+            </li>
+          </ul>
+        </form>
+      </nav>
+
+
+
 
     </section>
 
     <section id="view">
 
-        <header class="page-header">
-            <h1>VanillaPress</h1>
-            <h2>A JS front + back end</h2>
-        </header>
+      <header class="page-header">
+        <h1>VanillaPress</h1>
+        <h2>A JS front + back end</h2>
+      </header>
 
-        <div id="menuIcon">
-            <a href="#menuExpand">Menu</a>
-        </div>
-        <nav id="mainNav">
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#blog">Blog</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+      <div id="menuIcon">
+        <a href="#menuExpand">Menu</a>
+      </div>
+      <nav id="mainNav">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
 
-        <div class="content">
+      <div class="content">
 
-            <h2>Page Title</h2>
-            <p>Reprehenderit sit sunt nisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p>
+        <h2>Page Title 2</h2>
+        <p>Reprehenderit sit sunt nisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p>
 
-        </div>
+      </div>
 
 
     </section>
 
 
-</section>
-<script src="dist/js/build.js"></script>
+  </section>
+  <script src="dist/js/app.js"></script>
+
 </body>
 </html>

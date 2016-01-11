@@ -1,28 +1,27 @@
 @import "navigation";
-@import "view";
-@import "lists";
+
 body {
   margin: 0;
 }
-#main {
+#wrapper {
   //@include outer-container;
   @include display(flex);
   @include flex-direction(row);
   //@include box-orient(horizontal);
   height: 100vh;
-  
   background-color: #000;
-
 
   #editor {
     //@include span-columns(3);
     @include flex(1);
-    background-color: $editor-color;
+    background-color: $editor-background-color;
     padding: 20px;
+    border-right: 2px #ddd solid;
   }
-  #view { 
+  #view {
     //@include span-columns(9);
     @include flex(3);
+    padding: 0 10px;
     background-color: #fff;
     .content {
       display: block;
