@@ -9,7 +9,10 @@ module.exports = function(grunt) {
           globals: {
             console: true
           }
-        }
+        },
+        // ignore_warning: {
+        //   options:
+        // }
   		},
 
   		concat: {
@@ -17,7 +20,7 @@ module.exports = function(grunt) {
           separator: ';'
         },
   			dist: {
-  				src: ['src/js/data.js', 'src/js/lib/class-list.js', 'src/js/helpers.js', 'src/js/models.js', 'src/js/editor.js', 'src/js/app.js'],
+  				src: ['src/js/data.js', 'src/js/lib/class-list.js', 'src/js/helpers.js', 'src/js/router.js', 'src/js/models.js', 'src/js/editor.js', 'src/js/view.js', 'src/js/app.js'],
   				dest: 'dist/js/build.js'
   			}
   		},
@@ -51,7 +54,7 @@ module.exports = function(grunt) {
           livereload: true
         },
         html: {
-          files: ['theme.html'],
+          files: ['index.html'],
         },
   			css: {
   				files: ['src/sass/*.scss', 'src/sass/*/*.scss'],
@@ -59,7 +62,7 @@ module.exports = function(grunt) {
   			},
         js: {
           files: ['src/js/**/*.js', 'src/js/*.js'],
-          tasks: ['jshint', 'browserify', 'concat']
+          tasks: ['jshint', 'concat']
         },
   		},
 
@@ -74,10 +77,10 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-browserify');
+  //grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-express');
 	grunt.registerTask('default',['watch','browserify']);
-  grunt.registerTask('server',['express', 'watch', 'browserify']);
+  grunt.registerTask('server',['express', 'watch']);
 };

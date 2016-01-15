@@ -22,10 +22,15 @@
     }
   }
   textarea, iframe.wysiwyg {
-    min-height: 10rem;
+    min-height: 13rem;
     font-size: 1.1rem;
     line-height: 1.8rem;
     padding: 5px;
+  }
+  #editUpdate {
+    background: $primary-btn-color;
+    color: #fff;
+    font-weight: lighter;
   }
 
 }

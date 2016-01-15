@@ -48,22 +48,40 @@ var Posts = [
 
 var Pages = [
   {
+    id:40,
+    date:"2016-01-07T22:05:09",
+    modified:"2016-01-07T22:05:09",
+    slug:"home",
+    type:"page",
+    title:"Home",
+    content:"<p>Welcome!</p><p>Reprehenderit sit sunt nisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
+  },
+  {
     id:41,
     date:"2016-01-09T22:05:09",
     modified:"2016-01-09T22:05:09",
     slug:"about",
     type:"page",
     title:"About Me",
-    content:"<p>Hi!  I'm me :)</p> ",
+    content:"<p>Hi!  I'm me :)</p><p>Sisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
   },
   {
     id:42,
-    date:"2016-01-09T22:06:09",
-    modified:"2016-01-09T22:06:09",
-    slug:"portfolio",
+    date:"2016-01-09T22:05:09",
+    modified:"2016-01-09T22:05:09",
+    slug:"blog",
     type:"page",
-    title:"Portfolio",
-    content:"<p>Here's my work :)</p> ",
+    title:"Blog",
+    content:"<p>Welcome to my blog page, please enjoy!</p>",
+  },
+  {
+    id:43,
+    date:"2016-01-19T22:06:09",
+    modified:"2016-01-19T22:06:09",
+    slug:"contact",
+    type:"page",
+    title:"Contact",
+    content:"<p>Please get in touch!</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
   }
 ];
 
@@ -325,27 +343,19 @@ if (objCtr.defineProperty) {
 }
 
 }
-;function getAfterHash(url) {
-  url = typeof url !== 'undefined' ? url : null;
-  returnArray = typeof returnArray !== 'undefined' ? returnArray : null;
-  var urlSegments;
-  if (url === null){
-      urlSegments = window.location.hash.substr(1);
+;Array.prototype.isArray = true;
+
+function getAfterHash(url) {
+  url = url || null;
+  var urlSegments = [""];
+  if( url !== null ) {
+    url = url.substring(url.indexOf('#')+1);
+    urlSegments = url.split("/");
   } else {
-      urlSegments = url.split('#')[1];
+    var pageUrl = window.location.hash.substr(1);
+    urlSegments = pageUrl.split("/");
   }
-  return urlSegments.split("/");
-}
-
-function refreshMenu(){
-
-  //console.log(this);
-  //urlSegments = getAfterHash();
-  //console.log(this);
-  //ffwindow.location.hash = window.location.hash;
-
-  //editor.loadMenu();
-  //event.preventDefault();
+  return urlSegments;
 }
 
 function addMenuItems(menuItems, contentType) {
@@ -367,6 +377,38 @@ function createLink(text, contentType, slug) {
   a.href = "#edit/" + contentType + "/" + slug;
   return a;
 }
+
+function getEditorEl() {
+  var el = document.getElementById("editor");
+  return el;
+}
+function getEditorToggleEl() {
+  var el = document.getElementById("editorToggle");
+  return el;
+}
+function getCurrentContentObj() {
+
+  var newPageSlugs = getAfterHash();  
+  var pageContent;
+  if( newPageSlugs.length > 1 ) {
+    pageContent = getContentBySlug(newPageSlugs[1], 'posts');
+  } else {
+    if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
+    pageContent = getContentBySlug(newPageSlugs[0], 'pages');
+  }
+  return pageContent;
+}
+;var router = {
+  init: function() {
+    var mainNav = document.getElementById("mainNav");
+    var links = mainNav.getElementsByTagName("a");
+    for(var i = 0, len = links.length; i < len; i++) {
+        links[i].addEventListener("click", view.update, false);
+    }    
+    //view.update();
+
+  }
+};
 ;
 function getContent(type) {
   var content;
@@ -424,12 +466,12 @@ var editor = {
       this.showPrimaryMenu();
     }
     //if url #edit/secondary
-    if( urlSegments[0] == "edit" && urlSegments.length == 2 ) {
+    else if( urlSegments[0] == "edit" && urlSegments.length == 2 ) {
       currentMenu = "secondary";
       this.showSecondaryMenu();
     }
     //if editing content
-    if( urlSegments[0] == "edit" && urlSegments.length == 3 ) {
+    else {//( urlSegments[0] == "edit" && urlSegments.length == 3 ) {
       currentMenu = "edit";
       this.showEditPanel(urlSegments[2], urlSegments[1]);
     }
@@ -464,18 +506,24 @@ var editor = {
     }
   },
   fillEditForm: function(post) {
+    editor.clearEditForm();
     var editTitle = document.getElementById("editTitle");
     var editContent = document.getElementById("editContent");
     editTitle.value = post.title;
     editContent.value = post.content;
-    var contentEditor = wysiwyg(editContent);
-    contentEditor.selectAll();
+    var contentEditor = wysiwyg(post.content);
+    contentEditor.bold();
+    //contentEditor.selectAll();
     contentEditor.onUpdate(function () {
       //console.log(contentEditor.read());
     });
   },
+  clearEditForm: function() {
+    editTitle.value = "";
+    editContent.value = "";
+  },
   clearMenus: function(){
-    var editorEl = document.getElementById("editor");
+    var editorEl = getEditorEl();
     //remove active class from all navs
     var navs = editorEl.getElementsByTagName("nav");
     for (var j = 0; j < navs.length; j++) {
@@ -491,6 +539,20 @@ var editor = {
       editorLinks[i].removeEventListener("click", refreshMenu, false);
     }
   },
+  setupToggle: function() {
+    var editorToggleEl = document.querySelector("#editorToggle a");
+    editorToggleEl.addEventListener("click", editor.toggleView, false);
+  },
+  toggleView: function() {
+    var editorEl = getEditorEl();
+    editorEl.classList.toggle("hidden");
+    var toggleBtn = document.querySelector("#editorToggle");
+    toggleBtn.classList.toggle("hidden");
+    if( toggleBtn.classList.contains("hidden") === false ) {
+      var viewContent = getCurrentContentObj();
+      editor.fillEditForm(viewContent);
+    }
+  },
   updateMenuTitle: function() {
     var title = null,
         titleEl,
@@ -503,18 +565,51 @@ var editor = {
       title = urlSegments[urlSegments.length-2];
       titleEl = document.querySelector("#editor nav.edit h3 span a");
       titleEl.href = "#edit/" + title;
-      titleEl.addEventListener("click", refreshMenu, false);
+      //titleEl.addEventListener("click", refreshMenu, false);
     }
 
     var homeLink = document.querySelector("#editor nav.edit h3 .go-home");
-    if( homeLink ) addEventListener("click", refreshMenu, false);
+    //if( homeLink ) addEventListener("click", refreshMenu, false);
 
-    titleEl.textContent = title;
+    //titleEl.textContent = title;
   }
 };
-;function init() {
+;var view = {
+  init: function() {
+    var viewContent = getCurrentContentObj();
+    view.updateTitle( viewContent.title );
+    view.updateContent( viewContent.content );
 
-  editor.loadMenu();
+  },
+  update: function() {
+    var newPageSlugs = getAfterHash(this.href);
+    var viewContent;
+    if( newPageSlugs.length > 1 ) {
+      viewContent = getContentBySlug(newPageSlugs[1], 'posts');
+    } else {
+      if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
+      viewContent = getContentBySlug(newPageSlugs[0], 'pages');
+    }
 
-}
-init();
+    view.updateTitle( viewContent.title );
+    view.updateContent( viewContent.content );
+  },
+  updateTitle: function(title) {
+    var titleEl = document.getElementById("pageTitle");    
+    titleEl.innerHTML = title;
+  },
+  updateContent: function(content) {
+    var contentEl = document.getElementById("pageContent");
+    contentEl.innerHTML = content;
+  }
+};
+;var vanillaPress = {
+  init: function() {
+    router.init();
+    view.init();
+    editor.loadMenu();
+    editor.setupToggle();
+
+  }
+};
+vanillaPress.init();

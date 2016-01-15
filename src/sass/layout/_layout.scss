@@ -1,4 +1,5 @@
 @import "navigation";
+@import "view";
 
 body {
   margin: 0;
@@ -14,18 +15,33 @@ body {
   #editor {
     //@include span-columns(3);
     @include flex(1);
+    min-width: 240px;
+    max-width: 320px;
     background-color: $editor-background-color;
     padding: 20px;
     border-right: 2px #ddd solid;
+    &.hidden {
+      display: none;
+    }
   }
   #view {
     //@include span-columns(9);
     @include flex(3);
     padding: 0 10px;
-    background-color: #fff;
+    a {
+      color: $view-link-color;
+    }
     .content {
       display: block;
       clear: both;
+      @include display(flex);
+      @include flex-direction(row);
+      .primary {
+        @include flex(3);
+      }
+      .sidebar {
+        @include flex(1);
+      }
     }
   }
 }

@@ -6,7 +6,19 @@ $editor-dark-link: #555;
 $editor-light-link: #999;
 $editor-hover-link: #23282d;
 $editor-border-color: #eee;
+$primary-btn-color: #0085ba;
+
+$view-background-color: #fff; // #3e7aa6; // #3087c8
+$view-header-color-light: #ffffff; // #3087c8
+$view-header-color-dark: #222; // #3087c8
+$view-link-color: #0085ba;
+$nav-link-color: #222;
+$nav-link-color-hover: #0085ba;
+
 
 // Fonts
 $editor-header-fonts: "Open Sans",sans-serif;
 $editor-form-fonts: "Helvetica Neue", $editor-header-fonts;
+$view-default-fonts: "Helvetica Neue", $editor-header-fonts;
+$view-header-primary: "Pacifico";
+$view-header-secondary: "Montserrat";

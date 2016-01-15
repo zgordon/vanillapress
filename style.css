@@ -19,6 +19,40 @@ html {
   font-family: "Open Sans", sans-serif;
 }
 
+#view body, #view p {
+  font-family: "Helvetica Neue", "Open Sans", sans-serif;
+}
+#view h1, #view h2, #view h3, #view h4, #view h5, #view h6 {
+  font-family: "Montserrat";
+  font-weight: normal;
+}
+#view .page-header h1 {
+  font-family: "Pacifico";
+  font-size: 2.2rem;
+  margin: 1rem 0 0;
+  color: #222;
+}
+#view .page-header h2 {
+  color: #222;
+  font-size: 1.2rem;
+  margin: .4rem 0 0;
+  font-weight: lighter;
+}
+#view .primary p {
+  font-size: 1.2rem;
+  line-height: 2rem;
+  color: #222;
+}
+#view .sidebar p {
+  font-size: 1rem;
+}
+#view .footer p {
+  font-size: .8rem;
+  font-family: "Montserrat";
+  text-align: center;
+  font-weight: lighter;
+}
+
 #editor ul {
   padding: 0;
 }
@@ -78,19 +112,29 @@ html {
 }
 
 #view #mainNav {
-  display: block;
-  width: 100%;
+  margin: 10px;
+  font-family: "Montserrat";
+  margin: 40px 0 20px;
 }
 #view #mainNav ul {
   padding: 0;
   margin: 0;
+  text-align: center;
 }
 #view #mainNav ul li {
   display: inline-block;
-  float: left;
   list-style: none;
   padding: 0 0 0 5px;
   margin: 0;
+  font-size: 1.4rem;
+}
+#view #mainNav ul li a {
+  color: #222;
+  padding: 10px;
+  text-decoration: none;
+}
+#view #mainNav ul li a:hover {
+  color: #0085ba;
 }
 #view #menuIcon {
   display: none;
@@ -146,6 +190,73 @@ html {
     display: inline-block;
   }
 }
+#editorToggle {
+  position: absolute;
+  bottom: 5px;
+  left: 25px;
+}
+#editorToggle a {
+  color: #0085ba;
+}
+#editorToggle a .arrow {
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 8px solid transparent;
+  border-right: 8px solid #0085ba;
+  display: block;
+  left: -25px;
+  position: absolute;
+}
+#editorToggle a:hover label {
+  cursor: pointer;
+}
+#editorToggle.hidden a {
+  background: #0085ba;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  position: absolute;
+  padding: 10px;
+  bottom: 0px;
+  left: -20px;
+}
+#editorToggle.hidden a .arrow {
+  border-right: 5px solid transparent;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid #fff;
+  left: 40%;
+  bottom: 5px;
+}
+#editorToggle.hidden a label {
+  display: none;
+}
+
+#view {
+  background: #fff;
+  padding: 40px 20px;
+}
+#view .container {
+  margin: 20px auto 0;
+  max-width: 960px;
+}
+#view .container .page-header {
+  text-align: center;
+}
+#view .container .content {
+  background: #fff;
+  padding: 10px 20px;
+  border: 1px #ddd solid;
+}
+#view .container .content .primary {
+  width: calc(100% - 20px);
+  padding: 10px;
+}
+#view .container .content .sidebar {
+  width: calc(100% - 20px);
+  padding: 10px;
+}
+
 body {
   margin: 0;
 }
@@ -179,9 +290,14 @@ body {
   -moz-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  min-width: 240px;
+  max-width: 320px;
   background-color: #eee;
   padding: 20px;
   border-right: 2px #ddd solid;
+}
+#wrapper #editor.hidden {
+  display: none;
 }
 #wrapper #view {
   -webkit-box-flex: 3;
@@ -192,11 +308,48 @@ body {
   -ms-flex: 3;
   flex: 3;
   padding: 0 10px;
-  background-color: #fff;
+}
+#wrapper #view a {
+  color: #0085ba;
 }
 #wrapper #view .content {
   display: block;
   clear: both;
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -moz-box-direction: normal;
+  box-direction: normal;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-direction: row;
+}
+#wrapper #view .content .primary {
+  -webkit-box-flex: 3;
+  -moz-box-flex: 3;
+  box-flex: 3;
+  -webkit-flex: 3;
+  -moz-flex: 3;
+  -ms-flex: 3;
+  flex: 3;
+}
+#wrapper #view .content .sidebar {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
 }
 
 .edit label {
@@ -223,8 +376,13 @@ body {
   border-color: #555;
 }
 .edit textarea, .edit iframe.wysiwyg {
-  min-height: 10rem;
+  min-height: 13rem;
   font-size: 1.1rem;
   line-height: 1.8rem;
   padding: 5px;
+}
+.edit #editUpdate {
+  background: #0085ba;
+  color: #fff;
+  font-weight: lighter;
 }

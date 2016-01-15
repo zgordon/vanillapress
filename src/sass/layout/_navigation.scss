@@ -20,9 +20,11 @@
     &.active {
       display: block;
     }
+
     h3 {
       padding: 20px;
       text-transform: capitalize;
+
       a {
         color: $editor-dark-link;
         // text-decoration: none;
@@ -35,15 +37,19 @@
         }
       }
     }
+
     ul {
       padding: 0;
       margin: 0;
     }
+
     li {
       list-style: none;
+
       &:first-child {
         border-top: 1px solid $editor-border-color;
       }
+
       a {
         padding: 15px 20px;
         display: block;
@@ -71,18 +77,34 @@
 }
 
 #view {
+
   #mainNav {
-    display: block;
-    width: 100%;
+    margin: 10px;
+    font-family: $view-header-secondary;
+    margin: 40px 0 20px;
+
     ul {
       padding:0;
       margin:0;
+      text-align: center;
+
       li {
         display: inline-block;
-        float: left;
         list-style: none;
         padding: 0 0 0 5px;
         margin: 0;
+        font-size: 1.4rem;
+
+        a {
+          color: $nav-link-color;
+          padding: 10px;
+          text-decoration: none;
+          &:hover {
+            color: $nav-link-color-hover;
+          }
+
+        }
+
       }
     }
   }
@@ -138,6 +160,52 @@
     }
     #menuIcon {
       display: inline-block;
+    }
+  }
+}
+
+#editorToggle {
+  position: absolute;
+  bottom: 5px;
+  left: 25px;
+  a {
+    color: $primary-btn-color;
+    .arrow {
+      // width: 0;
+      // height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 8px solid transparent;
+      border-right: 8px solid $primary-btn-color;
+      display: block;
+      left: -25px;
+      position: absolute;
+    }
+    &:hover label {
+      cursor: pointer;
+    }
+  }
+  &.hidden {
+    a {
+      background: $primary-btn-color;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      position: absolute;
+      padding: 10px;
+      bottom: 0px;
+      left: -20px;
+      .arrow {
+        border-right: 5px solid transparent;
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        border-left: 5px solid #fff;
+        left: 40%;
+        bottom: 5px;
+      }
+      label {
+        display: none;
+      }
     }
   }
 }

@@ -1,0 +1,30 @@
+#view {
+  background: $view-background-color;
+  padding: 40px 20px;
+
+  .container {
+    // padding: 20px;
+    margin: 20px auto 0;
+    max-width: 960px;
+    //max-width: 1280px;
+
+    .page-header {
+      text-align: center;      
+    }
+
+    .content {
+      background: #fff;
+      padding: 10px 20px;
+      border: 1px #ddd solid;
+      .primary {
+        width: calc(100% - 20px);
+        padding: 10px;
+      }
+      .sidebar {
+
+        width: calc(100% - 20px);
+        padding: 10px;
+      }
+    }
+  }
+}

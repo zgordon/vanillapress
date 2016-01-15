@@ -1,24 +1,16 @@
+Array.prototype.isArray = true;
+
 function getAfterHash(url) {
-  url = typeof url !== 'undefined' ? url : null;
-  returnArray = typeof returnArray !== 'undefined' ? returnArray : null;
-  var urlSegments;
-  if (url === null){
-      urlSegments = window.location.hash.substr(1);
+  url = url || null;
+  var urlSegments = [""];
+  if( url !== null ) {
+    url = url.substring(url.indexOf('#')+1);
+    urlSegments = url.split("/");
   } else {
-      urlSegments = url.split('#')[1];
+    var pageUrl = window.location.hash.substr(1);
+    urlSegments = pageUrl.split("/");
   }
-  return urlSegments.split("/");
-}
-
-function refreshMenu(){
-
-  //console.log(this);
-  //urlSegments = getAfterHash();
-  //console.log(this);
-  //ffwindow.location.hash = window.location.hash;
-
-  //editor.loadMenu();
-  //event.preventDefault();
+  return urlSegments;
 }
 
 function addMenuItems(menuItems, contentType) {
@@ -39,4 +31,25 @@ function createLink(text, contentType, slug) {
   a.appendChild(aText);
   a.href = "#edit/" + contentType + "/" + slug;
   return a;
+}
+
+function getEditorEl() {
+  var el = document.getElementById("editor");
+  return el;
+}
+function getEditorToggleEl() {
+  var el = document.getElementById("editorToggle");
+  return el;
+}
+function getCurrentContentObj() {
+
+  var newPageSlugs = getAfterHash();  
+  var pageContent;
+  if( newPageSlugs.length > 1 ) {
+    pageContent = getContentBySlug(newPageSlugs[1], 'posts');
+  } else {
+    if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
+    pageContent = getContentBySlug(newPageSlugs[0], 'pages');
+  }
+  return pageContent;
 }
