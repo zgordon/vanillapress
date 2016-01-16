@@ -19,11 +19,11 @@ var view = {
     view.updateContent( viewContent.content );
   },
   updateTitle: function(title) {
-    var titleEl = document.getElementById("pageTitle");    
+    var titleEl = document.getElementById("pageTitle");
     titleEl.innerHTML = title;
   },
   updateContent: function(content) {
     var contentEl = document.getElementById("pageContent");
-    contentEl.innerHTML = content;
+    contentEl.innerHTML = markdown.toHTML( content );
   }
 };

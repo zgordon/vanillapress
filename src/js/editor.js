@@ -1,4 +1,20 @@
+var wysiwyg;
 var editor = {
+  init: function() {
+    //var contentwysiwyg = wysiwyg(document.querySelector('#editContent'));
+    wysiwyg = new SimpleMDE({
+      element: document.getElementById("editContent"),
+      toolbar: false,
+      spellChecker: false,
+      status: false,
+    });
+    wysiwyg.codemirror.on( "change", function() {
+      view.updateContent( wysiwyg.value() );
+      console.log( wysiwyg.value() );
+    });
+    editor.loadMenu();
+    editor.setupToggle();
+  },
   //posts: get_posts(),
   loadMenu: function(){
     editor.clearMenus();
@@ -57,15 +73,10 @@ var editor = {
   fillEditForm: function(post) {
     editor.clearEditForm();
     var editTitle = document.getElementById("editTitle");
-    var editContent = document.getElementById("editContent");
     editTitle.value = post.title;
-    editContent.value = post.content;
-    //var contentEditor = wysiwyg(post.content);
-    //contentEditor.bold();
-    //contentEditor.selectAll();
-    // contentEditor.onUpdate(function () {
-    //   //console.log(contentEditor.read());
-    // });
+    //console.log(wysiwyg.value());
+    wysiwyg.value( markdown.toHTML(post.content) );
+    //editContent.value = post.content;
   },
   clearEditForm: function() {
     editTitle.value = "";

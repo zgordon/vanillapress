@@ -20,7 +20,18 @@ module.exports = function(grunt) {
           separator: ';'
         },
   			dist: {
-  				src: ['src/js/data.js', 'src/js/lib/class-list.js', 'src/js/helpers.js', 'src/js/router.js', 'src/js/models.js', 'src/js/editor.js', 'src/js/view.js', 'src/js/app.js'],
+  				src: [
+            'src/js/data.js',
+            'src/js/lib/class-list.js',
+            'src/js/helpers.js',
+            'src/js/router.js',
+            'src/js/models.js',
+            'src/js/lib/wysiwyg.js',
+            'src/js/lib/markdown.js',
+            'src/js/editor.js',
+            'src/js/view.js',
+            'src/js/app.js'
+          ],
   				dest: 'dist/js/build.js'
   			}
   		},
@@ -71,6 +82,16 @@ module.exports = function(grunt) {
           src: ['dist/js/build.js'],
           dest: 'dist/js/app.js'
         }
+      },
+
+      requirejs: {
+        compile: {
+          options: {
+            baseUrl: "dist/js",
+            mainConfigFile: "dist/src/build.js",
+            out: "dist/js/optimized.js"
+          }
+        }
       }
 
 	   });
@@ -78,9 +99,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-watch');
   //grunt.loadNpmTasks('grunt-browserify');
+  //grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-express');
-	grunt.registerTask('default',['watch','browserify']);
+	grunt.registerTask('default',['watch']);
   grunt.registerTask('server',['express', 'watch']);
 };

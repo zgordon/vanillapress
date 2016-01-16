@@ -1,3 +1,5 @@
+@import "wysiwyg";
+
 .edit {
   label {
     padding: 10px 10px 0;
@@ -7,7 +9,7 @@
   }
   input,
   textarea,
-  iframe.wysiwyg {
+  .CodeMirror {
     display: block;
     color: $editor-dark-link;
     font-size: 1.4rem;
@@ -21,8 +23,9 @@
       border-color: $editor-dark-link;
     }
   }
-  textarea, iframe.wysiwyg {
-    min-height: 13rem;
+  textarea, .CodeMirror, .CodeMirror-scroll  {
+    min-height: 300px;
+    max-height: 400px;
     font-size: 1.1rem;
     line-height: 1.8rem;
     padding: 5px;

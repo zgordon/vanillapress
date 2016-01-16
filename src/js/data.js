@@ -6,7 +6,7 @@ var Posts = [
     slug:"hello-world",
     type:"post",
     title:"Hello world!",
-    content:"<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p> ",
+    content:"Welcome to WordPress.\nThis is your first post.\nEdit or delete it, then start writing!",
   },
   {
     id:2,
