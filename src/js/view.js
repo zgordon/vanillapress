@@ -1,18 +1,20 @@
+var helpers = require( "./lib/helpers.js" );
+var models = require( "./models.js" );
 var view = {
   init: function() {
-    var viewContent = getCurrentContentObj();
+    var viewContent = helpers.getCurrentContentObj();
     view.updateTitle( viewContent.title );
     view.updateContent( viewContent.content );
 
   },
   update: function() {
-    var newPageSlugs = getAfterHash(this.href);
+    var newPageSlugs = helpers.getAfterHash(this.href);
     var viewContent;
     if( newPageSlugs.length > 1 ) {
-      viewContent = getContentBySlug(newPageSlugs[1], 'posts');
+      viewContent = models.getContentBySlug(newPageSlugs[1], 'posts');
     } else {
       if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
-      viewContent = getContentBySlug(newPageSlugs[0], 'pages');
+      viewContent = models.getContentBySlug(newPageSlugs[0], 'pages');
     }
 
     view.updateTitle( viewContent.title );
@@ -24,6 +26,7 @@ var view = {
   },
   updateContent: function(content) {
     var contentEl = document.getElementById("pageContent");
-    contentEl.innerHTML = markdown.toHTML( content );
+    contentEl.innerHTML = content;
   }
 };
+module.exports = view;

@@ -1,17 +1,26 @@
+var models = require( "./models.js" );
+var helpers = require( "./lib/helpers.js" );
+var view = require( "./view.js" );
+var wysiwygEditor = require('wysiwyg');
+
+
 var wysiwyg;
+
 var editor = {
   init: function() {
     //var contentwysiwyg = wysiwyg(document.querySelector('#editContent'));
-    wysiwyg = new SimpleMDE({
-      element: document.getElementById("editContent"),
-      toolbar: false,
-      spellChecker: false,
-      status: false,
-    });
-    wysiwyg.codemirror.on( "change", function() {
-      view.updateContent( wysiwyg.value() );
-      console.log( wysiwyg.value() );
-    });
+
+    //wysiwyg = document.getElementById("editContent");
+    // wysiwyg = new SimpleMDE({
+    //   element: document.getElementById("editContent"),
+    //   toolbar: false,
+    //   spellChecker: false,
+    //   status: false,
+    // });
+    // wysiwyg.codemirror.on( "change", function() {
+    //   view.updateContent( wysiwyg.value() );
+    //   console.log( wysiwyg.value() );
+    // });
     editor.loadMenu();
     editor.setupToggle();
   },
@@ -22,7 +31,7 @@ var editor = {
   },
   showCurrentMenu: function() {
 
-    var urlSegments = getAfterHash();
+    var urlSegments = helpers.getAfterHash();
     var currentMenu;
 
     //if url #edit/
@@ -58,14 +67,14 @@ var editor = {
   showSecondaryMenu: function(){
     this.updateMenuTitle();
     //figure out what secondary navigation we're loading
-    var currentSecondaryMenu = getAfterHash()[1];
+    var currentSecondaryMenu = helpers.getAfterHash()[1];
     var menuItems = getContent(currentSecondaryMenu);
-    addMenuItems(menuItems, currentSecondaryMenu);
+    helpers.addMenuItems(menuItems, currentSecondaryMenu);
   },
   showEditPanel: function(slug, contentType){
     this.updateMenuTitle();
     var itt;
-    var post = getContentBySlug(slug, contentType);
+    var post = models.getContentBySlug(slug, contentType);
     if( contentType == "posts" || contentType == "pages" ) {
         this.fillEditForm(post);
     }
@@ -75,15 +84,22 @@ var editor = {
     var editTitle = document.getElementById("editTitle");
     editTitle.value = post.title;
     //console.log(wysiwyg.value());
-    wysiwyg.value( markdown.toHTML(post.content) );
-    //editContent.value = post.content;
+    //wysiwyg.value( markdown.toHTML(post.content) );
+    editContent.value = post.content;
+    wysiwyg = wysiwygEditor(document.getElementById("editContent"));
+    wysiwyg.onUpdate(function () {
+      view.updateContent( wysiwyg.read() );
+    });
   },
   clearEditForm: function() {
     editTitle.value = "";
     editContent.value = "";
+    var wysiwyg = document.querySelector("nav.edit form iframe");
+    console.log(wysiwyg);
+    if(wysiwyg != null) wysiwyg.remove();
   },
   clearMenus: function(){
-    var editorEl = getEditorEl();
+    var editorEl = helpers.getEditorEl();
     //remove active class from all navs
     var navs = editorEl.getElementsByTagName("nav");
     for (var j = 0; j < navs.length; j++) {
@@ -104,19 +120,19 @@ var editor = {
     editorToggleEl.addEventListener("click", editor.toggleView, false);
   },
   toggleView: function() {
-    var editorEl = getEditorEl();
+    var editorEl = helpers.getEditorEl();
     editorEl.classList.toggle("hidden");
     var toggleBtn = document.querySelector("#editorToggle");
     toggleBtn.classList.toggle("hidden");
     if( toggleBtn.classList.contains("hidden") === false ) {
-      var viewContent = getCurrentContentObj();
+      var viewContent = helpers.getCurrentContentObj();
       editor.fillEditForm(viewContent);
     }
   },
   updateMenuTitle: function() {
     var title = null,
         titleEl,
-        urlSegments = getAfterHash();
+        urlSegments = helpers.getAfterHash();
     if(urlSegments.length == 2 && urlSegments[0] == "edit") {
       title = urlSegments[urlSegments.length-1];
       titleEl = document.querySelector("#editor nav.secondary h3 span");
@@ -134,3 +150,5 @@ var editor = {
     //titleEl.textContent = title;
   }
 };
+
+module.exports = editor;

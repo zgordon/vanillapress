@@ -9,7 +9,8 @@
   }
   input,
   textarea,
-  .CodeMirror {
+  .CodeMirror,
+  iframe.wysiwyg {
     display: block;
     color: $editor-dark-link;
     font-size: 1.4rem;
@@ -23,12 +24,19 @@
       border-color: $editor-dark-link;
     }
   }
-  textarea, .CodeMirror, .CodeMirror-scroll  {
+  textarea, .CodeMirror, .CodeMirror-scroll, iframe.wysiwyg  {
     min-height: 300px;
     max-height: 400px;
     font-size: 1.1rem;
     line-height: 1.8rem;
     padding: 5px;
+  }
+  iframe.wysiwyg {
+    margin-left: 10px;
+    width: 93%;
+    padding: 0;
+    /* margin: 0; */
+    border: 1px #ccc solid;
   }
   #editUpdate {
     background: $primary-btn-color;

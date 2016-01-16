@@ -105,3 +105,6 @@ var Settings = [
     content:"Not Just Another WP Site"
   }
 ];
+
+var data = [Posts, Pages, Settings];
+module.exports = data;
