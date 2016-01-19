@@ -1,13 +1,11 @@
-var view = require( "./view.js" );
+var helpers = require( "./lib/helpers.js" );
+
 var router = {
   init: function() {
-    var mainNav = document.getElementById("mainNav");
-    var links = mainNav.getElementsByTagName("a");
-    for(var i = 0, len = links.length; i < len; i++) {
-        links[i].addEventListener("click", view.update, false);
-    }
-    //view.update();
-
+    var urlSegments = helpers.getAfterHash();    
+  },
+  updateHash: function(slug) {
+    window.location.hash = slug;
   }
 };
 module.exports = router;

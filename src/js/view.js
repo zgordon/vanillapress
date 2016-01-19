@@ -1,24 +1,45 @@
 var helpers = require( "./lib/helpers.js" );
-var models = require( "./models.js" );
+var model = require( "./model.js" );
+// var listeners = require( "./listeners.js" );
+
 var view = {
   init: function() {
-    var viewContent = helpers.getCurrentContentObj();
+    var viewContent = model.getCurrentContentObj();
     view.updateTitle( viewContent.title );
     view.updateContent( viewContent.content );
-
+  },
+  listenMainNavLinksUpdatePage: function() {
+    var mainNav = document.getElementById("mainNav");
+    var links = mainNav.getElementsByTagName("a");
+    for(var i = 0, len = links.length; i < len; i++) {
+      links[i].addEventListener("click", view.update, false);
+      links[i].removeEventListener("click", view.disableNav);
+    }
+  },
+  listenDisableMainNavLinks: function() {
+    var links = helpers.getMainNavLinks();
+    for(var i = 0, len = links.length; i < len; i++) {
+      links[i].removeEventListener("click", view.update);
+      links[i].addEventListener("click", view.disableNav, false);
+    }
   },
   update: function() {
     var newPageSlugs = helpers.getAfterHash(this.href);
-    var viewContent;
+    var post;
     if( newPageSlugs.length > 1 ) {
-      viewContent = models.getContentBySlug(newPageSlugs[1], 'posts');
+      post = model.getContentBySlug(newPageSlugs[1], 'posts');
     } else {
       if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
-      viewContent = models.getContentBySlug(newPageSlugs[0], 'pages');
+      post = model.getContentBySlug(newPageSlugs[0], 'pages');
     }
-
-    view.updateTitle( viewContent.title );
-    view.updateContent( viewContent.content );
+    //view.updateCurrentNav();
+    view.updateTitle( post.title );
+    view.updateContent( post.content );
+  },
+  push: function(post) {
+    router.updateHash(post);
+    view.updateTitle( post.title );
+    view.updateContent( post.content );
   },
   updateTitle: function(title) {
     var titleEl = document.getElementById("pageTitle");
@@ -27,6 +48,9 @@ var view = {
   updateContent: function(content) {
     var contentEl = document.getElementById("pageContent");
     contentEl.innerHTML = content;
+  },
+  disableNav: function(){
+    event.preventDefault();
   }
 };
 module.exports = view;

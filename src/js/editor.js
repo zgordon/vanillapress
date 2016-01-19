@@ -1,82 +1,73 @@
-var models = require( "./models.js" );
 var helpers = require( "./lib/helpers.js" );
+var router = require( "./router.js" );
+var model = require( "./model.js" );
 var view = require( "./view.js" );
-var wysiwygEditor = require('wysiwyg');
 
+var wysiwygEditor = require('wysiwyg');
 
 var wysiwyg;
 
 var editor = {
   init: function() {
-    //var contentwysiwyg = wysiwyg(document.querySelector('#editContent'));
-
-    //wysiwyg = document.getElementById("editContent");
-    // wysiwyg = new SimpleMDE({
-    //   element: document.getElementById("editContent"),
-    //   toolbar: false,
-    //   spellChecker: false,
-    //   status: false,
-    // });
-    // wysiwyg.codemirror.on( "change", function() {
-    //   view.updateContent( wysiwyg.value() );
-    //   console.log( wysiwyg.value() );
-    // });
-    editor.loadMenu();
-    editor.setupToggle();
+    editor.listenEditorToggle();
   },
-  //posts: get_posts(),
-  loadMenu: function(){
+  visible: "false",
+  currentMenu: "primary",
+  currentConentType: "",
+  currentPost: "",
+  listenSecondaryNavTitle: function(){
+    var url = this.href;
+    var urlSegments = helpers.getAfterHash(url);
+    event.preventDefault();
+  },
+  listenNavTitle: function(){
     editor.clearMenus();
-    editor.showCurrentMenu();
+    editor.showSecondaryMenu();
   },
-  showCurrentMenu: function() {
-
-    var urlSegments = helpers.getAfterHash();
-    var currentMenu;
-
-    //if url #edit/
-    if( urlSegments[0] == "edit" && urlSegments.length == 1  ) {
-      currentMenu = "primary";
-      this.showPrimaryMenu();
+  listenEditorToggle: function(){
+    var editorToggleEl = helpers.getEditorToggleLink();
+    editorToggleEl.addEventListener("click", function(){
+      editor.toggle();
+      event.preventDefault();
+    }, false);
+  },
+  showCurrentMenu: function(){
+    switch ( editor.currentMenu ) {
+      case "primary":
+        showPrimaryMenu();
+        break;
+      case "secondary":
+        showSecondaryMenu();
+        break;
+      case "edit":
+        showEditPanel();
+        break;
+      default:
+        showPrimaryMenu();
     }
-    //if url #edit/secondary
-    else if( urlSegments[0] == "edit" && urlSegments.length == 2 ) {
-      currentMenu = "secondary";
-      this.showSecondaryMenu();
-    }
-    //if editing content
-    else {//( urlSegments[0] == "edit" && urlSegments.length == 3 ) {
-      currentMenu = "edit";
-      this.showEditPanel(urlSegments[2], urlSegments[1]);
-    }
-
-    var queryCurrentNav = "#editor nav." + currentMenu;
-    var currentNav = document.querySelector(queryCurrentNav);
-    currentNav.classList.add("active");
-
-    // var currentUl = document.querySelector(queryStr + " ul");
-    // var currentLinks = currentUl.getElementsByTagName("a");
-    // for (var i = 0; i < currentLinks.length; i++) {
-    //   currentLinks[i].addEventListener("click", refreshMenu(), false);
-    // }
-
   },
   showPrimaryMenu: function(){
-
+    var primaryNav = document.querySelector("#editor nav.primary");
+    secondaryNav.classList.add("active");
   },
-  showSecondaryMenu: function(){
-    this.updateMenuTitle();
-    //figure out what secondary navigation we're loading
-    var currentSecondaryMenu = helpers.getAfterHash()[1];
-    var menuItems = getContent(currentSecondaryMenu);
-    helpers.addMenuItems(menuItems, currentSecondaryMenu);
+  showSecondaryMenu: function(contentType){
+    var secondaryNav = document.querySelector("#editor nav.secondary");
+    secondaryNav.classList.add("active");
+    editor.updateNavTitle(contentType, "secondary");
+    var menuItems = model.getContent(contentType);
+    helpers.addMenuItems(menuItems, contentType);
+    var secondaryUl =  document.querySelector("#editor nav.secondary ul");
+    var secondaryLinks = secondaryUl.getElementsByTagName("a");
+    for (var i = 0; i < secondaryLinks.length; i++) {
+      secondaryLinks[i].addEventListener("click", editor.listenSecondaryNavTitle, false);
+    }
   },
-  showEditPanel: function(slug, contentType){
-    this.updateMenuTitle();
-    var itt;
-    var post = models.getContentBySlug(slug, contentType);
-    if( contentType == "posts" || contentType == "pages" ) {
-        this.fillEditForm(post);
+  showEditPanel: function(post) {
+    var editNav = document.querySelector("#editor nav.edit");
+    editNav.classList.add("active");
+    editor.updateNavTitle(post.type, "edit");
+    if( post.type == "post" || post.type == "page" ) {
+        editor.fillEditForm(post);
     }
   },
   fillEditForm: function(post) {
@@ -88,15 +79,17 @@ var editor = {
     editContent.value = post.content;
     wysiwyg = wysiwygEditor(document.getElementById("editContent"));
     wysiwyg.onUpdate(function () {
+      //make sure view is loaded
       view.updateContent( wysiwyg.read() );
     });
+
   },
   clearEditForm: function() {
+    var editTitle = document.getElementById("editTitle");
     editTitle.value = "";
     editContent.value = "";
     var wysiwyg = document.querySelector("nav.edit form iframe");
-    console.log(wysiwyg);
-    if(wysiwyg != null) wysiwyg.remove();
+    if(wysiwyg !== null) wysiwyg.remove();
   },
   clearMenus: function(){
     var editorEl = helpers.getEditorEl();
@@ -115,39 +108,44 @@ var editor = {
       editorLinks[i].removeEventListener("click", refreshMenu, false);
     }
   },
-  setupToggle: function() {
-    var editorToggleEl = document.querySelector("#editorToggle a");
-    editorToggleEl.addEventListener("click", editor.toggleView, false);
-  },
-  toggleView: function() {
+  toggle: function() {
+    editor.clearMenus();
     var editorEl = helpers.getEditorEl();
     editorEl.classList.toggle("hidden");
+
     var toggleBtn = document.querySelector("#editorToggle");
     toggleBtn.classList.toggle("hidden");
+
+    var mainNav = document.getElementById("mainNav");
+    mainNav.classList.toggle("inactive");
+
     if( toggleBtn.classList.contains("hidden") === false ) {
-      var viewContent = helpers.getCurrentContentObj();
-      editor.fillEditForm(viewContent);
+      var post = model.getCurrentContentObj();
+      router.updateHash("edit/" + post.type + "s/" + post.slug);
+      editor.showEditPanel(post);
+      view.listenDisableMainNavLinks();
+    } else {
+      view.listenMainNavLinksUpdatePage();
+      router.updateHash("");
     }
+
   },
-  updateMenuTitle: function() {
-    var title = null,
-        titleEl,
-        urlSegments = helpers.getAfterHash();
-    if(urlSegments.length == 2 && urlSegments[0] == "edit") {
-      title = urlSegments[urlSegments.length-1];
-      titleEl = document.querySelector("#editor nav.secondary h3 span");
-    }
-    if(urlSegments.length == 3 && urlSegments[0] == "edit") {
-      title = urlSegments[urlSegments.length-2];
-      titleEl = document.querySelector("#editor nav.edit h3 span a");
-      titleEl.href = "#edit/" + title;
-      //titleEl.addEventListener("click", refreshMenu, false);
-    }
+  updateNavTitle: function(contentType, currentMenu) {
 
     var homeLink = document.querySelector("#editor nav.edit h3 .go-home");
-    //if( homeLink ) addEventListener("click", refreshMenu, false);
+    var titleEl;
 
-    //titleEl.textContent = title;
+    if( currentMenu == "secondary" ) {
+      titleEl = document.querySelector("#editor nav.edit h3 span");
+      titleEl.innerHTML = contentType + "s";
+    } else {
+      titleEl = document.querySelector("#editor nav.edit h3 span a");
+      titleEl.textContent = contentType + "s";
+      titleEl.href = "#edit/" + contentType + "s";
+
+      titleEl.addEventListener("click", editor.listenNavTitle, false);
+    }
+
   }
 };
 

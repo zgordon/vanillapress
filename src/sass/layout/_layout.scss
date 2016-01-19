@@ -3,6 +3,7 @@
 
 body {
   margin: 0;
+  position: relative;
 }
 #wrapper {
   //@include outer-container;
@@ -28,6 +29,7 @@ body {
     //@include span-columns(9);
     @include flex(3);
     padding: 0 10px;
+    background: #ededed;
     a {
       color: $view-link-color;
     }

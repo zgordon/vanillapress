@@ -358,7 +358,7 @@ var editor = require( "./editor.js" );
 
 var vanillaPress = {
   init: function() {
-    router.init();
+    router.init();    
     view.init();
     editor.init();
   }
@@ -478,85 +478,76 @@ var data = [Posts, Pages, Settings];
 module.exports = data;
 
 },{}],9:[function(require,module,exports){
-var models = require( "./models.js" );
 var helpers = require( "./lib/helpers.js" );
+var router = require( "./router.js" );
+var model = require( "./model.js" );
 var view = require( "./view.js" );
-var wysiwygEditor = require('wysiwyg');
 
+var wysiwygEditor = require('wysiwyg');
 
 var wysiwyg;
 
 var editor = {
   init: function() {
-    //var contentwysiwyg = wysiwyg(document.querySelector('#editContent'));
-
-    //wysiwyg = document.getElementById("editContent");
-    // wysiwyg = new SimpleMDE({
-    //   element: document.getElementById("editContent"),
-    //   toolbar: false,
-    //   spellChecker: false,
-    //   status: false,
-    // });
-    // wysiwyg.codemirror.on( "change", function() {
-    //   view.updateContent( wysiwyg.value() );
-    //   console.log( wysiwyg.value() );
-    // });
-    editor.loadMenu();
-    editor.setupToggle();
+    editor.listenEditorToggle();
   },
-  //posts: get_posts(),
-  loadMenu: function(){
+  visible: "false",
+  currentMenu: "primary",
+  currentConentType: "",
+  currentPost: "",
+  listenSecondaryNavTitle: function(){
+    var url = this.href;
+    var urlSegments = helpers.getAfterHash(url);
+    event.preventDefault();
+  },
+  listenNavTitle: function(){
     editor.clearMenus();
-    editor.showCurrentMenu();
+    editor.showSecondaryMenu();
   },
-  showCurrentMenu: function() {
-
-    var urlSegments = helpers.getAfterHash();
-    var currentMenu;
-
-    //if url #edit/
-    if( urlSegments[0] == "edit" && urlSegments.length == 1  ) {
-      currentMenu = "primary";
-      this.showPrimaryMenu();
+  listenEditorToggle: function(){
+    var editorToggleEl = helpers.getEditorToggleLink();
+    editorToggleEl.addEventListener("click", function(){
+      editor.toggle();
+      event.preventDefault();
+    }, false);
+  },
+  showCurrentMenu: function(){
+    switch ( editor.currentMenu ) {
+      case "primary":
+        showPrimaryMenu();
+        break;
+      case "secondary":
+        showSecondaryMenu();
+        break;
+      case "edit":
+        showEditPanel();
+        break;
+      default:
+        showPrimaryMenu();
     }
-    //if url #edit/secondary
-    else if( urlSegments[0] == "edit" && urlSegments.length == 2 ) {
-      currentMenu = "secondary";
-      this.showSecondaryMenu();
-    }
-    //if editing content
-    else {//( urlSegments[0] == "edit" && urlSegments.length == 3 ) {
-      currentMenu = "edit";
-      this.showEditPanel(urlSegments[2], urlSegments[1]);
-    }
-
-    var queryCurrentNav = "#editor nav." + currentMenu;
-    var currentNav = document.querySelector(queryCurrentNav);
-    currentNav.classList.add("active");
-
-    // var currentUl = document.querySelector(queryStr + " ul");
-    // var currentLinks = currentUl.getElementsByTagName("a");
-    // for (var i = 0; i < currentLinks.length; i++) {
-    //   currentLinks[i].addEventListener("click", refreshMenu(), false);
-    // }
-
   },
   showPrimaryMenu: function(){
-
+    var primaryNav = document.querySelector("#editor nav.primary");
+    secondaryNav.classList.add("active");
   },
-  showSecondaryMenu: function(){
-    this.updateMenuTitle();
-    //figure out what secondary navigation we're loading
-    var currentSecondaryMenu = helpers.getAfterHash()[1];
-    var menuItems = getContent(currentSecondaryMenu);
-    helpers.addMenuItems(menuItems, currentSecondaryMenu);
+  showSecondaryMenu: function(contentType){
+    var secondaryNav = document.querySelector("#editor nav.secondary");
+    secondaryNav.classList.add("active");
+    editor.updateNavTitle(contentType, "secondary");
+    var menuItems = model.getContent(contentType);
+    helpers.addMenuItems(menuItems, contentType);
+    var secondaryUl =  document.querySelector("#editor nav.secondary ul");
+    var secondaryLinks = secondaryUl.getElementsByTagName("a");
+    for (var i = 0; i < secondaryLinks.length; i++) {
+      secondaryLinks[i].addEventListener("click", editor.listenSecondaryNavTitle, false);
+    }
   },
-  showEditPanel: function(slug, contentType){
-    this.updateMenuTitle();
-    var itt;
-    var post = models.getContentBySlug(slug, contentType);
-    if( contentType == "posts" || contentType == "pages" ) {
-        this.fillEditForm(post);
+  showEditPanel: function(post) {
+    var editNav = document.querySelector("#editor nav.edit");
+    editNav.classList.add("active");
+    editor.updateNavTitle(post.type, "edit");
+    if( post.type == "post" || post.type == "page" ) {
+        editor.fillEditForm(post);
     }
   },
   fillEditForm: function(post) {
@@ -568,15 +559,17 @@ var editor = {
     editContent.value = post.content;
     wysiwyg = wysiwygEditor(document.getElementById("editContent"));
     wysiwyg.onUpdate(function () {
+      //make sure view is loaded
       view.updateContent( wysiwyg.read() );
     });
+
   },
   clearEditForm: function() {
+    var editTitle = document.getElementById("editTitle");
     editTitle.value = "";
     editContent.value = "";
     var wysiwyg = document.querySelector("nav.edit form iframe");
-    console.log(wysiwyg);
-    if(wysiwyg != null) wysiwyg.remove();
+    if(wysiwyg !== null) wysiwyg.remove();
   },
   clearMenus: function(){
     var editorEl = helpers.getEditorEl();
@@ -595,48 +588,52 @@ var editor = {
       editorLinks[i].removeEventListener("click", refreshMenu, false);
     }
   },
-  setupToggle: function() {
-    var editorToggleEl = document.querySelector("#editorToggle a");
-    editorToggleEl.addEventListener("click", editor.toggleView, false);
-  },
-  toggleView: function() {
+  toggle: function() {
+    editor.clearMenus();
     var editorEl = helpers.getEditorEl();
     editorEl.classList.toggle("hidden");
+
     var toggleBtn = document.querySelector("#editorToggle");
     toggleBtn.classList.toggle("hidden");
+
+    var mainNav = document.getElementById("mainNav");
+    mainNav.classList.toggle("inactive");
+
     if( toggleBtn.classList.contains("hidden") === false ) {
-      var viewContent = helpers.getCurrentContentObj();
-      editor.fillEditForm(viewContent);
+      var post = model.getCurrentContentObj();
+      router.updateHash("edit/" + post.type + "s/" + post.slug);
+      editor.showEditPanel(post);
+      view.listenDisableMainNavLinks();
+    } else {
+      view.listenMainNavLinksUpdatePage();
+      router.updateHash("");
     }
+
   },
-  updateMenuTitle: function() {
-    var title = null,
-        titleEl,
-        urlSegments = helpers.getAfterHash();
-    if(urlSegments.length == 2 && urlSegments[0] == "edit") {
-      title = urlSegments[urlSegments.length-1];
-      titleEl = document.querySelector("#editor nav.secondary h3 span");
-    }
-    if(urlSegments.length == 3 && urlSegments[0] == "edit") {
-      title = urlSegments[urlSegments.length-2];
-      titleEl = document.querySelector("#editor nav.edit h3 span a");
-      titleEl.href = "#edit/" + title;
-      //titleEl.addEventListener("click", refreshMenu, false);
-    }
+  updateNavTitle: function(contentType, currentMenu) {
 
     var homeLink = document.querySelector("#editor nav.edit h3 .go-home");
-    //if( homeLink ) addEventListener("click", refreshMenu, false);
+    var titleEl;
 
-    //titleEl.textContent = title;
+    if( currentMenu == "secondary" ) {
+      titleEl = document.querySelector("#editor nav.edit h3 span");
+      titleEl.innerHTML = contentType + "s";
+    } else {
+      titleEl = document.querySelector("#editor nav.edit h3 span a");
+      titleEl.textContent = contentType + "s";
+      titleEl.href = "#edit/" + contentType + "s";
+
+      titleEl.addEventListener("click", editor.listenNavTitle, false);
+    }
+
   }
 };
 
 module.exports = editor;
 
-},{"./lib/helpers.js":10,"./models.js":11,"./view.js":13,"wysiwyg":1}],10:[function(require,module,exports){
-var models = require( "./../models.js" );
-
+},{"./lib/helpers.js":10,"./model.js":11,"./router.js":12,"./view.js":13,"wysiwyg":1}],10:[function(require,module,exports){
 Array.prototype.isArray = true;
+
 var helpers = {
 
   getAfterHash: function(url) {
@@ -670,44 +667,39 @@ var helpers = {
     var a = document.createElement('a');
     var aText = document.createTextNode(text);
     a.appendChild(aText);
-    a.href = "#edit/" + contentType + "/" + slug;
+    a.href = "#" + slug;
     return a;
   },
 
   getEditorEl: function() {
-    var el = document.getElementById("editor");
-    return el;
+    return document.getElementById("editor");
   },
 
   getEditorToggleEl: function() {
-    var el = document.getElementById("editorToggle");
-    return el;
+    return document.getElementById("editorToggle");
   },
 
-  getCurrentContentObj: function() {
+  getEditorToggleLink: function() {
+    return document.querySelector("#editorToggle a");
+  },
 
-    var newPageSlugs = helpers.getAfterHash();
-    var pageContent;
-    if( newPageSlugs.length > 1 ) {
-      pageContent = models.getContentBySlug(newPageSlugs[1], 'posts');
-    } else {
-      if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
-      pageContent = models.getContentBySlug(newPageSlugs[0], 'pages');      
-    }
-    return pageContent;
+  getMainNavLinks: function() {
+    var mainNav = document.getElementById("mainNav");
+    var links = mainNav.getElementsByTagName("a");
+    return links;
   }
 
-
-}
+};
 
 module.exports = helpers;
 
-},{"./../models.js":11}],11:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var data = require( "./data.js" );
 var helpers = require( "./lib/helpers.js" );
-//console.log(data[2]);
-var models = {
+
+var model = {
   getContent: function(type) {
+    type = type + "s";
     var content;
     switch (type) {
       case "posts":
@@ -724,12 +716,22 @@ var models = {
     }
     return content;
   },
-
+  getCurrentContentObj: function() {
+    var newPageSlugs = helpers.getAfterHash();
+    var pageContent;
+    if( newPageSlugs.length > 1 ) {
+      pageContent = model.getContentBySlug(newPageSlugs[1], 'posts');
+    } else {
+      if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
+      pageContent = model.getContentBySlug(newPageSlugs[0], 'pages');
+    }
+    return pageContent;
+  },
   getContentBySlug: function(slug, contentType){
     var content;
     switch (contentType) {
       case "posts":
-        content = data[0];        
+        content = data[0];
         break;
       case "pages":
         content = data[1];
@@ -744,48 +746,71 @@ var models = {
       return obj.slug == slug;
     });
     return item[0];
-  }
-}
+  },
 
-module.exports = models;
+  save: function(content) {
+
+  }
+};
+
+module.exports = model;
 
 },{"./data.js":8,"./lib/helpers.js":10}],12:[function(require,module,exports){
-var view = require( "./view.js" );
+var helpers = require( "./lib/helpers.js" );
+
 var router = {
   init: function() {
-    var mainNav = document.getElementById("mainNav");
-    var links = mainNav.getElementsByTagName("a");
-    for(var i = 0, len = links.length; i < len; i++) {
-        links[i].addEventListener("click", view.update, false);
-    }
-    //view.update();
-
+    var urlSegments = helpers.getAfterHash();    
+  },
+  updateHash: function(slug) {
+    window.location.hash = slug;
   }
 };
 module.exports = router;
 
-},{"./view.js":13}],13:[function(require,module,exports){
+},{"./lib/helpers.js":10}],13:[function(require,module,exports){
 var helpers = require( "./lib/helpers.js" );
-var models = require( "./models.js" );
+var model = require( "./model.js" );
+// var listeners = require( "./listeners.js" );
+
 var view = {
   init: function() {
-    var viewContent = helpers.getCurrentContentObj();
+    var viewContent = model.getCurrentContentObj();
     view.updateTitle( viewContent.title );
     view.updateContent( viewContent.content );
-
+  },
+  listenMainNavLinksUpdatePage: function() {
+    var mainNav = document.getElementById("mainNav");
+    var links = mainNav.getElementsByTagName("a");
+    for(var i = 0, len = links.length; i < len; i++) {
+      links[i].addEventListener("click", view.update, false);
+      links[i].removeEventListener("click", view.disableNav);
+    }
+  },
+  listenDisableMainNavLinks: function() {
+    var links = helpers.getMainNavLinks();
+    for(var i = 0, len = links.length; i < len; i++) {
+      links[i].removeEventListener("click", view.update);
+      links[i].addEventListener("click", view.disableNav, false);
+    }
   },
   update: function() {
     var newPageSlugs = helpers.getAfterHash(this.href);
-    var viewContent;
+    var post;
     if( newPageSlugs.length > 1 ) {
-      viewContent = models.getContentBySlug(newPageSlugs[1], 'posts');
+      post = model.getContentBySlug(newPageSlugs[1], 'posts');
     } else {
       if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
-      viewContent = models.getContentBySlug(newPageSlugs[0], 'pages');
+      post = model.getContentBySlug(newPageSlugs[0], 'pages');
     }
-
-    view.updateTitle( viewContent.title );
-    view.updateContent( viewContent.content );
+    //view.updateCurrentNav();
+    view.updateTitle( post.title );
+    view.updateContent( post.content );
+  },
+  push: function(post) {
+    router.updateHash(post);
+    view.updateTitle( post.title );
+    view.updateContent( post.content );
   },
   updateTitle: function(title) {
     var titleEl = document.getElementById("pageTitle");
@@ -794,8 +819,11 @@ var view = {
   updateContent: function(content) {
     var contentEl = document.getElementById("pageContent");
     contentEl.innerHTML = content;
+  },
+  disableNav: function(){
+    event.preventDefault();
   }
 };
 module.exports = view;
 
-},{"./lib/helpers.js":10,"./models.js":11}]},{},[7]);
+},{"./lib/helpers.js":10,"./model.js":11}]},{},[7]);

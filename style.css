@@ -15,6 +15,10 @@ html {
   font-weight: lighter;
 }
 
+body {
+  font-family: "Helvetica Neue", "Open Sans", sans-serif;
+}
+
 #editor {
   font-family: "Open Sans", sans-serif;
 }
@@ -31,6 +35,9 @@ html {
   font-size: 2.2rem;
   margin: 1rem 0 0;
   color: #222;
+}
+#view .page-header h1 a {
+  text-decoration: none;
 }
 #view .page-header h2 {
   color: #222;
@@ -83,13 +90,13 @@ html {
   padding: 0;
   margin: 0;
 }
-#editor nav li {
+#editor nav ul li {
   list-style: none;
 }
-#editor nav li:first-child {
+#editor nav ul li:first-child {
   border-top: 1px solid #eee;
 }
-#editor nav li > a {
+#editor nav ul li > a {
   padding: 15px 20px;
   display: block;
   border-bottom: 1px solid #eee;
@@ -97,14 +104,14 @@ html {
   text-decoration: none;
   position: relative;
 }
-#editor nav li > a:hover {
+#editor nav ul li > a:hover {
   background: #f5f5f5;
   color: #23282d;
 }
-#editor nav li > a:hover:after {
+#editor nav ul li > a:hover:after {
   color: #23282d;
 }
-#editor nav li > a:after {
+#editor nav ul li > a:after {
   content: ">";
   position: absolute;
   right: 20px;
@@ -115,6 +122,9 @@ html {
   margin: 10px;
   font-family: "Montserrat";
   margin: 40px 0 20px;
+}
+#view #mainNav.inactive a {
+  cursor: not-allowed;
 }
 #view #mainNav ul {
   padding: 0;
@@ -259,6 +269,7 @@ html {
 
 body {
   margin: 0;
+  position: relative;
 }
 
 #wrapper {
@@ -308,6 +319,7 @@ body {
   -ms-flex: 3;
   flex: 3;
   padding: 0 10px;
+  background: #ededed;
 }
 #wrapper #view a {
   color: #0085ba;

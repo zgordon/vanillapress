@@ -4,7 +4,7 @@ var editor = require( "./editor.js" );
 
 var vanillaPress = {
   init: function() {
-    router.init();
+    router.init();    
     view.init();
     editor.init();
   }

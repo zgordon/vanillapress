@@ -1,6 +1,5 @@
-var models = require( "./../models.js" );
-
 Array.prototype.isArray = true;
+
 var helpers = {
 
   getAfterHash: function(url) {
@@ -34,34 +33,28 @@ var helpers = {
     var a = document.createElement('a');
     var aText = document.createTextNode(text);
     a.appendChild(aText);
-    a.href = "#edit/" + contentType + "/" + slug;
+    a.href = "#" + slug;
     return a;
   },
 
   getEditorEl: function() {
-    var el = document.getElementById("editor");
-    return el;
+    return document.getElementById("editor");
   },
 
   getEditorToggleEl: function() {
-    var el = document.getElementById("editorToggle");
-    return el;
+    return document.getElementById("editorToggle");
   },
 
-  getCurrentContentObj: function() {
+  getEditorToggleLink: function() {
+    return document.querySelector("#editorToggle a");
+  },
 
-    var newPageSlugs = helpers.getAfterHash();
-    var pageContent;
-    if( newPageSlugs.length > 1 ) {
-      pageContent = models.getContentBySlug(newPageSlugs[1], 'posts');
-    } else {
-      if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
-      pageContent = models.getContentBySlug(newPageSlugs[0], 'pages');      
-    }
-    return pageContent;
+  getMainNavLinks: function() {
+    var mainNav = document.getElementById("mainNav");
+    var links = mainNav.getElementsByTagName("a");
+    return links;
   }
 
-
-}
+};
 
 module.exports = helpers;
