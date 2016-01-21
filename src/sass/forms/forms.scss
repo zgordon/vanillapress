@@ -1,6 +1,6 @@
 @import "wysiwyg";
 
-.edit {
+#edit {
   label {
     padding: 10px 10px 0;
     display: block;
@@ -38,7 +38,7 @@
     /* margin: 0; */
     border: 1px #ccc solid;
   }
-  #editUpdate {
+  #editUpdateBtn {
     background: $primary-btn-color;
     color: #fff;
     font-weight: lighter;

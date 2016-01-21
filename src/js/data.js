@@ -42,7 +42,7 @@ var Posts = [
     slug:"javascript-project",
     type:"post",
     title:"JavaScript Project",
-    content:"<p>I've started working with the REST API in WordPress, what fun!</p> ",
+    content:"<p>I've started working with the REST API in WordPress, what fun!</p> "
   }
 ];
 
@@ -93,7 +93,7 @@ var Settings = [
     slug:"site-name",
     type:"setting",
     title:"Site Name",
-    content:"My VanillaPress Site"
+    content:"VanillaPress"
   },
   {
     id:992,
@@ -102,9 +102,10 @@ var Settings = [
     slug:"site-description",
     type:"setting",
     title:"Site Description",
-    content:"Not Just Another WP Site"
+    content:"A JS Front & Back End"
   }
 ];
 
 var data = [Posts, Pages, Settings];
+
 module.exports = data;

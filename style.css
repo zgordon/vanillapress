@@ -79,6 +79,21 @@ body {
 #editor nav.active {
   display: block;
 }
+#editor nav .addNew {
+  position: absolute;
+  top: 42px;
+  right: 14px;
+}
+#editor nav .addNew a {
+  text-decoration: none;
+  padding: 0px 6px;
+  display: block;
+  background: #0085ba;
+  border-radius: 50%;
+  font-size: 1rem;
+  color: #fff;
+  font-weight: bold;
+}
 #editor nav h3 {
   padding: 20px;
   text-transform: capitalize;
@@ -370,16 +385,16 @@ body {
  * @link https://github.com/NextStepWebs/simplemde-markdown-editor
  * @license MIT
  */
-.edit label {
+#edit label {
   padding: 10px 10px 0;
   display: block;
   color: #999;
   font-weight: lighter;
 }
-.edit input,
-.edit textarea,
-.edit .CodeMirror,
-.edit iframe.wysiwyg {
+#edit input,
+#edit textarea,
+#edit .CodeMirror,
+#edit iframe.wysiwyg {
   display: block;
   color: #555;
   font-size: 1.4rem;
@@ -389,27 +404,27 @@ body {
   padding: 10px;
   border: 1px #eee solid;
 }
-.edit input:focus,
-.edit textarea:focus,
-.edit .CodeMirror:focus,
-.edit iframe.wysiwyg:focus {
+#edit input:focus,
+#edit textarea:focus,
+#edit .CodeMirror:focus,
+#edit iframe.wysiwyg:focus {
   border-color: #555;
 }
-.edit textarea, .edit .CodeMirror, .edit .CodeMirror-scroll, .edit iframe.wysiwyg {
+#edit textarea, #edit .CodeMirror, #edit .CodeMirror-scroll, #edit iframe.wysiwyg {
   min-height: 300px;
   max-height: 400px;
   font-size: 1.1rem;
   line-height: 1.8rem;
   padding: 5px;
 }
-.edit iframe.wysiwyg {
+#edit iframe.wysiwyg {
   margin-left: 10px;
   width: 93%;
   padding: 0;
   /* margin: 0; */
   border: 1px #ccc solid;
 }
-.edit #editUpdate {
+#edit #editUpdateBtn {
   background: #0085ba;
   color: #fff;
   font-weight: lighter;

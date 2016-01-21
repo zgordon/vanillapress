@@ -352,20 +352,22 @@ function pubsub (mix) {
 }
 
 },{}],7:[function(require,module,exports){
+var model = require( "./model.js" );
 var router = require( "./router.js" );
 var view = require( "./view.js" );
 var editor = require( "./editor.js" );
 
 var vanillaPress = {
   init: function() {
-    router.init();    
+    model.init();
+    router.init();
     view.init();
     editor.init();
   }
 };
 vanillaPress.init();
 
-},{"./editor.js":9,"./router.js":12,"./view.js":13}],8:[function(require,module,exports){
+},{"./editor.js":9,"./model.js":12,"./router.js":13,"./view.js":14}],8:[function(require,module,exports){
 var Posts = [
   {
     id:1,
@@ -410,7 +412,7 @@ var Posts = [
     slug:"javascript-project",
     type:"post",
     title:"JavaScript Project",
-    content:"<p>I've started working with the REST API in WordPress, what fun!</p> ",
+    content:"<p>I've started working with the REST API in WordPress, what fun!</p> "
   }
 ];
 
@@ -461,7 +463,7 @@ var Settings = [
     slug:"site-name",
     type:"setting",
     title:"Site Name",
-    content:"My VanillaPress Site"
+    content:"VanillaPress"
   },
   {
     id:992,
@@ -470,14 +472,19 @@ var Settings = [
     slug:"site-description",
     type:"setting",
     title:"Site Description",
-    content:"Not Just Another WP Site"
+    content:"A JS Front & Back End"
   }
 ];
 
 var data = [Posts, Pages, Settings];
+
 module.exports = data;
 
 },{}],9:[function(require,module,exports){
+// var addClass = require('amp-add-class');
+// var removeClass = require('amp-remove-class');
+// var toggleClass = require('amp-toggle-class');
+
 var helpers = require( "./lib/helpers.js" );
 var router = require( "./router.js" );
 var model = require( "./model.js" );
@@ -492,17 +499,40 @@ var editor = {
     editor.listenEditorToggle();
   },
   visible: "false",
-  currentMenu: "primary",
-  currentConentType: "",
+  currentMenu: "edit",
   currentPost: "",
-  listenSecondaryNavTitle: function(){
-    var url = this.href;
-    var urlSegments = helpers.getAfterHash(url);
+  currentPostType: "",
+  listenAdminHomeLink: function(){
+    editor.clearMenus();
+    editor.showPrimaryMenu();
     event.preventDefault();
   },
-  listenNavTitle: function(){
+  listenPrimaryLinks: function() {
+    var urlSegments = helpers.getAfterHash(this.href);
+    var currentPost = urlSegments[0].substring(0, urlSegments[0].length - 1);
+    editor.currentPostType = currentPost;
     editor.clearMenus();
     editor.showSecondaryMenu();
+    event.preventDefault();
+  },
+  listenSecondaryNavTitle: function(){
+    editor.clearMenus();
+    editor.showSecondaryMenu();
+    event.preventDefault();
+  },
+  listenLoadEditForm: function(){
+    editor.clearMenus();
+    var slugs = helpers.getAfterHash(this.href);
+    var post = model.getPostBySlugs(slugs);
+    editor.currentPost = post;
+    editor.currentPostType = post.type;
+    if(editor.currentPostType != "setting") {
+      view.currentPost = post;
+      view.update();
+    } else {
+      event.preventDefault();
+    }
+    editor.showEditPanel();
   },
   listenEditorToggle: function(){
     var editorToggleEl = helpers.getEditorToggleLink();
@@ -510,6 +540,39 @@ var editor = {
       editor.toggle();
       event.preventDefault();
     }, false);
+  },
+  listenUpdatePost: function() {
+    event.preventDefault();
+    var postType = editor.currentPostType;
+    var store = model.getLocalStore();    
+    var storePosts;
+    switch (postType) {
+      case "post":
+        storePosts = store.posts;
+        break;
+      case "page":
+        storePosts = store.pages;
+        break;
+      default:
+        storePosts = store.settings;
+    }
+    storePosts.forEach(function(item){
+      if(editor.currentPost.id == item.id){
+        item.title = editor.currentPost.title;
+        item.content = editor.currentPost.content;
+      }
+    });
+    switch (postType) {
+      case "post":
+        store.posts = storePosts;
+        break;
+      case "page":
+        store.pages = storePosts;
+        break;
+      default:
+        store.settings = storePosts;
+    }
+    model.updateLocalStore(store);
   },
   showCurrentMenu: function(){
     switch ( editor.currentMenu ) {
@@ -527,48 +590,82 @@ var editor = {
     }
   },
   showPrimaryMenu: function(){
-    var primaryNav = document.querySelector("#editor nav.primary");
-    secondaryNav.classList.add("active");
+    var primaryNav = helpers.getEditorPrimaryNav();
+    primaryNav.classList.add("active");
+    var primaryLinks = helpers.getEditorPrimaryNavLinks();
+    for (var i = 0; i < primaryLinks.length; i++) {
+      primaryLinks[i].addEventListener("click", editor.listenPrimaryLinks, false);
+    }
+    editor.currentMenu = "primary";
   },
-  showSecondaryMenu: function(contentType){
-    var secondaryNav = document.querySelector("#editor nav.secondary");
+  showSecondaryMenu: function(){
+    var secondaryNav = helpers.getEditorSecondaryNav();
+    var postType = editor.currentPostType;
     secondaryNav.classList.add("active");
-    editor.updateNavTitle(contentType, "secondary");
-    var menuItems = model.getContent(contentType);
-    helpers.addMenuItems(menuItems, contentType);
-    var secondaryUl =  document.querySelector("#editor nav.secondary ul");
+    editor.currentMenu = "secondary";
+    editor.updateNavTitle();
+    var menuItems = model.getContent(postType);
+    helpers.addMenuItems(menuItems, postType);
+    var secondaryUl =  helpers.getEditorSecondaryNavUl();
     var secondaryLinks = secondaryUl.getElementsByTagName("a");
     for (var i = 0; i < secondaryLinks.length; i++) {
-      secondaryLinks[i].addEventListener("click", editor.listenSecondaryNavTitle, false);
+      secondaryLinks[i].addEventListener("click", editor.listenLoadEditForm, false);
     }
   },
-  showEditPanel: function(post) {
-    var editNav = document.querySelector("#editor nav.edit");
-    editNav.classList.add("active");
-    editor.updateNavTitle(post.type, "edit");
-    if( post.type == "post" || post.type == "page" ) {
-        editor.fillEditForm(post);
-    }
-  },
-  fillEditForm: function(post) {
+  showEditPanel: function() {
     editor.clearEditForm();
+    var post = editor.currentPost;
+    var editNav = helpers.getEditorEditNav();
+    var editorEl = helpers.getEditorEditNav();
+    editorEl.classList.toggle("active");
+    editor.currentMenu = "edit";
+    editor.updateNavTitle();
+    editor.fillEditForm();
+    var editForm = helpers.getEditorForm();
+    editForm.addEventListener('submit', editor.listenUpdatePost, false);
+    //}
+  },
+  fillEditForm: function() {
+    var post = editor.currentPost;
     var editTitle = document.getElementById("editTitle");
-    editTitle.value = post.title;
-    //console.log(wysiwyg.value());
-    //wysiwyg.value( markdown.toHTML(post.content) );
-    editContent.value = post.content;
-    wysiwyg = wysiwygEditor(document.getElementById("editContent"));
-    wysiwyg.onUpdate(function () {
-      //make sure view is loaded
-      view.updateContent( wysiwyg.read() );
-    });
+    var postTitle = helpers.getPostTitle();
+    var titleField = helpers.getEditorTitleField();
 
+    editTitle.value = post.title;
+    editContent.value = post.content;
+
+
+    wysiwyg = wysiwygEditor(document.getElementById("editContent"));
+    if( post.type != "setting") {
+      titleField.addEventListener("input", function(){
+        editor.currentPost.title = this.value;
+        view.updateTitle(this.value);
+      }, false);
+      wysiwyg.onUpdate(function () {
+        view.updateContent( wysiwyg.read() );
+        editor.currentPost.content = wysiwyg.read();
+      });
+    } else {
+      if (  post.slug == "site-name" ) {
+        wysiwyg.onUpdate(function () {
+          view.updateSiteName( wysiwyg.read() );
+          editor.currentPost.content = wysiwyg.read();
+        });
+      } else if( post.slug == "site-description" ) {
+        wysiwyg.onUpdate(function () {
+          view.updateSiteDescription( wysiwyg.read() );
+          editor.currentPost.content = wysiwyg.read();
+        });
+      } else {
+
+      }
+    }
   },
   clearEditForm: function() {
     var editTitle = document.getElementById("editTitle");
     editTitle.value = "";
     editContent.value = "";
-    var wysiwyg = document.querySelector("nav.edit form iframe");
+    var wysiwyg = helpers.getEditorWysiwyg();
     if(wysiwyg !== null) wysiwyg.remove();
   },
   clearMenus: function(){
@@ -580,7 +677,7 @@ var editor = {
       nav.classList.remove("active");
     }
     //remove all children from #editor nav.secondary ul
-    var navUl = document.querySelector("#editor nav.secondary ul");
+    var navUl = helpers.getEditorSecondaryNavUl();
     while(navUl.firstChild) navUl.removeChild(navUl.firstChild);
 
     var navlinks = navUl.getElementsByTagName("a");
@@ -590,40 +687,45 @@ var editor = {
   },
   toggle: function() {
     editor.clearMenus();
+
+    editor.currentPost = view.currentPost;
+    editor.currentPostType = view.currentPost.type;
+    editor.currentMenu = "edit";
+
     var editorEl = helpers.getEditorEl();
     editorEl.classList.toggle("hidden");
 
-    var toggleBtn = document.querySelector("#editorToggle");
-    toggleBtn.classList.toggle("hidden");
+    var toggleEl = helpers.getEditorToggleEl();
+    toggleEl.classList.toggle("hidden");
 
-    var mainNav = document.getElementById("mainNav");
+    var mainNav = helpers.getMainNavEl();
     mainNav.classList.toggle("inactive");
 
-    if( toggleBtn.classList.contains("hidden") === false ) {
-      var post = model.getCurrentContentObj();
-      router.updateHash("edit/" + post.type + "s/" + post.slug);
-      editor.showEditPanel(post);
+    if( toggleEl.classList.contains("hidden") === false ) {
+      editor.showEditPanel();
+      var navTitleLink = helpers.getEditorNavTitleLink();
+      navTitleLink.addEventListener("click", editor.listenSecondaryNavTitle, false);
       view.listenDisableMainNavLinks();
     } else {
+      router.updateHash(view.currentPost.slug);
       view.listenMainNavLinksUpdatePage();
-      router.updateHash("");
     }
 
   },
-  updateNavTitle: function(contentType, currentMenu) {
+  updateNavTitle: function() {
 
-    var homeLink = document.querySelector("#editor nav.edit h3 .go-home");
-    var titleEl;
+    var postType = editor.currentPostType;
+    var currentMenu = editor.currentMenu;
+    var homeLink = helpers.getEditorHomeLinkEl(currentMenu);
+    homeLink.addEventListener("click", editor.listenAdminHomeLink, false);
 
     if( currentMenu == "secondary" ) {
-      titleEl = document.querySelector("#editor nav.edit h3 span");
-      titleEl.innerHTML = contentType + "s";
+      var navTitleEl = helpers.getEditorNavTitleEl(currentMenu);
+      navTitleEl.innerHTML = postType + "s";
     } else {
-      titleEl = document.querySelector("#editor nav.edit h3 span a");
-      titleEl.textContent = contentType + "s";
-      titleEl.href = "#edit/" + contentType + "s";
-
-      titleEl.addEventListener("click", editor.listenNavTitle, false);
+      var navTitleLink = helpers.getEditorNavTitleLink();
+      navTitleLink.textContent = postType + "s";
+      navTitleLink.addEventListener("click", editor.listenSecondaryNavTitle, false);
     }
 
   }
@@ -631,7 +733,120 @@ var editor = {
 
 module.exports = editor;
 
-},{"./lib/helpers.js":10,"./model.js":11,"./router.js":12,"./view.js":13,"wysiwyg":1}],10:[function(require,module,exports){
+},{"./lib/helpers.js":11,"./model.js":12,"./router.js":13,"./view.js":14,"wysiwyg":1}],10:[function(require,module,exports){
+var jsonData = [
+  {
+    posts: [
+      {
+        id:1,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"hello-world",
+        type:"post",
+        title:"Hello world!",
+        content:"<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p> ",
+      },
+      {
+        id:2,
+        date:"2016-01-10T22:05:09",
+        modified:"2016-01-10T22:05:09",
+        slug:"learning-javascript",
+        type:"post",
+        title:"Learning JavaScript!",
+        content:"<p>I'm learning JavaScript and super excited!!!</p> ",
+      },
+      {
+        id:3,
+        date:"2016-01-11T22:05:09",
+        modified:"2016-01-11T22:05:09",
+        slug:"rest-api",
+        type:"post",
+        title:"The REST API!",
+        content:"<p>I've started working with the REST API in WordPress, what fun!</p> ",
+      },
+      {
+        id:4,
+        date:"2016-01-12T22:05:09",
+        modified:"2016-01-12T22:05:09",
+        slug:"json-data",
+        type:"post",
+        title:"JSON Data!",
+        content:"<p>So, with the REST API it is posible to pull in WordPress data as pure JSON.  Now I'm figuring out what to do with the data</p> ",
+      },
+      {
+        id:5,
+        date:"2016-01-13T22:05:09",
+        modified:"2016-01-13T22:05:09",
+        slug:"javascript-project",
+        type:"post",
+        title:"JavaScript Project",
+        content:"<p>I've started working with the REST API in WordPress, what fun!</p> ",
+      }
+    ],
+    pages: [
+      {
+        id:40,
+        date:"2016-01-07T22:05:09",
+        modified:"2016-01-07T22:05:09",
+        slug:"home",
+        type:"page",
+        title:"Home",
+        content:"<p>Welcome!</p><p>Reprehenderit sit sunt nisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
+      },
+      {
+        id:41,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"about",
+        type:"page",
+        title:"About Me",
+        content:"<p>Hi!  I'm me :)</p><p>Sisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
+      },
+      {
+        id:42,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"blog",
+        type:"page",
+        title:"Blog",
+        content:"<p>Welcome to my blog page, please enjoy!</p>",
+      },
+      {
+        id:43,
+        date:"2016-01-19T22:06:09",
+        modified:"2016-01-19T22:06:09",
+        slug:"contact",
+        type:"page",
+        title:"Contact",
+        content:"<p>Please get in touch!</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
+      }
+    ],
+    settings: [
+      {
+        id:991,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"site-name",
+        type:"setting",
+        title:"Site Name",
+        content:"VanillaPress"
+      },
+      {
+        id:992,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"site-description",
+        type:"setting",
+        title:"Site Description",
+        content:"A JS Front & Back End"
+      }
+    ]
+  },
+];
+
+module.exports = jsonData;
+
+},{}],11:[function(require,module,exports){
 Array.prototype.isArray = true;
 
 var helpers = {
@@ -657,17 +872,26 @@ var helpers = {
   },
 
   addMenuItem: function(menuItem) {
-    var ul = document.querySelector("#editor nav.secondary ul");
+    var ul = document.querySelector("#editor nav#secondary ul");
     var li = document.createElement("li");
     li.appendChild(menuItem);
     ul.appendChild(li);
   },
 
-  createLink: function(text, contentType, slug) {
+  createLink: function(text, postType, slug) {
     var a = document.createElement('a');
     var aText = document.createTextNode(text);
     a.appendChild(aText);
-    a.href = "#" + slug;
+    switch (postType) {
+      case "post":
+        a.href = "#blog/" + slug;
+        break;
+      case "setting":
+        a.href = "#settings/" + slug;
+        break;
+      default:
+        a.href = "#" + slug;
+    }
     return a;
   },
 
@@ -683,61 +907,166 @@ var helpers = {
     return document.querySelector("#editorToggle a");
   },
 
+  getEditorPrimaryNav: function() {
+    return  document.querySelector("#editor nav#primary");
+  },
+
+  getEditorPrimaryNavLinks: function() {
+    var primaryNav = helpers.getEditorPrimaryNav();
+    return  primaryNav.getElementsByTagName("a");
+  },
+
+  getEditorSecondaryNav: function() {
+    return  document.querySelector("#editor nav#secondary");
+  },
+
+  getEditorSecondaryNavUl: function() {
+    var secondaryNav = helpers.getEditorSecondaryNav();
+    return  secondaryNav.querySelector("ul");
+  },
+
+  getEditorEditNav: function() {
+    return  document.querySelector("#editor nav#edit");
+  },
+
+  getEditorHomeLinkEl: function(currentMenu) {
+    var nav;
+    switch (currentMenu) {
+      case "edit":
+        nav = helpers.getEditorEditNav();
+        break;
+      case "secondary":
+        nav = helpers.getEditorSecondaryNav();
+        break;
+      default:
+        nav = helpers.getEditorPrimaryNav();
+    }
+    return nav.querySelector("h3 .go-home");
+  },
+
+  getEditorNavTitleEl: function(currentMenu) {
+    var nav;
+    switch (currentMenu) {
+      case "edit":
+        nav = helpers.getEditorEditNav();
+        break;
+      case "secondary":
+        nav = helpers.getEditorSecondaryNav();
+        break;
+      default:
+        nav = helpers.getEditorPrimaryNav();
+    }
+    return nav.querySelector("h3 span");
+  },
+
+  getEditorNavTitleLink: function() {
+      var editNav = helpers.getEditorEditNav();
+      return editNav.querySelector("h3 span a");
+  },
+
+  getEditorTitleField: function() {
+    return document.getElementById("editTitle");
+  },
+
+  getEditorWysiwyg: function() {
+    var editNav = helpers.getEditorEditNav();
+    return editNav.querySelector("form iframe");
+  },
+
+  getEditorForm: function() {
+    var editNav = helpers.getEditorEditNav();
+    return editNav.querySelector("form");
+  },
+
+  getEditorEditUpdateBtn: function() {
+    return document.getElementById("editUpdateBtn");
+  },
+
+  getSiteName: function() {
+    siteNameEl = document.getElementById("siteName");
+    return siteNameEl.querySelector("a");
+  },
+
+  getSiteDescription: function() {
+    return document.getElementById("siteDesription");
+  },
+
+  getMainNavEl: function() {
+    var mainNavEl = document.getElementById("mainNav");
+    return mainNavEl;
+  },
+
   getMainNavLinks: function() {
     var mainNav = document.getElementById("mainNav");
     var links = mainNav.getElementsByTagName("a");
     return links;
+  },
+
+  getPostTitle: function() {
+    var titleEl = document.getElementById("pageTitle");
+    return titleEl;
   }
 
 };
 
 module.exports = helpers;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var data = require( "./data.js" );
+var jsonData = require( "./json.js" );
 var helpers = require( "./lib/helpers.js" );
 
 var model = {
+  init: function() {
+    var localStore = model.getLocalStore();
+    if(typeof localStore === "undefined" || localStore === null | localStore === "") {
+      localStorage.setItem('vanillaPress', JSON.stringify(jsonData) );
+      localStore = model.getLocalStore();
+    }
+  },
   getContent: function(type) {
+    var data = model.getLocalStore();
     type = type + "s";
-    var content;
     switch (type) {
       case "posts":
-        content = data[0];
+        content = data.posts;
         break;
       case "pages":
-        content = data[1];
+        content = data.pages;
         break;
       case "settings":
-        content = data[2];
+        content = data.settings;
         break;
       default:
         content =  [{type:"404",title:"404 Error"}];
     }
     return content;
   },
-  getCurrentContentObj: function() {
-    var newPageSlugs = helpers.getAfterHash();
-    var pageContent;
-    if( newPageSlugs.length > 1 ) {
-      pageContent = model.getContentBySlug(newPageSlugs[1], 'posts');
+  getPostBySlugs: function(slugs) {
+    var post;
+    if( slugs.length > 1 && (slugs[0] == "posts" || slugs[0] == "blog")) {
+      post = model.getPostBySlug(slugs[1], 'posts');
+    } else if(slugs.length > 1 && slugs[0] == "settings"){
+      post = model.getPostBySlug(slugs[1], 'settings');
     } else {
-      if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
-      pageContent = model.getContentBySlug(newPageSlugs[0], 'pages');
+      if( slugs[0] === "") slugs[0] = "home";
+      post = model.getPostBySlug(slugs[0], 'pages');
     }
-    return pageContent;
+    return post;
   },
-  getContentBySlug: function(slug, contentType){
+  getPostBySlug: function(slug, contentType){
+    //get contet from local storage
+    var data = model.getLocalStore();
     var content;
     switch (contentType) {
       case "posts":
-        content = data[0];
+        content = data.posts;
         break;
       case "pages":
-        content = data[1];
+        content = data.pages;
         break;
       case "settings":
-        content = data[2];
+        content = data.settings;
         break;
       default:
         content =  [{type:"404",title:"404 Error"}];
@@ -747,20 +1076,54 @@ var model = {
     });
     return item[0];
   },
-
-  save: function(content) {
-
+  getCurrentContentObj: function() {
+    var newPageSlugs = helpers.getAfterHash();
+    var post;
+    if( newPageSlugs.length > 1 ) {
+      post = model.getPostBySlug(newPageSlugs[1], 'posts');
+    } else {
+      if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
+      post = model.getPostBySlug(newPageSlugs[0], 'pages');
+    }
+    return post;
+  },
+  getLocalStore: function() {
+    var store = JSON.parse(localStorage.getItem('vanillaPress'));    
+    if(store === null) {
+      store = [""];
+    }
+    return store[0];
+  },
+  updateLocalStore: function(store) {
+    //console.log( JSON.stringify(store) );
+    var newStore = [store];
+    localStorage.setItem('vanillaPress', JSON.stringify(newStore) );
+  },
+  removeLocalStore: function() {
+    localStorage.removeItem('vanillaPress');
   }
 };
 
 module.exports = model;
 
-},{"./data.js":8,"./lib/helpers.js":10}],12:[function(require,module,exports){
+},{"./data.js":8,"./json.js":10,"./lib/helpers.js":11}],13:[function(require,module,exports){
 var helpers = require( "./lib/helpers.js" );
+var model = require( "./model.js" );
+var view = require( "./view.js" );
 
 var router = {
   init: function() {
-    var urlSegments = helpers.getAfterHash();    
+    router.setCurrentPost();
+    view.update();
+    router.listenPageChange();
+  },
+  listenPageChange: function() {
+    window.addEventListener("hashchange", router.setCurrentPost, false);
+  },
+  setCurrentPost: function() {
+    var slugs = helpers.getAfterHash();
+    var post = model.getPostBySlugs(slugs);
+    view.currentPost = post;
   },
   updateHash: function(slug) {
     window.location.hash = slug;
@@ -768,49 +1131,62 @@ var router = {
 };
 module.exports = router;
 
-},{"./lib/helpers.js":10}],13:[function(require,module,exports){
+},{"./lib/helpers.js":11,"./model.js":12,"./view.js":14}],14:[function(require,module,exports){
 var helpers = require( "./lib/helpers.js" );
 var model = require( "./model.js" );
-// var listeners = require( "./listeners.js" );
 
 var view = {
   init: function() {
-    var viewContent = model.getCurrentContentObj();
-    view.updateTitle( viewContent.title );
-    view.updateContent( viewContent.content );
+    view.listenMainNavLinksUpdatePage();
+    view.loadMainHeader();
   },
+  currentPost: "",
   listenMainNavLinksUpdatePage: function() {
     var mainNav = document.getElementById("mainNav");
     var links = mainNav.getElementsByTagName("a");
     for(var i = 0, len = links.length; i < len; i++) {
-      links[i].addEventListener("click", view.update, false);
+      links[i].addEventListener("click", view.mainNavControl, false);
       links[i].removeEventListener("click", view.disableNav);
     }
   },
   listenDisableMainNavLinks: function() {
     var links = helpers.getMainNavLinks();
     for(var i = 0, len = links.length; i < len; i++) {
-      links[i].removeEventListener("click", view.update);
+      links[i].removeEventListener("click", view.mainNavControl);
       links[i].addEventListener("click", view.disableNav, false);
     }
   },
-  update: function() {
+  mainNavControl: function() {
     var newPageSlugs = helpers.getAfterHash(this.href);
-    var post;
-    if( newPageSlugs.length > 1 ) {
-      post = model.getContentBySlug(newPageSlugs[1], 'posts');
-    } else {
-      if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
-      post = model.getContentBySlug(newPageSlugs[0], 'pages');
-    }
-    //view.updateCurrentNav();
-    view.updateTitle( post.title );
-    view.updateContent( post.content );
+    var post = model.getPostBySlugs(newPageSlugs);
+    view.currentPost = post;
+    view.update();
+  },
+  update: function() {
+    // var urlSegments = helpers.getAfterHash(this);
+    // console.log(this + " " + view.currentPost.title);
+    // //view.updateCurrentNav();
+    view.updateTitle( view.currentPost.title );
+    view.updateContent( view.currentPost.content );
   },
   push: function(post) {
     router.updateHash(post);
     view.updateTitle( post.title );
     view.updateContent( post.content );
+  },
+  loadMainHeader: function() {
+    var siteName = model.getPostBySlug("site-name", "settings");
+    var siteDescription = model.getPostBySlug("site-description", "settings");
+    view.updateSiteName(siteName.content);
+    view.updateSiteDescription(siteDescription.content);
+  },
+  updateSiteName: function(content) {
+    var siteName = helpers.getSiteName();
+    siteName.innerHTML = content;
+  },
+  updateSiteDescription: function(content) {
+    var siteDescription = helpers.getSiteDescription();
+    siteDescription.innerHTML = content;
   },
   updateTitle: function(title) {
     var titleEl = document.getElementById("pageTitle");
@@ -826,4 +1202,4 @@ var view = {
 };
 module.exports = view;
 
-},{"./lib/helpers.js":10,"./model.js":11}]},{},[7]);
+},{"./lib/helpers.js":11,"./model.js":12}]},{},[7]);

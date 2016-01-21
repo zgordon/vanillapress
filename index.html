@@ -13,27 +13,28 @@
 
       <h1>VanillaPress</h1>
 
-      <nav class="primary">
+      <nav id="primary">
         <h3>Admin</h3>
         <ul class="accordion">
-          <li><a href="#edit/posts">Posts</a></li>
-          <li><a href="#edit/pages">Pages</a></li>
-          <li><a href="#edit/settings">Settings</a></li>
+          <li><a href="#posts">Posts</a></li>
+          <li><a href="#pages">Pages</a></li>
+          <li><a href="#settings">Settings</a></li>
         </ul>
       </nav>
 
-      <nav class="secondary">
+      <nav id="secondary">
         <h3>
-          <a class="go-home" href="#edit">Admin</a> /
+          <a class="go-home" href="#">Admin</a> /
           <span>Title</span>
         </h3>
+        <!-- <span class="addNew"><a href="#">+</a></span> -->
         <ul class="accordion">
         </ul>
       </nav>
 
-      <nav class="edit">
+      <nav id="edit">
         <h3>
-          <a class="go-home" href="#edit">Admin</a> /
+          <a class="go-home" href="#">Admin</a> /
           <span><a href="#edit">Title</a></span>
         </h3>
         <form action="">
@@ -47,7 +48,7 @@
               <textarea name="editContent" id="editContent"></textarea>
             </li>
             <li>
-                <input id="editUpdate" type="submit" value="Update" class="btn primary">
+                <input id="editUpdateBtn" type="submit" value="Update" class="btn primary">
             </li>
           </ul>
         </form>
@@ -63,8 +64,8 @@
       <div class="container">
 
         <header class="page-header">
-          <h1><a href="#">VanillaPress</a></h1>
-          <h2>A JS Front &amp; Back End</h2>
+          <h1 id="siteName"><a href="#">VanillaPress</a></h1>
+          <h2 id="siteDesription">A JS Front &amp; Back End</h2>
         </header>
 
         <nav id="mainNav">

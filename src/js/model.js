@@ -1,47 +1,58 @@
 var data = require( "./data.js" );
+var jsonData = require( "./json.js" );
 var helpers = require( "./lib/helpers.js" );
 
 var model = {
+  init: function() {
+    var localStore = model.getLocalStore();
+    if(typeof localStore === "undefined" || localStore === null | localStore === "") {
+      localStorage.setItem('vanillaPress', JSON.stringify(jsonData) );
+      localStore = model.getLocalStore();
+    }
+  },
   getContent: function(type) {
+    var data = model.getLocalStore();
     type = type + "s";
-    var content;
     switch (type) {
       case "posts":
-        content = data[0];
+        content = data.posts;
         break;
       case "pages":
-        content = data[1];
+        content = data.pages;
         break;
       case "settings":
-        content = data[2];
+        content = data.settings;
         break;
       default:
         content =  [{type:"404",title:"404 Error"}];
     }
     return content;
   },
-  getCurrentContentObj: function() {
-    var newPageSlugs = helpers.getAfterHash();
-    var pageContent;
-    if( newPageSlugs.length > 1 ) {
-      pageContent = model.getContentBySlug(newPageSlugs[1], 'posts');
+  getPostBySlugs: function(slugs) {
+    var post;
+    if( slugs.length > 1 && (slugs[0] == "posts" || slugs[0] == "blog")) {
+      post = model.getPostBySlug(slugs[1], 'posts');
+    } else if(slugs.length > 1 && slugs[0] == "settings"){
+      post = model.getPostBySlug(slugs[1], 'settings');
     } else {
-      if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
-      pageContent = model.getContentBySlug(newPageSlugs[0], 'pages');
+      if( slugs[0] === "") slugs[0] = "home";
+      post = model.getPostBySlug(slugs[0], 'pages');
     }
-    return pageContent;
+    return post;
   },
-  getContentBySlug: function(slug, contentType){
+  getPostBySlug: function(slug, contentType){
+    //get contet from local storage
+    var data = model.getLocalStore();
     var content;
     switch (contentType) {
       case "posts":
-        content = data[0];
+        content = data.posts;
         break;
       case "pages":
-        content = data[1];
+        content = data.pages;
         break;
       case "settings":
-        content = data[2];
+        content = data.settings;
         break;
       default:
         content =  [{type:"404",title:"404 Error"}];
@@ -51,9 +62,31 @@ var model = {
     });
     return item[0];
   },
-
-  save: function(content) {
-
+  getCurrentContentObj: function() {
+    var newPageSlugs = helpers.getAfterHash();
+    var post;
+    if( newPageSlugs.length > 1 ) {
+      post = model.getPostBySlug(newPageSlugs[1], 'posts');
+    } else {
+      if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
+      post = model.getPostBySlug(newPageSlugs[0], 'pages');
+    }
+    return post;
+  },
+  getLocalStore: function() {
+    var store = JSON.parse(localStorage.getItem('vanillaPress'));    
+    if(store === null) {
+      store = [""];
+    }
+    return store[0];
+  },
+  updateLocalStore: function(store) {
+    //console.log( JSON.stringify(store) );
+    var newStore = [store];
+    localStorage.setItem('vanillaPress', JSON.stringify(newStore) );
+  },
+  removeLocalStore: function() {
+    localStorage.removeItem('vanillaPress');
   }
 };
 
