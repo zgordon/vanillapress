@@ -1,6 +1,6 @@
 // var addClass = require('amp-add-class');
 // var removeClass = require('amp-remove-class');
-// var toggleClass = require('amp-toggle-class');
+var Spinner = require('spin.js');
 
 var helpers = require( "./lib/helpers.js" );
 var router = require( "./router.js" );
@@ -51,6 +51,21 @@ var editor = {
     }
     editor.showEditPanel();
   },
+  listenLoadNewPostForm: function(){
+    editor.clearMenus();
+    var post = {slug: "_new",title:"",content:""};
+    editor.currentPost = post;
+    if(editor.currentPostType != "setting") {
+      view.currentPost = post;
+      view.update();
+    } else {
+      event.preventDefault();
+    }
+    editor.showEditPanel();
+    var updateBtn = helpers.getEditorEditUpdateBtn();
+    updateBtn.innerText = "Save";
+    //change text for Update btn
+  },
   listenEditorToggle: function(){
     var editorToggleEl = helpers.getEditorToggleLink();
     editorToggleEl.addEventListener("click", function(){
@@ -60,8 +75,32 @@ var editor = {
   },
   listenUpdatePost: function() {
     event.preventDefault();
+
+    var newPost = false;
+
+    //if new post
+    if( editor.currentPost.slug == "_new" ) {
+      newPost = true;
+      editor.currentPost.type = "post";
+      //slugify title
+      editor.currentPost.slug = helpers.slugifyTitle(editor.currentPost.title);
+      //get a new post id
+      var localStore = model.getLocalStore();
+      localStore = localStore.posts;
+      var postIds = [];
+      localStore.forEach(function(post) {
+        postIds.push(Number(post.id));
+      });
+      var highestId = Math.max.apply( Math, postIds );
+      editor.currentPost.id = highestId + 1;
+      //set the date
+      editor.currentPost.date = Date();
+      editor.currentPost.modified = Date();
+    }
+
+    //get the local store of post type
     var postType = editor.currentPostType;
-    var store = model.getLocalStore();    
+    var store = model.getLocalStore();
     var storePosts;
     switch (postType) {
       case "post":
@@ -73,12 +112,18 @@ var editor = {
       default:
         storePosts = store.settings;
     }
-    storePosts.forEach(function(item){
-      if(editor.currentPost.id == item.id){
-        item.title = editor.currentPost.title;
-        item.content = editor.currentPost.content;
-      }
-    });
+    //get the current item to edit from store
+    if(newPost === true){
+      storePosts.push(editor.currentPost);
+    } else {
+      storePosts.forEach(function(item){
+        if(editor.currentPost.id == item.id){
+          item.title = editor.currentPost.title;
+          item.content = editor.currentPost.content;
+        }
+      });
+    }
+    //add store data back
     switch (postType) {
       case "post":
         store.posts = storePosts;
@@ -89,7 +134,43 @@ var editor = {
       default:
         store.settings = storePosts;
     }
+
     model.updateLocalStore(store);
+    router.updateHash("blog/" + editor.currentPost.slug);
+    view.currentPost = editor.currentPost;
+    view.update();
+    editor.updateSaveBtnText();
+
+  },
+  listenDeletePost: function(){
+    var store = model.getLocalStore();
+    var storePosts = store.posts;
+    var deleteId,
+        deleteIdIndex;
+
+    for(var i=0; i<storePosts.length; i++) {
+      if(editor.currentPost.id == storePosts[i].id){
+        deleteIdIndex = i;
+      }
+    }
+
+    //confirm detele
+    //return to posts page
+    var confirmation = confirm("Are you sure you want to delete this post?");
+    if (confirmation === true) {
+      console.log(deleteIdIndex);
+      storePosts.splice(deleteIdIndex, 1);
+      store.posts = storePosts;
+      model.updateLocalStore(store);
+      editor.currentPost = {};
+      view.currentPost = model.getPostBySlug("blog", "pages");
+      view.update();
+      editor.clearMenus();
+      editor.showSecondaryMenu();
+    }
+
+
+    event.preventDefault();
   },
   showCurrentMenu: function(){
     switch ( editor.currentMenu ) {
@@ -128,19 +209,24 @@ var editor = {
     for (var i = 0; i < secondaryLinks.length; i++) {
       secondaryLinks[i].addEventListener("click", editor.listenLoadEditForm, false);
     }
+    var addNewPostLink = helpers.getEditorAddNewPost();
+    addNewPostLink.addEventListener("click", editor.listenLoadNewPostForm, false);
+    var deletePostLink = helpers.getDeletePostLink();
+    deletePostLink.addEventListener("click", editor.listenDeletePost, false);
+    console.log(deletePostLink);
   },
   showEditPanel: function() {
     editor.clearEditForm();
     var post = editor.currentPost;
     var editNav = helpers.getEditorEditNav();
-    var editorEl = helpers.getEditorEditNav();
-    editorEl.classList.toggle("active");
+    editNav.classList.toggle("active");
     editor.currentMenu = "edit";
     editor.updateNavTitle();
     editor.fillEditForm();
     var editForm = helpers.getEditorForm();
     editForm.addEventListener('submit', editor.listenUpdatePost, false);
-    //}
+    var deleteBtn = helpers.getDeletePostLink();
+    deleteBtn.addEventListener('click', editor.listenDeletePost, false);
   },
   fillEditForm: function() {
     var post = editor.currentPost;
@@ -150,7 +236,6 @@ var editor = {
 
     editTitle.value = post.title;
     editContent.value = post.content;
-
 
     wysiwyg = wysiwygEditor(document.getElementById("editContent"));
     if( post.type != "setting") {
@@ -224,7 +309,11 @@ var editor = {
       navTitleLink.addEventListener("click", editor.listenSecondaryNavTitle, false);
       view.listenDisableMainNavLinks();
     } else {
-      router.updateHash(view.currentPost.slug);
+      if(view.currentPost.type === "post") {
+        router.updateHash("blog/" + view.currentPost.slug);
+      } else {
+        router.updateHash(view.currentPost.slug);
+      }
       view.listenMainNavLinksUpdatePage();
     }
 
@@ -245,6 +334,37 @@ var editor = {
       navTitleLink.addEventListener("click", editor.listenSecondaryNavTitle, false);
     }
 
+  },
+  updateSaveBtnText: function(text) {
+    //say saving, wait a sec
+    var btn = helpers.getEditorEditUpdateBtn();
+    var saving = function() {
+      setTimeout(function () {
+        spinner.stop();
+        btn.innerText = "Saved!";
+        saved();
+      }, 900);
+    };
+    var saved = function(){
+      setTimeout(function () {
+        btn.innerText = "Update";
+      }, 1000);
+    };
+
+    btn.innerText = "Saving...";
+    var spinnerOpts = {
+      color:'#fff',
+      lines: 8,
+      length: 4,
+      radius: 3,
+      width: 1,
+      left: '10%'
+    };
+    var spinner = new Spinner(spinnerOpts).spin(btn);
+
+    saving();
+    //say saved
+    //go back to Update
   }
 };
 

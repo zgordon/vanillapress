@@ -74,7 +74,7 @@ var model = {
     return post;
   },
   getLocalStore: function() {
-    var store = JSON.parse(localStorage.getItem('vanillaPress'));    
+    var store = JSON.parse(localStorage.getItem('vanillaPress'));
     if(store === null) {
       store = [""];
     }

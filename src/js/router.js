@@ -15,6 +15,7 @@ var router = {
     var slugs = helpers.getAfterHash();
     var post = model.getPostBySlugs(slugs);
     view.currentPost = post;
+    view.update();
   },
   updateHash: function(slug) {
     window.location.hash = slug;

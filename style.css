@@ -79,12 +79,12 @@ body {
 #editor nav.active {
   display: block;
 }
-#editor nav .addNew {
+#editor nav #addNew {
   position: absolute;
   top: 42px;
   right: 14px;
 }
-#editor nav .addNew a {
+#editor nav #addNew a {
   text-decoration: none;
   padding: 0px 6px;
   display: block;
@@ -277,6 +277,20 @@ body {
   width: calc(100% - 20px);
   padding: 10px;
 }
+#view .container .content .primary #blogPosts {
+  padding-top: 20px;
+}
+#view .container .content .primary #blogPosts article {
+  margin: 10px 0 0;
+  border-top: 1px #ededed solid;
+  padding: 5px 0 10px;
+}
+#view .container .content .primary #blogPosts article h3 {
+  font-size: 1.2rem;
+}
+#view .container .content .primary #blogPosts article p {
+  font-size: 1rem;
+}
 #view .container .content .sidebar {
   width: calc(100% - 20px);
   padding: 10px;
@@ -392,6 +406,7 @@ body {
   font-weight: lighter;
 }
 #edit input,
+#edit button,
 #edit textarea,
 #edit .CodeMirror,
 #edit iframe.wysiwyg {
@@ -405,6 +420,7 @@ body {
   border: 1px #eee solid;
 }
 #edit input:focus,
+#edit button:focus,
 #edit textarea:focus,
 #edit .CodeMirror:focus,
 #edit iframe.wysiwyg:focus {
@@ -428,4 +444,74 @@ body {
   background: #0085ba;
   color: #fff;
   font-weight: lighter;
+  position: relative;
+}
+#edit #deletePost {
+  margin-left: 10px;
+  font-size: .8rem;
+}
+#edit #deletePost a {
+  color: #999;
+}
+
+.loader:before,
+.loader:after,
+.loader {
+  border-radius: 50%;
+  width: 2.5em;
+  height: 2.5em;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation: load7 1.8s infinite ease-in-out;
+  animation: load7 1.8s infinite ease-in-out;
+}
+
+.loader {
+  font-size: 10px;
+  margin: 80px auto;
+  position: relative;
+  text-indent: -9999em;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+.loader:before {
+  left: -3.5em;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.loader:after {
+  left: 3.5em;
+}
+
+.loader:before,
+.loader:after {
+  content: '';
+  position: absolute;
+  top: 0;
+}
+
+@-webkit-keyframes load7 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em #ffffff;
+  }
+  40% {
+    box-shadow: 0 2.5em 0 0 #ffffff;
+  }
+}
+@keyframes load7 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em #ffffff;
+  }
+  40% {
+    box-shadow: 0 2.5em 0 0 #ffffff;
+  }
 }

@@ -32,8 +32,12 @@ var view = {
     // var urlSegments = helpers.getAfterHash(this);
     // console.log(this + " " + view.currentPost.title);
     // //view.updateCurrentNav();
+    view.removeBlogPosts();
     view.updateTitle( view.currentPost.title );
     view.updateContent( view.currentPost.content );
+    if(view.currentPost.slug === "blog") {
+      view.loadBlogPosts();
+    }
   },
   push: function(post) {
     router.updateHash(post);
@@ -61,6 +65,22 @@ var view = {
   updateContent: function(content) {
     var contentEl = document.getElementById("pageContent");
     contentEl.innerHTML = content;
+  },
+  loadBlogPosts: function() {
+    var posts = model.getContent("post");
+    var postContent = document.createElement("section");
+    postContent.id = "blogPosts";
+    //var postContent = helpers.createPostMarkup(posts[0]);
+    for (var i = 0; i < posts.length; i++) {
+      postContent.appendChild(helpers.createPostMarkup(posts[i]));
+    }
+    var primaryContentEL = helpers.getPrimaryContentEl();
+    primaryContentEL.appendChild(postContent);
+
+  },
+  removeBlogPosts: function(){
+    var blogPost = document.getElementById("blogPosts");
+    if(blogPost) blogPost.remove();    
   },
   disableNav: function(){
     event.preventDefault();

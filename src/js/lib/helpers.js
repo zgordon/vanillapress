@@ -46,6 +46,33 @@ var helpers = {
     return a;
   },
 
+  createPostMarkup: function(post) {
+    var articleEl = document.createElement('article');
+
+    var titleEl = document.createElement('h3');
+    var titleLink = document.createElement('a');
+    var title = document.createTextNode(post.title);
+    titleLink.appendChild(title);
+    titleLink.href = "#blog/" + post.slug;
+    titleEl.appendChild(titleLink);
+
+    var contentDiv = document.createElement('div');
+    //var content = document.createTextNode(post.content);
+    //contentDiv.appendChild(content);
+    var excerpt = post.content;
+    console.log(excerpt.length);
+    if( excerpt.length > 100) {
+      excerpt = excerpt.substr(0, 60) + "\u2026";
+    }
+    contentDiv.innerHTML = excerpt;
+
+    articleEl.appendChild(titleEl);
+    articleEl.appendChild(contentDiv);
+
+    return articleEl;
+
+  },
+
   getEditorEl: function() {
     return document.getElementById("editor");
   },
@@ -74,6 +101,14 @@ var helpers = {
   getEditorSecondaryNavUl: function() {
     var secondaryNav = helpers.getEditorSecondaryNav();
     return  secondaryNav.querySelector("ul");
+  },
+
+  getEditorAddNewPost: function() {
+    return  document.querySelector("#editor #addNew a");
+  },
+
+  getDeletePostLink: function() {
+    return document.querySelector("#deletePost a");
   },
 
   getEditorEditNav: function() {
@@ -119,6 +154,14 @@ var helpers = {
     return document.getElementById("editTitle");
   },
 
+  slugifyTitle: function(title) {
+    var slug = title;
+    slug = slug.replace(/[^a-zA-Z0-9\s]/g,"");
+    slug = slug.toLowerCase();
+    slug = slug.replace(/\s/g,'-');
+    return slug;
+  },
+
   getEditorWysiwyg: function() {
     var editNav = helpers.getEditorEditNav();
     return editNav.querySelector("form iframe");
@@ -156,6 +199,11 @@ var helpers = {
   getPostTitle: function() {
     var titleEl = document.getElementById("pageTitle");
     return titleEl;
+  },
+
+  getPrimaryContentEl: function(){
+    var primaryContentEL = document.querySelector("#view .content .primary");
+    return primaryContentEL;
   }
 
 };

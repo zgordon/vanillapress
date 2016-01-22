@@ -27,7 +27,7 @@
           <a class="go-home" href="#">Admin</a> /
           <span>Title</span>
         </h3>
-        <!-- <span class="addNew"><a href="#">+</a></span> -->
+        <span id="addNew"><a href="#">+</a></span>
         <ul class="accordion">
         </ul>
       </nav>
@@ -37,6 +37,7 @@
           <a class="go-home" href="#">Admin</a> /
           <span><a href="#edit">Title</a></span>
         </h3>
+
         <form action="">
           <ul>
             <li>
@@ -48,10 +49,12 @@
               <textarea name="editContent" id="editContent"></textarea>
             </li>
             <li>
-                <input id="editUpdateBtn" type="submit" value="Update" class="btn primary">
+                <button id="editUpdateBtn" type="submit" value="Update" class="btn primary">Update
+                </button>
             </li>
           </ul>
         </form>
+        <p id="deletePost"><a href="#">Delete Post</a></p>
       </nav>
 
 
@@ -73,7 +76,6 @@
             <li><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#blog">Blog</a></li>
-            <li><a href="#blog/hello-world">Post</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </nav>
