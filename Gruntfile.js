@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 		      sourcemap: 'none',
 		    },
 		    files: {
-		      'style.css': 'src/sass/style.scss'
+		      'dist/css/style.css': 'src/sass/style.scss'
 		    }
 		  }
 		},
