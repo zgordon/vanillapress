@@ -1,6 +1,6 @@
-var helpers = require( "./lib/helpers.js" );
-var model = require( "./model.js" );
-var view = require( "./view.js" );
+var helpers = require( './lib/helpers.js' ),
+    model = require( './model.js' ),
+    view = require( './view.js' );
 
 var router = {
   init: function() {
@@ -8,17 +8,27 @@ var router = {
     view.update();
     router.listenPageChange();
   },
+
   listenPageChange: function() {
-    window.addEventListener("hashchange", router.setCurrentPost, false);
+    window.addEventListener(
+      'hashchange',
+      router.setCurrentPost,
+      false
+    );
   },
+
   setCurrentPost: function() {
-    var slugs = helpers.getAfterHash();
-    var post = model.getPostBySlugs(slugs);
+    var slugs = helpers.getAfterHash(),
+        post = model.getPostBySlugs( slugs );
+
     view.currentPost = post;
     view.update();
   },
+
   updateHash: function(slug) {
     window.location.hash = slug;
   }
+
 };
+
 module.exports = router;

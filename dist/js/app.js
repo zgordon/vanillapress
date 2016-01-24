@@ -731,10 +731,10 @@ function pubsub (mix) {
 }
 
 },{}],8:[function(require,module,exports){
-var model = require( "./model.js" );
-var router = require( "./router.js" );
-var view = require( "./view.js" );
-var editor = require( "./editor.js" );
+var model = require( './model.js' ),
+    router = require( './router.js' ),
+    view = require( './view.js' ),
+    editor = require( './editor.js' );
 
 var vanillaPress = {
   init: function() {
@@ -744,114 +744,115 @@ var vanillaPress = {
     editor.init();
   }
 };
+
 vanillaPress.init();
 
 },{"./editor.js":10,"./model.js":13,"./router.js":14,"./view.js":15}],9:[function(require,module,exports){
 var Posts = [
   {
     id:1,
-    date:"2016-01-09T22:05:09",
-    modified:"2016-01-09T22:05:09",
-    slug:"hello-world",
-    type:"post",
-    title:"Hello world!",
-    content:"Welcome to WordPress.\nThis is your first post.\nEdit or delete it, then start writing!",
+    date:'2016-01-09T22:05:09',
+    modified:'2016-01-09T22:05:09',
+    slug:'hello-world',
+    type:'post',
+    title:'Hello world!',
+    content:'Welcome to WordPress.\nThis is your first post.\nEdit or delete it, then start writing!',
   },
   {
     id:2,
-    date:"2016-01-10T22:05:09",
-    modified:"2016-01-10T22:05:09",
-    slug:"learning-javascript",
-    type:"post",
-    title:"Learning JavaScript!",
-    content:"<p>I'm learning JavaScript and super excited!!!</p> ",
+    date:'2016-01-10T22:05:09',
+    modified:'2016-01-10T22:05:09',
+    slug:'learning-javascript',
+    type:'post',
+    title:'Learning JavaScript!',
+    content:'<p>I\'m learning JavaScript and super excited!!!</p> ',
   },
   {
     id:3,
-    date:"2016-01-11T22:05:09",
-    modified:"2016-01-11T22:05:09",
-    slug:"rest-api",
-    type:"post",
-    title:"The REST API!",
-    content:"<p>I've started working with the REST API in WordPress, what fun!</p> ",
+    date:'2016-01-11T22:05:09',
+    modified:'2016-01-11T22:05:09',
+    slug:'rest-api',
+    type:'post',
+    title:'The REST API!',
+    content:'<p>I\'ve started working with the REST API in WordPress, what fun!</p> ',
   },
   {
     id:4,
-    date:"2016-01-12T22:05:09",
-    modified:"2016-01-12T22:05:09",
-    slug:"json-data",
-    type:"post",
-    title:"JSON Data!",
-    content:"<p>So, with the REST API it is posible to pull in WordPress data as pure JSON.  Now I'm figuring out what to do with the data</p> ",
+    date:'2016-01-12T22:05:09',
+    modified:'2016-01-12T22:05:09',
+    slug:'json-data',
+    type:'post',
+    title:'JSON Data!',
+    content:'<p>So, with the REST API it is posible to pull in WordPress data as pure JSON.  Now I\'m figuring out what to do with the data</p> ',
   },
   {
     id:5,
-    date:"2016-01-13T22:05:09",
-    modified:"2016-01-13T22:05:09",
-    slug:"javascript-project",
-    type:"post",
-    title:"JavaScript Project",
-    content:"<p>I've started working with the REST API in WordPress, what fun!</p> "
+    date:'2016-01-13T22:05:09',
+    modified:'2016-01-13T22:05:09',
+    slug:'javascript-project',
+    type:'post',
+    title:'JavaScript Project',
+    content:'<p>I\'ve started working with the REST API in WordPress, what fun!</p> '
   }
 ];
 
 var Pages = [
   {
     id:40,
-    date:"2016-01-07T22:05:09",
-    modified:"2016-01-07T22:05:09",
-    slug:"home",
-    type:"page",
-    title:"Home",
-    content:"<p>Welcome!</p><p>Reprehenderit sit sunt nisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
+    date:'2016-01-07T22:05:09',
+    modified:'2016-01-07T22:05:09',
+    slug:'home',
+    type:'page',
+    title:'Home',
+    content:'<p>Welcome!</p><p>Reprehenderit sit sunt nisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>',
   },
   {
     id:41,
-    date:"2016-01-09T22:05:09",
-    modified:"2016-01-09T22:05:09",
-    slug:"about",
-    type:"page",
-    title:"About Me",
-    content:"<p>Hi!  I'm me :)</p><p>Sisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
+    date:'2016-01-09T22:05:09',
+    modified:'2016-01-09T22:05:09',
+    slug:'about',
+    type:'page',
+    title:'About Me',
+    content:'<p>Hi!  I\'m me :)</p><p>Sisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>',
   },
   {
     id:42,
-    date:"2016-01-09T22:05:09",
-    modified:"2016-01-09T22:05:09",
-    slug:"blog",
-    type:"page",
-    title:"Blog",
-    content:"<p>Welcome to my blog page, please enjoy!</p>",
+    date:'2016-01-09T22:05:09',
+    modified:'2016-01-09T22:05:09',
+    slug:'blog',
+    type:'page',
+    title:'Blog',
+    content:'<p>Welcome to my blog page, please enjoy!</p>',
   },
   {
     id:43,
-    date:"2016-01-19T22:06:09",
-    modified:"2016-01-19T22:06:09",
-    slug:"contact",
-    type:"page",
-    title:"Contact",
-    content:"<p>Please get in touch!</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
+    date:'2016-01-19T22:06:09',
+    modified:'2016-01-19T22:06:09',
+    slug:'contact',
+    type:'page',
+    title:'Contact',
+    content:'<p>Please get in touch!</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>',
   }
 ];
 
 var Settings = [
   {
     id:991,
-    date:"2016-01-09T22:05:09",
-    modified:"2016-01-09T22:05:09",
-    slug:"site-name",
-    type:"setting",
-    title:"Site Name",
-    content:"VanillaPress"
+    date:'2016-01-09T22:05:09',
+    modified:'2016-01-09T22:05:09',
+    slug:'site-name',
+    type:'setting',
+    title:'Site Name',
+    content:'VanillaPress'
   },
   {
     id:992,
-    date:"2016-01-09T22:05:09",
-    modified:"2016-01-09T22:05:09",
-    slug:"site-description",
-    type:"setting",
-    title:"Site Description",
-    content:"A JS Front & Back End"
+    date:'2016-01-09T22:05:09',
+    modified:'2016-01-09T22:05:09',
+    slug:'site-description',
+    type:'setting',
+    title:'Site Description',
+    content:'A JS Front & Back End'
   }
 ];
 
@@ -860,263 +861,299 @@ var data = [Posts, Pages, Settings];
 module.exports = data;
 
 },{}],10:[function(require,module,exports){
-// var addClass = require('amp-add-class');
-// var removeClass = require('amp-remove-class');
-var Spinner = require('spin.js');
-
-var helpers = require( "./lib/helpers.js" );
-var router = require( "./router.js" );
-var model = require( "./model.js" );
-var view = require( "./view.js" );
-
-var wysiwygEditor = require('wysiwyg');
-
-var wysiwyg;
+var Spinner = require( 'spin.js' ),
+    helpers = require( './lib/helpers.js' ),
+    router = require( './router.js' ),
+    model = require( './model.js' ),
+    view = require( './view.js' ),
+    wysiwygEditor = require('wysiwyg'),
+    wysiwyg;
 
 var editor = {
   init: function() {
     editor.listenEditorToggle();
   },
-  visible: "false",
-  currentMenu: "edit",
-  currentPost: "",
-  currentPostType: "",
+
+  visible: 'false',
+  currentMenu: 'edit',
+  currentPost: '',
+  currentPostType: '',
+
   listenAdminHomeLink: function(){
     editor.clearMenus();
     editor.showPrimaryMenu();
     event.preventDefault();
   },
+
   listenPrimaryLinks: function() {
-    var urlSegments = helpers.getAfterHash(this.href);
-    var currentPost = urlSegments[0].substring(0, urlSegments[0].length - 1);
+    var urlSegments = helpers.getAfterHash( this.href );
+    var currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
     editor.currentPostType = currentPost;
     editor.clearMenus();
     editor.showSecondaryMenu();
     event.preventDefault();
   },
+
   listenSecondaryNavTitle: function(){
     editor.clearMenus();
     editor.showSecondaryMenu();
     event.preventDefault();
   },
+
   listenLoadEditForm: function(){
     editor.clearMenus();
-    var slugs = helpers.getAfterHash(this.href);
-    var post = model.getPostBySlugs(slugs);
+    var slugs = helpers.getAfterHash( this.href );
+    var post = model.getPostBySlugs( slugs );
     editor.currentPost = post;
     editor.currentPostType = post.type;
-    if(editor.currentPostType != "setting") {
+
+    if ( editor.currentPostType !== 'setting' ) {
       view.currentPost = post;
       view.update();
     } else {
       event.preventDefault();
     }
+
     editor.showEditPanel();
   },
+
   listenLoadNewPostForm: function(){
+    var post = {slug: '_new',title:'',content:''},
+        updateBtn = helpers.getEditorEditUpdateBtn();
+
     editor.clearMenus();
-    var post = {slug: "_new",title:"",content:""};
     editor.currentPost = post;
-    if(editor.currentPostType != "setting") {
+
+    if ( editor.currentPostType !== 'setting' ) {
       view.currentPost = post;
       view.update();
     } else {
       event.preventDefault();
     }
+
     editor.showEditPanel();
-    var updateBtn = helpers.getEditorEditUpdateBtn();
-    updateBtn.innerText = "Save";
-    //change text for Update btn
+    updateBtn.innerText = 'Save';
   },
+
   listenEditorToggle: function(){
     var editorToggleEl = helpers.getEditorToggleLink();
-    editorToggleEl.addEventListener("click", function(){
+    editorToggleEl.addEventListener( 'click', function(){
       editor.toggle();
       event.preventDefault();
-    }, false);
+    }, false );
   },
-  listenUpdatePost: function() {
-    event.preventDefault();
 
+  listenUpdatePost: function() {
     var newPost = false;
 
-    //if new post
-    if( editor.currentPost.slug == "_new" ) {
+    event.preventDefault();
+
+    // If new post
+    if( editor.currentPost.slug === '_new' ) {
+      var localStore = model.getLocalStore(),
+          postIds = [];
+
       newPost = true;
-      editor.currentPost.type = "post";
-      //slugify title
-      editor.currentPost.slug = helpers.slugifyTitle(editor.currentPost.title);
-      //get a new post id
-      var localStore = model.getLocalStore();
+      editor.currentPost.type = 'post';
+
+      // Slugify title
+      editor.currentPost.slug = helpers.slugifyTitle( editor.currentPost.title );
+
+      // Get a new post id
       localStore = localStore.posts;
-      var postIds = [];
-      localStore.forEach(function(post) {
-        postIds.push(Number(post.id));
+      localStore.forEach(function( post ) {
+        postIds.push( Number( post.id ) );
       });
       var highestId = Math.max.apply( Math, postIds );
       editor.currentPost.id = highestId + 1;
-      //set the date
+
+      // Set the date
       editor.currentPost.date = Date();
       editor.currentPost.modified = Date();
     }
 
-    //get the local store of post type
-    var postType = editor.currentPostType;
-    var store = model.getLocalStore();
-    var storePosts;
-    switch (postType) {
-      case "post":
-        storePosts = store.posts;
-        break;
-      case "page":
-        storePosts = store.pages;
-        break;
-      default:
-        storePosts = store.settings;
-    }
-    //get the current item to edit from store
-    if(newPost === true){
-      storePosts.push(editor.currentPost);
+    // Get the local store of post type.
+    var postType = editor.currentPostType,
+        store = model.getLocalStore(),
+        storePosts;
+
+    if ( postType === 'post' ) {
+      storePosts = store.posts;
+    } else if ( postType === 'page' ) {
+      storePosts = store.pages;
     } else {
-      storePosts.forEach(function(item){
-        if(editor.currentPost.id == item.id){
+      storePosts = store.settings;
+    }
+
+    // Get the current item to edit from store.
+    if ( newPost === true ) {
+      storePosts.push( editor.currentPost );
+    } else {
+      storePosts.forEach(function( item ){
+        if( editor.currentPost.id == item.id ){
           item.title = editor.currentPost.title;
           item.content = editor.currentPost.content;
         }
       });
     }
+
     //add store data back
-    switch (postType) {
-      case "post":
-        store.posts = storePosts;
-        break;
-      case "page":
-        store.pages = storePosts;
-        break;
-      default:
-        store.settings = storePosts;
+    if ( postType === 'post' ) {
+      store.posts = storePosts;
+    } else if ( postType === 'page' ) {
+      store.pages = storePosts;
+    } else {
+      store.settings = storePosts;
     }
 
-    model.updateLocalStore(store);
-    router.updateHash("blog/" + editor.currentPost.slug);
+    model.updateLocalStore( store );
+    router.updateHash( 'blog/' + editor.currentPost.slug );
     view.currentPost = editor.currentPost;
     view.update();
     editor.updateSaveBtnText();
-
   },
+
   listenDeletePost: function(){
-    var store = model.getLocalStore();
-    var storePosts = store.posts;
-    var deleteId,
+    var store = model.getLocalStore(),
+        storePosts = store.posts,
+        confirmation = confirm('Are you sure you want to delete this post?'),
+        deleteId,
         deleteIdIndex;
 
-    for(var i=0; i<storePosts.length; i++) {
-      if(editor.currentPost.id == storePosts[i].id){
+    for ( var i = 0, max = storePosts.length; i < max ; i++) {
+      if ( editor.currentPost.id === storePosts[i].id ) {
         deleteIdIndex = i;
       }
     }
 
-    //confirm detele
-    //return to posts page
-    var confirmation = confirm("Are you sure you want to delete this post?");
-    if (confirmation === true) {
-      console.log(deleteIdIndex);
-      storePosts.splice(deleteIdIndex, 1);
+    // Confirm detele
+    // Return to posts page
+    if ( confirmation === true ) {
+      storePosts.splice( deleteIdIndex, 1 );
       store.posts = storePosts;
-      model.updateLocalStore(store);
+      model.updateLocalStore( store );
       editor.currentPost = {};
-      view.currentPost = model.getPostBySlug("blog", "pages");
+      view.currentPost = model.getPostBySlug( 'blog', 'pages' );
       view.update();
       editor.clearMenus();
       editor.showSecondaryMenu();
     }
 
-
     event.preventDefault();
   },
+
   showCurrentMenu: function(){
-    switch ( editor.currentMenu ) {
-      case "primary":
-        showPrimaryMenu();
-        break;
-      case "secondary":
-        showSecondaryMenu();
-        break;
-      case "edit":
-        showEditPanel();
-        break;
-      default:
-        showPrimaryMenu();
+    if ( editor.currentMenu === 'primary' ) {
+      showPrimaryMenu();
+    } else if ( postType === 'secondary' ) {
+      showSecondaryMenu();
+    } else if ( postType === 'edit' ) {
+      showEditPanel();
+    } else {
+      showPrimaryMenu();
     }
   },
+
   showPrimaryMenu: function(){
-    var primaryNav = helpers.getEditorPrimaryNav();
-    primaryNav.classList.add("active");
-    var primaryLinks = helpers.getEditorPrimaryNavLinks();
-    for (var i = 0; i < primaryLinks.length; i++) {
-      primaryLinks[i].addEventListener("click", editor.listenPrimaryLinks, false);
+    var primaryNav = helpers.getEditorPrimaryNav(),
+        primaryLinks = helpers.getEditorPrimaryNavLinks();
+
+    primaryNav.classList.add( 'active' );
+    for ( var i = 0, max = primaryLinks.length; i < max; i++ ) {
+      primaryLinks[i].addEventListener(
+        'click',
+        editor.listenPrimaryLinks,
+        false
+      );
     }
-    editor.currentMenu = "primary";
+    editor.currentMenu = 'primary';
   },
+
   showSecondaryMenu: function(){
-    var secondaryNav = helpers.getEditorSecondaryNav();
-    var postType = editor.currentPostType;
-    secondaryNav.classList.add("active");
-    editor.currentMenu = "secondary";
+    var secondaryNav = helpers.getEditorSecondaryNav(),
+        postType = editor.currentPostType,
+        menuItems = model.getContent( postType ),
+        secondaryUl =  helpers.getEditorSecondaryNavUl(),
+        secondaryLinks = secondaryUl.getElementsByTagName( 'a' ),
+        addNewPostLink = helpers.getEditorAddNewPost(),
+        deletePostLink = helpers.getDeletePostLink();
+
+    secondaryNav.classList.add( 'active' );
+    editor.currentMenu = 'secondary';
     editor.updateNavTitle();
-    var menuItems = model.getContent(postType);
-    helpers.addMenuItems(menuItems, postType);
-    var secondaryUl =  helpers.getEditorSecondaryNavUl();
-    var secondaryLinks = secondaryUl.getElementsByTagName("a");
-    for (var i = 0; i < secondaryLinks.length; i++) {
-      secondaryLinks[i].addEventListener("click", editor.listenLoadEditForm, false);
+    helpers.addMenuItems( menuItems, postType );
+
+    for ( var i = 0, max = secondaryLinks.length; i < max; i++ ) {
+      secondaryLinks[i].addEventListener(
+        'click',
+        editor.listenLoadEditForm,
+        false);
     }
-    var addNewPostLink = helpers.getEditorAddNewPost();
-    addNewPostLink.addEventListener("click", editor.listenLoadNewPostForm, false);
-    var deletePostLink = helpers.getDeletePostLink();
-    deletePostLink.addEventListener("click", editor.listenDeletePost, false);
-    console.log(deletePostLink);
+
+    addNewPostLink.addEventListener(
+      'click',
+      editor.listenLoadNewPostForm,
+      false
+    );
+    deletePostLink.addEventListener(
+      'click',
+      editor.listenDeletePost,
+      false
+    );
   },
+
   showEditPanel: function() {
+    var post = editor.currentPost,
+        editNav = helpers.getEditorEditNav(),
+        editForm = helpers.getEditorForm(),
+        deleteBtn = helpers.getDeletePostLink();
+
     editor.clearEditForm();
-    var post = editor.currentPost;
-    var editNav = helpers.getEditorEditNav();
-    editNav.classList.toggle("active");
-    editor.currentMenu = "edit";
+    editNav.classList.toggle('active');
+    editor.currentMenu = 'edit';
     editor.updateNavTitle();
     editor.fillEditForm();
-    var editForm = helpers.getEditorForm();
-    editForm.addEventListener('submit', editor.listenUpdatePost, false);
-    var deleteBtn = helpers.getDeletePostLink();
-    deleteBtn.addEventListener('click', editor.listenDeletePost, false);
+
+    editForm.addEventListener(
+      'submit',
+      editor.listenUpdatePost,
+      false
+    );
+    deleteBtn.addEventListener(
+      'click',
+      editor.listenDeletePost,
+      false
+    );
   },
+
   fillEditForm: function() {
-    var post = editor.currentPost;
-    var editTitle = document.getElementById("editTitle");
-    var postTitle = helpers.getPostTitle();
-    var titleField = helpers.getEditorTitleField();
+    var post = editor.currentPost,
+        editTitle = document.getElementById('editTitle'),
+        postTitle = helpers.getPostTitle(),
+        titleField = helpers.getEditorTitleField();
 
     editTitle.value = post.title;
     editContent.value = post.content;
 
-    wysiwyg = wysiwygEditor(document.getElementById("editContent"));
-    if( post.type != "setting") {
-      titleField.addEventListener("input", function(){
+    wysiwyg = wysiwygEditor(document.getElementById('editContent'));
+
+    if ( post.type !== 'setting' ) {
+      titleField.addEventListener( 'input', function() {
         editor.currentPost.title = this.value;
-        view.updateTitle(this.value);
+        view.updateTitle( this.value );
       }, false);
-      wysiwyg.onUpdate(function () {
+      wysiwyg.onUpdate( function() {
         view.updateContent( wysiwyg.read() );
         editor.currentPost.content = wysiwyg.read();
       });
     } else {
-      if (  post.slug == "site-name" ) {
+      if (  post.slug === 'site-name' ) {
         wysiwyg.onUpdate(function () {
           view.updateSiteName( wysiwyg.read() );
           editor.currentPost.content = wysiwyg.read();
         });
-      } else if( post.slug == "site-description" ) {
-        wysiwyg.onUpdate(function () {
+      } else if( post.slug == 'site-description' ) {
+        wysiwyg.onUpdate( function () {
           view.updateSiteDescription( wysiwyg.read() );
           editor.currentPost.content = wysiwyg.read();
         });
@@ -1126,107 +1163,131 @@ var editor = {
     }
   },
   clearEditForm: function() {
-    var editTitle = document.getElementById("editTitle");
-    editTitle.value = "";
-    editContent.value = "";
-    var wysiwyg = helpers.getEditorWysiwyg();
-    if(wysiwyg !== null) wysiwyg.remove();
+    var editTitle = document.getElementById( 'editTitle' ),
+        wysiwyg = helpers.getEditorWysiwyg();
+
+    editTitle.value = '';
+    editContent.value = '';
+    if ( wysiwyg !== null ) {
+      wysiwyg.remove();
+    }
   },
   clearMenus: function(){
-    var editorEl = helpers.getEditorEl();
-    //remove active class from all navs
-    var navs = editorEl.getElementsByTagName("nav");
-    for (var j = 0; j < navs.length; j++) {
-      var nav = navs[j];
-      nav.classList.remove("active");
-    }
-    //remove all children from #editor nav.secondary ul
-    var navUl = helpers.getEditorSecondaryNavUl();
-    while(navUl.firstChild) navUl.removeChild(navUl.firstChild);
+    var navs = helpers.getEditorNavs(),
+        navUl = helpers.getEditorSecondaryNavUl(),
+        navlinks = navUl.getElementsByTagName( 'a' );
 
-    var navlinks = navUl.getElementsByTagName("a");
-    for (var i = 0; i < navlinks.length; i++) {
-      editorLinks[i].removeEventListener("click", refreshMenu, false);
+    // Remove active class from all navs
+    for ( var j = 0, max = navs.length; j < max; j++ ) {
+      var nav = navs[j];
+      nav.classList.remove( 'active' );
+    }
+
+    // Remove all children from #editor nav.secondary ul
+    while ( navUl.firstChild ) {
+      navUl.removeChild( navUl.firstChild );
+    }
+
+    // Remove event listeners
+    for ( var i = 0, navMax = navlinks.length; i < navMax; i++ ) {
+      editorLinks[i].removeEventListener(
+        'click',
+        refreshMenu,
+        false
+      );
     }
   },
-  toggle: function() {
-    editor.clearMenus();
 
+  toggle: function() {
+    var editorEl = helpers.getEditorEl(),
+        toggleEl = helpers.getEditorToggleEl(),
+        mainNav = helpers.getMainNavEl();
+
+    editor.clearMenus();
     editor.currentPost = view.currentPost;
     editor.currentPostType = view.currentPost.type;
-    editor.currentMenu = "edit";
+    editor.currentMenu = 'edit';
 
-    var editorEl = helpers.getEditorEl();
-    editorEl.classList.toggle("hidden");
+    editorEl.classList.toggle('hidden');
+    toggleEl.classList.toggle('hidden');
+    mainNav.classList.toggle('inactive');
 
-    var toggleEl = helpers.getEditorToggleEl();
-    toggleEl.classList.toggle("hidden");
-
-    var mainNav = helpers.getMainNavEl();
-    mainNav.classList.toggle("inactive");
-
-    if( toggleEl.classList.contains("hidden") === false ) {
-      editor.showEditPanel();
+    if( toggleEl.classList.contains( 'hidden' ) === false ) {
       var navTitleLink = helpers.getEditorNavTitleLink();
-      navTitleLink.addEventListener("click", editor.listenSecondaryNavTitle, false);
+
+      editor.showEditPanel();
+      navTitleLink.addEventListener(
+        'click',
+        editor.listenSecondaryNavTitle,
+        false
+      );
       view.listenDisableMainNavLinks();
     } else {
-      if(view.currentPost.type === "post") {
-        router.updateHash("blog/" + view.currentPost.slug);
+      if ( view.currentPost.type === 'post' ) {
+        router.updateHash( 'blog/' + view.currentPost.slug );
       } else {
-        router.updateHash(view.currentPost.slug);
+        router.updateHash( view.currentPost.slug );
       }
       view.listenMainNavLinksUpdatePage();
     }
 
   },
+
   updateNavTitle: function() {
 
-    var postType = editor.currentPostType;
-    var currentMenu = editor.currentMenu;
-    var homeLink = helpers.getEditorHomeLinkEl(currentMenu);
-    homeLink.addEventListener("click", editor.listenAdminHomeLink, false);
+    var postType = editor.currentPostType,
+        currentMenu = editor.currentMenu,
+        homeLink = helpers.getEditorHomeLinkEl(currentMenu);
 
-    if( currentMenu == "secondary" ) {
-      var navTitleEl = helpers.getEditorNavTitleEl(currentMenu);
-      navTitleEl.innerHTML = postType + "s";
+    homeLink.addEventListener(
+      'click',
+      editor.listenAdminHomeLink,
+      false
+    );
+
+    if( currentMenu === 'secondary' ) {
+      var navTitleEl = helpers.getEditorNavTitleEl( currentMenu );
+      navTitleEl.innerHTML = postType + 's';
     } else {
       var navTitleLink = helpers.getEditorNavTitleLink();
-      navTitleLink.textContent = postType + "s";
-      navTitleLink.addEventListener("click", editor.listenSecondaryNavTitle, false);
+      navTitleLink.textContent = postType + 's';
+      navTitleLink.addEventListener(
+        'click',
+        editor.listenSecondaryNavTitle,
+        false
+      );
     }
 
   },
-  updateSaveBtnText: function(text) {
-    //say saving, wait a sec
-    var btn = helpers.getEditorEditUpdateBtn();
-    var saving = function() {
-      setTimeout(function () {
-        spinner.stop();
-        btn.innerText = "Saved!";
-        saved();
-      }, 900);
-    };
-    var saved = function(){
-      setTimeout(function () {
-        btn.innerText = "Update";
-      }, 1000);
-    };
 
-    btn.innerText = "Saving...";
-    var spinnerOpts = {
-      color:'#fff',
-      lines: 8,
-      length: 4,
-      radius: 3,
-      width: 1,
-      left: '10%'
-    };
-    var spinner = new Spinner(spinnerOpts).spin(btn);
+  updateSaveBtnText: function( text ) {
 
+    var btn = helpers.getEditorEditUpdateBtn(),
+        saving = function() {
+          setTimeout( function () {
+            Spinner.stop();
+            btn.innerText = 'Saved!';
+            saved();
+          }, 900 );
+        },
+        saved = function(){
+          setTimeout( function () {
+            btn.innerText = 'Update';
+          }, 1000 );
+        },
+        spinnerOpts = {
+          color:'#fff',
+          lines: 8,
+          length: 4,
+          radius: 3,
+          width: 1,
+          left: '10%'
+        };
+        Spinner = new Spinner( spinnerOpts )
+                        .spin( btn );
+
+    btn.innerText = 'Saving...';
     saving();
-    //say saved
-    //go back to Update
   }
 };
 
@@ -1350,207 +1411,215 @@ Array.prototype.isArray = true;
 
 var helpers = {
 
-  getAfterHash: function(url) {
-    url = url || null;
-    var urlSegments = [""];
-    if( url !== null ) {
-      url = url.substring(url.indexOf('#')+1);
-      urlSegments = url.split("/");
+  getAfterHash: function( url ) {
+    url = url || '';
+    var urlSegments = [];
+
+    if( url !== '' ) {
+      url = url.substring( url.indexOf( '#' ) + 1 );
+      urlSegments = url.split( '/' );
     } else {
-      var pageUrl = window.location.hash.substr(1);
-      urlSegments = pageUrl.split("/");
+      var pageUrl = window.location.hash.substr( 1 );
+      urlSegments = pageUrl.split( '/' );
     }
+
     return urlSegments;
   },
 
-  addMenuItems: function(menuItems, contentType) {
-    menuItems.forEach(function(item){
-      var a = helpers.createLink(item.title, contentType, item.slug);
-      helpers.addMenuItem(a);
+  addMenuItems: function( menuItems, contentType ) {
+    menuItems.forEach( function( item ){
+
+      var a = helpers.createLink( item.title, contentType, item.slug );
+      helpers.addMenuItem( a );
+
     });
   },
 
-  addMenuItem: function(menuItem) {
-    var ul = document.querySelector("#editor nav#secondary ul");
-    var li = document.createElement("li");
-    li.appendChild(menuItem);
-    ul.appendChild(li);
+  addMenuItem: function( menuItem ) {
+    var ul = document.querySelector( '#editor nav#secondary ul' ),
+        li = document.createElement( 'li' );
+
+    li.appendChild( menuItem );
+    ul.appendChild( li );
   },
 
-  createLink: function(text, postType, slug) {
-    var a = document.createElement('a');
-    var aText = document.createTextNode(text);
-    a.appendChild(aText);
-    switch (postType) {
-      case "post":
-        a.href = "#blog/" + slug;
-        break;
-      case "setting":
-        a.href = "#settings/" + slug;
-        break;
-      default:
-        a.href = "#" + slug;
+  createLink: function( text, postType, slug ) {
+    var a = document.createElement( 'a' ),
+        aText = document.createTextNode( text );
+
+    a.appendChild( aText );
+
+    if ( postType === 'post' ) {
+      a.href = '#blog/' + slug;
+    } else if ( postType === 'setting' ) {
+      a.href = '#settings/' + slug;
+    } else {
+      a.href = '#' + slug;
     }
+
     return a;
   },
 
-  createPostMarkup: function(post) {
-    var articleEl = document.createElement('article');
+  createPostMarkup: function( post ) {
+    var articleEl = document.createElement( 'article' ),
+        titleEl = document.createElement( 'h3' ),
+        titleLink = document.createElement( 'a' ),
+        title = document.createTextNode( post.title ),
+        contentDiv,
+        excerpt;
 
-    var titleEl = document.createElement('h3');
-    var titleLink = document.createElement('a');
-    var title = document.createTextNode(post.title);
-    titleLink.appendChild(title);
-    titleLink.href = "#blog/" + post.slug;
-    titleEl.appendChild(titleLink);
+    titleLink.appendChild( title );
+    titleLink.href = '#blog/' + post.slug;
+    titleEl.appendChild( titleLink );
 
-    var contentDiv = document.createElement('div');
-    //var content = document.createTextNode(post.content);
-    //contentDiv.appendChild(content);
-    var excerpt = post.content;
-    console.log(excerpt.length);
-    if( excerpt.length > 100) {
-      excerpt = excerpt.substr(0, 60) + "\u2026";
+    contentDiv = document.createElement( 'div' );
+    excerpt = post.content;
+
+    if ( excerpt.length > 100 ) {
+      excerpt = excerpt.substr( 0, 60 ) + '\u2026';
     }
+
     contentDiv.innerHTML = excerpt;
 
-    articleEl.appendChild(titleEl);
-    articleEl.appendChild(contentDiv);
+    articleEl.appendChild( titleEl );
+    articleEl.appendChild( contentDiv );
 
     return articleEl;
-
   },
 
   getEditorEl: function() {
-    return document.getElementById("editor");
+    return document.getElementById( 'editor' );
   },
 
   getEditorToggleEl: function() {
-    return document.getElementById("editorToggle");
+    return document.getElementById( 'editorToggle' );
   },
 
   getEditorToggleLink: function() {
-    return document.querySelector("#editorToggle a");
+    return document.querySelector( '#editorToggle a' );
+  },
+
+  getEditorNavs: function() {
+    var editorEl = helpers.getEditorEl(),
+        navs = editorEl.getElementsByTagName( 'nav' );
+    return  navs;
   },
 
   getEditorPrimaryNav: function() {
-    return  document.querySelector("#editor nav#primary");
+    return  document.querySelector( '#editor nav#primary' );
   },
 
   getEditorPrimaryNavLinks: function() {
     var primaryNav = helpers.getEditorPrimaryNav();
-    return  primaryNav.getElementsByTagName("a");
+    return  primaryNav.getElementsByTagName( 'a' );
   },
 
   getEditorSecondaryNav: function() {
-    return  document.querySelector("#editor nav#secondary");
+    return  document.querySelector( '#editor nav#secondary' );
   },
 
   getEditorSecondaryNavUl: function() {
     var secondaryNav = helpers.getEditorSecondaryNav();
-    return  secondaryNav.querySelector("ul");
+    return  secondaryNav.querySelector( 'ul' );
   },
 
   getEditorAddNewPost: function() {
-    return  document.querySelector("#editor #addNew a");
+    return  document.querySelector( '#editor #addNew a' );
   },
 
   getDeletePostLink: function() {
-    return document.querySelector("#deletePost a");
+    return document.querySelector( '#deletePost a' );
+  },
+
+  getCurrentNavEl: function( currentMenu ) {
+    var nav;
+
+    if ( currentMenu === 'edit' ) {
+      nav = helpers.getEditorEditNav();
+    } else if ( currentMenu === 'secondary' ) {
+      nav = helpers.getEditorSecondaryNav();
+    } else {
+      nav = helpers.getEditorPrimaryNav();
+    }
+
+    return nav;
   },
 
   getEditorEditNav: function() {
-    return  document.querySelector("#editor nav#edit");
+    return  document.querySelector( '#editor nav#edit' );
   },
 
-  getEditorHomeLinkEl: function(currentMenu) {
-    var nav;
-    switch (currentMenu) {
-      case "edit":
-        nav = helpers.getEditorEditNav();
-        break;
-      case "secondary":
-        nav = helpers.getEditorSecondaryNav();
-        break;
-      default:
-        nav = helpers.getEditorPrimaryNav();
-    }
-    return nav.querySelector("h3 .go-home");
+  getEditorHomeLinkEl: function( currentMenu ) {
+    var nav = helpers.getCurrentNavEl( currentMenu );
+    return nav.querySelector( 'h3 .go-home' );
   },
 
-  getEditorNavTitleEl: function(currentMenu) {
-    var nav;
-    switch (currentMenu) {
-      case "edit":
-        nav = helpers.getEditorEditNav();
-        break;
-      case "secondary":
-        nav = helpers.getEditorSecondaryNav();
-        break;
-      default:
-        nav = helpers.getEditorPrimaryNav();
-    }
-    return nav.querySelector("h3 span");
+  getEditorNavTitleEl: function( currentMenu ) {
+    var nav = helpers.getCurrentNavEl( currentMenu );
+    return nav.querySelector( 'h3 span' );
   },
 
   getEditorNavTitleLink: function() {
-      var editNav = helpers.getEditorEditNav();
-      return editNav.querySelector("h3 span a");
+    var editNav = helpers.getEditorEditNav();
+    return editNav.querySelector( 'h3 span a' );
   },
 
   getEditorTitleField: function() {
-    return document.getElementById("editTitle");
+    return document.getElementById( 'editTitle' );
   },
 
-  slugifyTitle: function(title) {
+  slugifyTitle: function( title ) {
     var slug = title;
+
     slug = slug.replace(/[^a-zA-Z0-9\s]/g,"");
     slug = slug.toLowerCase();
     slug = slug.replace(/\s/g,'-');
+
     return slug;
   },
 
   getEditorWysiwyg: function() {
     var editNav = helpers.getEditorEditNav();
-    return editNav.querySelector("form iframe");
+    return editNav.querySelector( 'form iframe' );
   },
 
   getEditorForm: function() {
     var editNav = helpers.getEditorEditNav();
-    return editNav.querySelector("form");
+    return editNav.querySelector( 'form' );
   },
 
   getEditorEditUpdateBtn: function() {
-    return document.getElementById("editUpdateBtn");
+    var editBtn = document.getElementById( 'editUpdateBtn' );
+    return editBtn;
   },
 
   getSiteName: function() {
-    siteNameEl = document.getElementById("siteName");
-    return siteNameEl.querySelector("a");
+    var siteNameEl = document.getElementById( 'siteName' );
+    return siteNameEl.querySelector( 'a' );
   },
 
   getSiteDescription: function() {
-    return document.getElementById("siteDesription");
+    return document.getElementById( 'siteDesription' );
   },
 
   getMainNavEl: function() {
-    var mainNavEl = document.getElementById("mainNav");
+    var mainNavEl = document.getElementById( 'mainNav' );
     return mainNavEl;
   },
 
   getMainNavLinks: function() {
-    var mainNav = document.getElementById("mainNav");
-    var links = mainNav.getElementsByTagName("a");
+    var mainNav = document.getElementById( 'mainNav' ),
+        links = mainNav.getElementsByTagName( 'a' );
     return links;
   },
 
   getPostTitle: function() {
-    var titleEl = document.getElementById("pageTitle");
+    var titleEl = document.getElementById( 'pageTitle' );
     return titleEl;
   },
 
   getPrimaryContentEl: function(){
-    var primaryContentEL = document.querySelector("#view .content .primary");
+    var primaryContentEL = document.querySelector( '#view .content .primary' );
     return primaryContentEL;
   }
 
@@ -1559,104 +1628,111 @@ var helpers = {
 module.exports = helpers;
 
 },{}],13:[function(require,module,exports){
-var data = require( "./data.js" );
-var jsonData = require( "./json.js" );
-var helpers = require( "./lib/helpers.js" );
+var data = require( './data.js' ),
+    jsonData = require( './json.js' ),
+    helpers = require( './lib/helpers.js' );
 
 var model = {
   init: function() {
     var localStore = model.getLocalStore();
-    if(typeof localStore === "undefined" || localStore === null | localStore === "") {
-      localStorage.setItem('vanillaPress', JSON.stringify(jsonData) );
+    if( typeof localStore === 'undefined' || localStore === null ||
+        localStore === '' ) {
+      localStorage.setItem(
+        'vanillaPress',
+        JSON.stringify( jsonData )
+      );
       localStore = model.getLocalStore();
     }
   },
-  getContent: function(type) {
+
+  getContent: function( postType ) {
     var data = model.getLocalStore();
-    type = type + "s";
-    switch (type) {
-      case "posts":
-        content = data.posts;
-        break;
-      case "pages":
-        content = data.pages;
-        break;
-      case "settings":
-        content = data.settings;
-        break;
-      default:
-        content =  [{type:"404",title:"404 Error"}];
+
+    if ( postType === 'post' ) {
+      content = data.posts;
+    } else if ( postType === 'page' ) {
+      content = data.pages;
+    } else if ( postType === 'setting' ) {
+      content = data.settings;
+    } else {
+      content =  [{type:'404',title:'404 Error'}];
     }
+
     return content;
   },
-  getPostBySlugs: function(slugs) {
+
+  getPostBySlugs: function( slugs ) {
     var post;
-    if( slugs.length > 1 && (slugs[0] == "posts" || slugs[0] == "blog")) {
-      post = model.getPostBySlug(slugs[1], 'posts');
-    } else if(slugs.length > 1 && slugs[0] == "settings"){
-      post = model.getPostBySlug(slugs[1], 'settings');
+
+    if ( slugs.length > 1 && ( slugs[0] === 'posts' || slugs[0] === 'blog' ) ) {
+      post = model.getPostBySlug( slugs[1], 'posts' );
+    } else if ( slugs.length > 1 && slugs[0] === 'settings' ) {
+      post = model.getPostBySlug( slugs[1], 'settings' );
     } else {
-      if( slugs[0] === "") slugs[0] = "home";
-      post = model.getPostBySlug(slugs[0], 'pages');
+      if( slugs[0] === '') slugs[0] = 'home';
+      post = model.getPostBySlug( slugs[0], 'pages');
     }
     return post;
   },
-  getPostBySlug: function(slug, contentType){
-    //get contet from local storage
-    var data = model.getLocalStore();
-    var content;
-    switch (contentType) {
-      case "posts":
-        content = data.posts;
-        break;
-      case "pages":
-        content = data.pages;
-        break;
-      case "settings":
-        content = data.settings;
-        break;
-      default:
-        content =  [{type:"404",title:"404 Error"}];
+
+  getPostBySlug: function( slug, postType ){
+    // Get contet from local storage
+    var data = model.getLocalStore(),
+        content,
+        item;
+
+    if ( postType === 'posts' ) {
+      content = data.posts;
+    } else if ( postType === 'pages' ) {
+      content = data.pages;
+    } else if ( postType === 'settings' ) {
+      content = data.settings;
+    } else {
+      content =  [{type:'404',title:'404 Error'}];
     }
-    var item = content.filter( function( obj ) {
+
+    item = content.filter( function( obj ) {
       return obj.slug == slug;
     });
     return item[0];
   },
+
   getCurrentContentObj: function() {
-    var newPageSlugs = helpers.getAfterHash();
-    var post;
-    if( newPageSlugs.length > 1 ) {
-      post = model.getPostBySlug(newPageSlugs[1], 'posts');
+    var newPageSlugs = helpers.getAfterHash(),
+        post;
+
+    if ( newPageSlugs.length > 1 ) {
+      post = model.getPostBySlug( newPageSlugs[1], 'posts' );
     } else {
-      if( newPageSlugs[0] === "") newPageSlugs[0] = "home";
-      post = model.getPostBySlug(newPageSlugs[0], 'pages');
+      if ( newPageSlugs[0] === '' ) newPageSlugs[0] = 'home';
+      post = model.getPostBySlug( newPageSlugs[0], 'pages' );
     }
     return post;
   },
+
   getLocalStore: function() {
-    var store = JSON.parse(localStorage.getItem('vanillaPress'));
-    if(store === null) {
-      store = [""];
+    var store = JSON.parse( localStorage.getItem( 'vanillaPress' ) );
+    if( store === null ) {
+      store = [''];
     }
     return store[0];
   },
+
   updateLocalStore: function(store) {
-    //console.log( JSON.stringify(store) );
-    var newStore = [store];
-    localStorage.setItem('vanillaPress', JSON.stringify(newStore) );
+    var newStore = [ store ];
+    localStorage.setItem( 'vanillaPress', JSON.stringify( newStore ) );
   },
   removeLocalStore: function() {
-    localStorage.removeItem('vanillaPress');
+    localStorage.removeItem( 'vanillaPress' );
   }
 };
 
 module.exports = model;
 
 },{"./data.js":9,"./json.js":11,"./lib/helpers.js":12}],14:[function(require,module,exports){
-var helpers = require( "./lib/helpers.js" );
-var model = require( "./model.js" );
-var view = require( "./view.js" );
+var helpers = require( './lib/helpers.js' ),
+    model = require( './model.js' ),
+    view = require( './view.js' );
 
 var router = {
   init: function() {
@@ -1664,106 +1740,129 @@ var router = {
     view.update();
     router.listenPageChange();
   },
+
   listenPageChange: function() {
-    window.addEventListener("hashchange", router.setCurrentPost, false);
+    window.addEventListener(
+      'hashchange',
+      router.setCurrentPost,
+      false
+    );
   },
+
   setCurrentPost: function() {
-    var slugs = helpers.getAfterHash();
-    var post = model.getPostBySlugs(slugs);
+    var slugs = helpers.getAfterHash(),
+        post = model.getPostBySlugs( slugs );
+
     view.currentPost = post;
     view.update();
   },
+
   updateHash: function(slug) {
     window.location.hash = slug;
   }
+
 };
+
 module.exports = router;
 
 },{"./lib/helpers.js":12,"./model.js":13,"./view.js":15}],15:[function(require,module,exports){
-var helpers = require( "./lib/helpers.js" );
-var model = require( "./model.js" );
+var helpers = require( './lib/helpers.js' ),
+    model = require( './model.js' );
 
 var view = {
   init: function() {
     view.listenMainNavLinksUpdatePage();
     view.loadMainHeader();
   },
-  currentPost: "",
+
+  currentPost: '',
+
   listenMainNavLinksUpdatePage: function() {
-    var mainNav = document.getElementById("mainNav");
-    var links = mainNav.getElementsByTagName("a");
-    for(var i = 0, len = links.length; i < len; i++) {
-      links[i].addEventListener("click", view.mainNavControl, false);
-      links[i].removeEventListener("click", view.disableNav);
+    var mainNav = document.getElementById( 'mainNav' ),
+        links = mainNav.getElementsByTagName( 'a' );
+    for ( var i = 0, max = links.length; i < max; i++ ) {
+      links[i].addEventListener('click',view.mainNavControl,false);
+      links[i].removeEventListener('click',view.disableNav );
     }
   },
+
   listenDisableMainNavLinks: function() {
     var links = helpers.getMainNavLinks();
-    for(var i = 0, len = links.length; i < len; i++) {
-      links[i].removeEventListener("click", view.mainNavControl);
-      links[i].addEventListener("click", view.disableNav, false);
+    for ( var i = 0, len = links.length; i < len; i++ ) {
+      links[i].removeEventListener('click', view.mainNavControl);
+      links[i].addEventListener('click', view.disableNav, false);
     }
   },
+
   mainNavControl: function() {
-    var newPageSlugs = helpers.getAfterHash(this.href);
-    var post = model.getPostBySlugs(newPageSlugs);
+    var newPageSlugs = helpers.getAfterHash( this.href ),
+        post = model.getPostBySlugs( newPageSlugs );
     view.currentPost = post;
     view.update();
   },
+
   update: function() {
-    // var urlSegments = helpers.getAfterHash(this);
-    // console.log(this + " " + view.currentPost.title);
-    // //view.updateCurrentNav();
     view.removeBlogPosts();
     view.updateTitle( view.currentPost.title );
     view.updateContent( view.currentPost.content );
-    if(view.currentPost.slug === "blog") {
+
+    if ( view.currentPost.slug === 'blog' ) {
       view.loadBlogPosts();
     }
   },
-  push: function(post) {
-    router.updateHash(post);
+
+  push: function( post ) {
+    router.updateHash( post );
     view.updateTitle( post.title );
     view.updateContent( post.content );
   },
+
   loadMainHeader: function() {
-    var siteName = model.getPostBySlug("site-name", "settings");
-    var siteDescription = model.getPostBySlug("site-description", "settings");
-    view.updateSiteName(siteName.content);
-    view.updateSiteDescription(siteDescription.content);
+    var siteName = model.getPostBySlug( 'site-name', 'settings' ),
+        siteDescription = model.getPostBySlug( 'site-description', 'settings' );
+    view.updateSiteName( siteName.content );
+    view.updateSiteDescription( siteDescription.content );
   },
-  updateSiteName: function(content) {
+
+  updateSiteName: function( content ) {
     var siteName = helpers.getSiteName();
     siteName.innerHTML = content;
   },
-  updateSiteDescription: function(content) {
+
+  updateSiteDescription: function( content ) {
     var siteDescription = helpers.getSiteDescription();
     siteDescription.innerHTML = content;
   },
+
   updateTitle: function(title) {
-    var titleEl = document.getElementById("pageTitle");
+    var titleEl = document.getElementById( 'pageTitle' );
     titleEl.innerHTML = title;
   },
+
   updateContent: function(content) {
-    var contentEl = document.getElementById("pageContent");
+    var contentEl = document.getElementById( 'pageContent' );
     contentEl.innerHTML = content;
   },
   loadBlogPosts: function() {
-    var posts = model.getContent("post");
-    var postContent = document.createElement("section");
-    postContent.id = "blogPosts";
-    //var postContent = helpers.createPostMarkup(posts[0]);
-    for (var i = 0; i < posts.length; i++) {
-      postContent.appendChild(helpers.createPostMarkup(posts[i]));
-    }
-    var primaryContentEL = helpers.getPrimaryContentEl();
-    primaryContentEL.appendChild(postContent);
+    var posts = model.getContent( 'post' ),
+        postContent = document.createElement( 'section' ),
+        primaryContentEL;
 
+    postContent.id = 'blogPosts';
+    for ( var i = 0, max = posts.length; i < max; i++ ) {
+      postContent.appendChild( helpers.createPostMarkup( posts[i] ) );
+    }
+    primaryContentEL = helpers.getPrimaryContentEl();
+    primaryContentEL.appendChild( postContent );
   },
+
   removeBlogPosts: function(){
-    var blogPost = document.getElementById("blogPosts");
-    if(blogPost) blogPost.remove();    
+    var blogPost = document.getElementById( 'blogPosts' );
+    if( blogPost )  {
+      blogPost.remove();
+    }
   },
+
   disableNav: function(){
     event.preventDefault();
   }

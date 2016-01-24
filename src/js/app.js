@@ -1,7 +1,7 @@
-var model = require( "./model.js" );
-var router = require( "./router.js" );
-var view = require( "./view.js" );
-var editor = require( "./editor.js" );
+var model = require( './model.js' ),
+    router = require( './router.js' ),
+    view = require( './view.js' ),
+    editor = require( './editor.js' );
 
 var vanillaPress = {
   init: function() {
@@ -11,4 +11,5 @@ var vanillaPress = {
     editor.init();
   }
 };
+
 vanillaPress.init();
