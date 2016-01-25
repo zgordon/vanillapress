@@ -744,6 +744,8 @@ var model = require( './model.js' ),
 
 /**
  * The main app object.
+ *
+ * @namespace
  */
 var vanillaPress = {
   init: function() {
@@ -886,6 +888,8 @@ var Spinner = require( 'spin.js' ),
 
 /**
  * Main editor panel.
+ *
+ * @namespace
  */
 var editor = {
   init: function() {
@@ -1769,6 +1773,12 @@ var data = require( './data.js' ),
     jsonData = require( './json.js' ),
     helpers = require( './lib/helpers.js' );
 
+
+/**
+ * Main model object.
+ *
+ * @namespace
+ */
 var model = {
   // Init function to load data into local store
   init: function() {
@@ -1932,7 +1942,8 @@ var helpers = require( './lib/helpers.js' ),
 
 /**
  * The main router object.
- *  
+ *
+ * @namespace 
  */
 var router = {
   init: function() {
@@ -1974,6 +1985,7 @@ module.exports = router;
  * This file controls the main front end view
  * of the app.
  *
+ *
  * @exports view
  */
 var helpers = require( './lib/helpers.js' ),
@@ -1982,6 +1994,8 @@ var helpers = require( './lib/helpers.js' ),
 
 /**
  * Main view object
+ *
+ * @namespace
  */
 var view = {
   init: function() {
@@ -1994,8 +2008,8 @@ var view = {
 
   /**
    * Listener activate and deactivate main nav.
-   *
-   */
+   * @function
+  */
   listenMainNavLinksUpdatePage: function() {
     var mainNav = document.getElementById( 'mainNav' ),
         links = mainNav.getElementsByTagName( 'a' );
@@ -2073,9 +2087,9 @@ var view = {
   },
 
   /**
-   * Helper function to update to post content in the view
+   * Helper function to update to post content in the view.
    *
-   * @param content {string} The post content to display
+   * @param content {string} The site name to display
    */
   updateSiteName: function( content ) {
     var siteName = helpers.getSiteName();
@@ -2083,37 +2097,58 @@ var view = {
   },
 
   /**
-   * Helper function to update to post content in the view
+   * Helper function to update to the site description in the view.
    *
-   * @param content {string} The post content to display
+   * @param content {string} The site description to display
    */
   updateSiteDescription: function( content ) {
     var siteDescription = helpers.getSiteDescription();
     siteDescription.innerHTML = content;
   },
 
+  /**
+   * Helper function to update main page title in the view.
+   *
+   * @param title {string} The title to display
+   */
   updateTitle: function(title) {
     var titleEl = document.getElementById( 'pageTitle' );
     titleEl.innerHTML = title;
   },
 
+  /**
+   * Helper function to update main page content in the view.
+   *
+   * @param content {string} The content to display
+   */
   updateContent: function(content) {
     var contentEl = document.getElementById( 'pageContent' );
     contentEl.innerHTML = content;
   },
+
+  /**
+   * Gets blog posts and appends them to the page.
+   *
+   */
   loadBlogPosts: function() {
     var posts = model.getPostsByType( 'post' ),
-        postContent = document.createElement( 'section' ),
+        postsMarkup = document.createElement( 'section' ),
         primaryContentEL;
 
-    postContent.id = 'blogPosts';
+    postsMarkup.id = 'blogPosts';
+    // Get markup for each post
     for ( var i = 0, max = posts.length; i < max; i++ ) {
-      postContent.appendChild( helpers.createPostMarkup( posts[i] ) );
+      postsMarkup.appendChild( helpers.createPostMarkup( posts[i] ) );
     }
     primaryContentEL = helpers.getPrimaryContentEl();
-    primaryContentEL.appendChild( postContent );
+    // Append posts to page
+    primaryContentEL.appendChild( postsMarkup );
   },
 
+  /**
+   * Remove blog posts from page
+   *
+   */
   removeBlogPosts: function(){
     var blogPost = document.getElementById( 'blogPosts' );
     if( blogPost )  {
@@ -2121,6 +2156,10 @@ var view = {
     }
   },
 
+  /**
+   * Prevents main nav from working. Used when editor is open.
+   *
+   */
   disableNav: function(){
     event.preventDefault();
   }

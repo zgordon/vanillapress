@@ -11,7 +11,8 @@ var helpers = require( './lib/helpers.js' ),
 
 /**
  * The main router object.
- *  
+ *
+ * @namespace 
  */
 var router = {
   init: function() {

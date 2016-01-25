@@ -24,6 +24,17 @@ module.exports = function(grunt) {
 		  }
 		},
 
+    jsdoc : {
+        dist : {
+            src: ['src/js/*.js', 'src/js/helpers.js'],
+            options: {
+                destination: 'docs',
+                access: 'all'
+
+            }
+        }
+    },
+
     // Express Server
     express: {
       all: {
@@ -49,7 +60,7 @@ module.exports = function(grunt) {
 			},
       js: {
         files: [ 'src/js/*.js','src/js/**/*.js' ],
-        tasks: [ 'jshint', 'browserify' ]
+        tasks: [ 'jshint', 'jsdoc', 'browserify' ]
       },
 		},
 
@@ -62,6 +73,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-jsdoc');
 	grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-express');
 	grunt.registerTask('default',['watch']);

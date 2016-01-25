@@ -11,6 +11,8 @@ var model = require( './model.js' ),
 
 /**
  * The main app object.
+ *
+ * @namespace
  */
 var vanillaPress = {
   init: function() {
