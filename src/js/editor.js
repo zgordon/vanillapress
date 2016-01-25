@@ -1,3 +1,9 @@
+/**
+ * Contains the properties and methods for the editor.
+ *
+ * @exports editor
+ */
+
 var Spinner = require( 'spin.js' ),
     helpers = require( './lib/helpers.js' ),
     router = require( './router.js' ),
@@ -6,6 +12,9 @@ var Spinner = require( 'spin.js' ),
     wysiwygEditor = require('wysiwyg'),
     wysiwyg;
 
+/**
+ * Main editor panel.
+ */
 var editor = {
   init: function() {
     editor.listenEditorToggle();
@@ -16,12 +25,24 @@ var editor = {
   currentPost: '',
   currentPostType: '',
 
+
+  /**
+   * Listener for Admin link in editor.
+   * Clears menus and shows primary menu.
+   *
+   */
   listenAdminHomeLink: function(){
     editor.clearMenus();
     editor.showPrimaryMenu();
     event.preventDefault();
   },
 
+
+  /**
+   * Listeners for links in the primary menu
+   * Loads seconday menu
+   *
+   */
   listenPrimaryLinks: function() {
     var urlSegments = helpers.getAfterHash( this.href );
     var currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
@@ -31,12 +52,24 @@ var editor = {
     event.preventDefault();
   },
 
+
+  /**
+   * Listener for post type link in editor
+   * (i.e. Posts, Pages, Settings).
+   * Loads secondary menu.
+   *
+   */
   listenSecondaryNavTitle: function(){
     editor.clearMenus();
     editor.showSecondaryMenu();
     event.preventDefault();
   },
 
+
+  /**
+   * Listener to load the post edit field.
+   *
+  */
   listenLoadEditForm: function(){
     editor.clearMenus();
     var slugs = helpers.getAfterHash( this.href );
@@ -54,6 +87,11 @@ var editor = {
     editor.showEditPanel();
   },
 
+
+  /**
+   * Listener to the new post field
+   *
+   */
   listenLoadNewPostForm: function(){
     var post = {slug: '_new',title:'',content:''},
         updateBtn = helpers.getEditorEditUpdateBtn();
@@ -72,6 +110,11 @@ var editor = {
     updateBtn.innerText = 'Save';
   },
 
+
+  /**
+   * Listener for the editor toggle button
+   *
+   */
   listenEditorToggle: function(){
     var editorToggleEl = helpers.getEditorToggleLink();
     editorToggleEl.addEventListener( 'click', function(){
@@ -80,15 +123,22 @@ var editor = {
     }, false );
   },
 
+
+  /**
+   * Listener to update content from the post add / edit
+   * form.
+   *
+   */
   listenUpdatePost: function() {
     var newPost = false;
 
     event.preventDefault();
 
-    // If new post
+    // If new post add to local store
     if( editor.currentPost.slug === '_new' ) {
       var localStore = model.getLocalStore(),
-          postIds = [];
+          postIds = [],
+          highestId;
 
       newPost = true;
       editor.currentPost.type = 'post';
@@ -101,7 +151,7 @@ var editor = {
       localStore.forEach(function( post ) {
         postIds.push( Number( post.id ) );
       });
-      var highestId = Math.max.apply( Math, postIds );
+      highestId = Math.max.apply( Math, postIds );
       editor.currentPost.id = highestId + 1;
 
       // Set the date
@@ -130,11 +180,12 @@ var editor = {
         if( editor.currentPost.id == item.id ){
           item.title = editor.currentPost.title;
           item.content = editor.currentPost.content;
+          item.modified = Date();
         }
       });
     }
 
-    //add store data back
+    // Add temp store data back
     if ( postType === 'post' ) {
       store.posts = storePosts;
     } else if ( postType === 'page' ) {
@@ -142,14 +193,20 @@ var editor = {
     } else {
       store.settings = storePosts;
     }
-
     model.updateLocalStore( store );
+
+    // Update url and current post
     router.updateHash( 'blog/' + editor.currentPost.slug );
     view.currentPost = editor.currentPost;
     view.update();
     editor.updateSaveBtnText();
   },
 
+
+  /**
+   * Listener to delete post
+   *
+   */
   listenDeletePost: function(){
     var store = model.getLocalStore(),
         storePosts = store.posts,
@@ -157,18 +214,21 @@ var editor = {
         deleteId,
         deleteIdIndex;
 
+    // Get the index of the item to delete from store
     for ( var i = 0, max = storePosts.length; i < max ; i++) {
       if ( editor.currentPost.id === storePosts[i].id ) {
         deleteIdIndex = i;
       }
     }
 
-    // Confirm detele
-    // Return to posts page
+    // Only procude with delete if confirmation
     if ( confirmation === true ) {
+      // Remove item from store
       storePosts.splice( deleteIdIndex, 1 );
       store.posts = storePosts;
       model.updateLocalStore( store );
+
+      // Update current post to empty, show blog posts
       editor.currentPost = {};
       view.currentPost = model.getPostBySlug( 'blog', 'pages' );
       view.update();
@@ -179,23 +239,18 @@ var editor = {
     event.preventDefault();
   },
 
-  showCurrentMenu: function(){
-    if ( editor.currentMenu === 'primary' ) {
-      showPrimaryMenu();
-    } else if ( postType === 'secondary' ) {
-      showSecondaryMenu();
-    } else if ( postType === 'edit' ) {
-      showEditPanel();
-    } else {
-      showPrimaryMenu();
-    }
-  },
 
+  /**
+   * Displays the primary menu.
+   *
+   */
   showPrimaryMenu: function(){
     var primaryNav = helpers.getEditorPrimaryNav(),
         primaryLinks = helpers.getEditorPrimaryNavLinks();
 
     primaryNav.classList.add( 'active' );
+
+    // Add event listeners to primary links
     for ( var i = 0, max = primaryLinks.length; i < max; i++ ) {
       primaryLinks[i].addEventListener(
         'click',
@@ -206,20 +261,26 @@ var editor = {
     editor.currentMenu = 'primary';
   },
 
+  /**
+   * Displays the secondary menu
+   *
+   */
   showSecondaryMenu: function(){
     var secondaryNav = helpers.getEditorSecondaryNav(),
         postType = editor.currentPostType,
-        menuItems = model.getContent( postType ),
+        menuItems = model.getPostsByType( postType ),
         secondaryUl =  helpers.getEditorSecondaryNavUl(),
         secondaryLinks = secondaryUl.getElementsByTagName( 'a' ),
         addNewPostLink = helpers.getEditorAddNewPost(),
         deletePostLink = helpers.getDeletePostLink();
 
+    // Display secondary menu
     secondaryNav.classList.add( 'active' );
     editor.currentMenu = 'secondary';
     editor.updateNavTitle();
     helpers.addMenuItems( menuItems, postType );
 
+    // Add listeners to secondary links
     for ( var i = 0, max = secondaryLinks.length; i < max; i++ ) {
       secondaryLinks[i].addEventListener(
         'click',
@@ -227,35 +288,38 @@ var editor = {
         false);
     }
 
+    // Add listener to new post link
     addNewPostLink.addEventListener(
       'click',
       editor.listenLoadNewPostForm,
       false
     );
-    deletePostLink.addEventListener(
-      'click',
-      editor.listenDeletePost,
-      false
-    );
   },
 
+  /**
+   * Displays the edit post panel
+   *
+   */
   showEditPanel: function() {
     var post = editor.currentPost,
         editNav = helpers.getEditorEditNav(),
         editForm = helpers.getEditorForm(),
         deleteBtn = helpers.getDeletePostLink();
 
+    // Display the edit panel and form
     editor.clearEditForm();
     editNav.classList.toggle('active');
     editor.currentMenu = 'edit';
     editor.updateNavTitle();
     editor.fillEditForm();
 
+    // Add event listener to update post
     editForm.addEventListener(
       'submit',
       editor.listenUpdatePost,
       false
     );
+    // Add event listener to delete post
     deleteBtn.addEventListener(
       'click',
       editor.listenDeletePost,
@@ -263,18 +327,27 @@ var editor = {
     );
   },
 
+  /**
+   * Dynamically fill the edit post form based on the
+   * current post.
+   *
+   */
   fillEditForm: function() {
     var post = editor.currentPost,
         editTitle = document.getElementById('editTitle'),
         postTitle = helpers.getPostTitle(),
         titleField = helpers.getEditorTitleField();
 
+    // Update the title and content fields
     editTitle.value = post.title;
     editContent.value = post.content;
 
+    // Initialize the wysiwyg editor
     wysiwyg = wysiwygEditor(document.getElementById('editContent'));
 
+    //  Add listeners to update the view on field changes
     if ( post.type !== 'setting' ) {
+      // Actions if not editing a setting
       titleField.addEventListener( 'input', function() {
         editor.currentPost.title = this.value;
         view.updateTitle( this.value );
@@ -284,6 +357,7 @@ var editor = {
         editor.currentPost.content = wysiwyg.read();
       });
     } else {
+      // Live update controls for settings
       if (  post.slug === 'site-name' ) {
         wysiwyg.onUpdate(function () {
           view.updateSiteName( wysiwyg.read() );
@@ -299,16 +373,30 @@ var editor = {
       }
     }
   },
+
+  /**
+   * Clears the edit form.
+   * Must call before loading data to form.
+   *
+   */
   clearEditForm: function() {
     var editTitle = document.getElementById( 'editTitle' ),
         wysiwyg = helpers.getEditorWysiwyg();
 
+    // Set the edit fields blank
     editTitle.value = '';
     editContent.value = '';
+    // Remove the wysiwyg editor
     if ( wysiwyg !== null ) {
       wysiwyg.remove();
     }
   },
+
+  /**
+   * Clears the current menu.
+   * Must call before loading a menu.
+   *
+   */
   clearMenus: function(){
     var navs = helpers.getEditorNavs(),
         navUl = helpers.getEditorSecondaryNavUl(),
@@ -320,38 +408,48 @@ var editor = {
       nav.classList.remove( 'active' );
     }
 
-    // Remove all children from #editor nav.secondary ul
+    // Remove event listeners from all previous nav links
+    for ( var i = 0, navMax = navlinks.length; i < navMax; i++ ) {
+      navlinks[i].removeEventListener(
+        'click',
+        editor.refreshMenu,
+        false
+      );
+    }
+
+    // Remove all list items from secondary nav ul tag
     while ( navUl.firstChild ) {
       navUl.removeChild( navUl.firstChild );
     }
 
-    // Remove event listeners
-    for ( var i = 0, navMax = navlinks.length; i < navMax; i++ ) {
-      editorLinks[i].removeEventListener(
-        'click',
-        refreshMenu,
-        false
-      );
-    }
   },
 
+
+  /**
+   * Main control for the editor toggle.
+   *
+   */
   toggle: function() {
     var editorEl = helpers.getEditorEl(),
         toggleEl = helpers.getEditorToggleEl(),
         mainNav = helpers.getMainNavEl();
 
+    // Clear menus and load edit panel
     editor.clearMenus();
     editor.currentPost = view.currentPost;
     editor.currentPostType = view.currentPost.type;
     editor.currentMenu = 'edit';
 
+    // Toggle editor and nav hidden classes
     editorEl.classList.toggle('hidden');
     toggleEl.classList.toggle('hidden');
+    // Toggle whether view nav is disabled
     mainNav.classList.toggle('inactive');
 
-    if( toggleEl.classList.contains( 'hidden' ) === false ) {
+    // Take specific actions if opening or closing editor
+    if ( toggleEl.classList.contains( 'hidden' ) === false ) {
+      // If opening editor
       var navTitleLink = helpers.getEditorNavTitleLink();
-
       editor.showEditPanel();
       navTitleLink.addEventListener(
         'click',
@@ -360,6 +458,7 @@ var editor = {
       );
       view.listenDisableMainNavLinks();
     } else {
+      // If closing editor
       if ( view.currentPost.type === 'post' ) {
         router.updateHash( 'blog/' + view.currentPost.slug );
       } else {
@@ -370,22 +469,30 @@ var editor = {
 
   },
 
+  /**
+   * Update the editor breadcrumb navigation
+   * (i.e. Admin / Posts, Admin / Pages, Admin / Settings, etc. )
+   *
+   */
   updateNavTitle: function() {
-
     var postType = editor.currentPostType,
         currentMenu = editor.currentMenu,
-        homeLink = helpers.getEditorHomeLinkEl(currentMenu);
+        homeLink = helpers.getEditorHomeLinkEl( currentMenu );
 
+    // Add event listener to Admin home link
     homeLink.addEventListener(
       'click',
       editor.listenAdminHomeLink,
       false
     );
 
+    // Add secondary link based on current nav and post type
     if( currentMenu === 'secondary' ) {
+      // If on secondary nav
       var navTitleEl = helpers.getEditorNavTitleEl( currentMenu );
       navTitleEl.innerHTML = postType + 's';
     } else {
+      // If editing post
       var navTitleLink = helpers.getEditorNavTitleLink();
       navTitleLink.textContent = postType + 's';
       navTitleLink.addEventListener(
@@ -397,19 +504,27 @@ var editor = {
 
   },
 
-  updateSaveBtnText: function( text ) {
-
+  /**
+   * Saves post in edit form.
+   * Mimics live updating text: "Saving, Saved!"
+   *
+   */
+  updateSaveBtnText: function() {
     var btn = helpers.getEditorEditUpdateBtn(),
+        finalText = 'Udpate',
+        savedText = 'Saved!',
+        // Displays save text
         saving = function() {
           setTimeout( function () {
             Spinner.stop();
-            btn.innerText = 'Saved!';
+            btn.innerText = savedText;
             saved();
           }, 900 );
         },
+        // Displays final text
         saved = function(){
           setTimeout( function () {
-            btn.innerText = 'Update';
+            btn.innerText = finalText;
           }, 1000 );
         },
         spinnerOpts = {
@@ -419,10 +534,11 @@ var editor = {
           radius: 3,
           width: 1,
           left: '10%'
-        };
+        },
         Spinner = new Spinner( spinnerOpts )
                         .spin( btn );
 
+    // Update btn text and start saving
     btn.innerText = 'Saving...';
     saving();
   }

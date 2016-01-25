@@ -731,11 +731,20 @@ function pubsub (mix) {
 }
 
 },{}],8:[function(require,module,exports){
+
+/**
+ * Main app file.  Initializes app components.
+ */
+
 var model = require( './model.js' ),
     router = require( './router.js' ),
     view = require( './view.js' ),
     editor = require( './editor.js' );
 
+
+/**
+ * The main app object.
+ */
 var vanillaPress = {
   init: function() {
     model.init();
@@ -861,6 +870,12 @@ var data = [Posts, Pages, Settings];
 module.exports = data;
 
 },{}],10:[function(require,module,exports){
+/**
+ * Contains the properties and methods for the editor.
+ *
+ * @exports editor
+ */
+
 var Spinner = require( 'spin.js' ),
     helpers = require( './lib/helpers.js' ),
     router = require( './router.js' ),
@@ -869,6 +884,9 @@ var Spinner = require( 'spin.js' ),
     wysiwygEditor = require('wysiwyg'),
     wysiwyg;
 
+/**
+ * Main editor panel.
+ */
 var editor = {
   init: function() {
     editor.listenEditorToggle();
@@ -879,12 +897,24 @@ var editor = {
   currentPost: '',
   currentPostType: '',
 
+
+  /**
+   * Listener for Admin link in editor.
+   * Clears menus and shows primary menu.
+   *
+   */
   listenAdminHomeLink: function(){
     editor.clearMenus();
     editor.showPrimaryMenu();
     event.preventDefault();
   },
 
+
+  /**
+   * Listeners for links in the primary menu
+   * Loads seconday menu
+   *
+   */
   listenPrimaryLinks: function() {
     var urlSegments = helpers.getAfterHash( this.href );
     var currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
@@ -894,12 +924,24 @@ var editor = {
     event.preventDefault();
   },
 
+
+  /**
+   * Listener for post type link in editor
+   * (i.e. Posts, Pages, Settings).
+   * Loads secondary menu.
+   *
+   */
   listenSecondaryNavTitle: function(){
     editor.clearMenus();
     editor.showSecondaryMenu();
     event.preventDefault();
   },
 
+
+  /**
+   * Listener to load the post edit field.
+   *
+  */
   listenLoadEditForm: function(){
     editor.clearMenus();
     var slugs = helpers.getAfterHash( this.href );
@@ -917,6 +959,11 @@ var editor = {
     editor.showEditPanel();
   },
 
+
+  /**
+   * Listener to the new post field
+   *
+   */
   listenLoadNewPostForm: function(){
     var post = {slug: '_new',title:'',content:''},
         updateBtn = helpers.getEditorEditUpdateBtn();
@@ -935,6 +982,11 @@ var editor = {
     updateBtn.innerText = 'Save';
   },
 
+
+  /**
+   * Listener for the editor toggle button
+   *
+   */
   listenEditorToggle: function(){
     var editorToggleEl = helpers.getEditorToggleLink();
     editorToggleEl.addEventListener( 'click', function(){
@@ -943,15 +995,22 @@ var editor = {
     }, false );
   },
 
+
+  /**
+   * Listener to update content from the post add / edit
+   * form.
+   *
+   */
   listenUpdatePost: function() {
     var newPost = false;
 
     event.preventDefault();
 
-    // If new post
+    // If new post add to local store
     if( editor.currentPost.slug === '_new' ) {
       var localStore = model.getLocalStore(),
-          postIds = [];
+          postIds = [],
+          highestId;
 
       newPost = true;
       editor.currentPost.type = 'post';
@@ -964,7 +1023,7 @@ var editor = {
       localStore.forEach(function( post ) {
         postIds.push( Number( post.id ) );
       });
-      var highestId = Math.max.apply( Math, postIds );
+      highestId = Math.max.apply( Math, postIds );
       editor.currentPost.id = highestId + 1;
 
       // Set the date
@@ -993,11 +1052,12 @@ var editor = {
         if( editor.currentPost.id == item.id ){
           item.title = editor.currentPost.title;
           item.content = editor.currentPost.content;
+          item.modified = Date();
         }
       });
     }
 
-    //add store data back
+    // Add temp store data back
     if ( postType === 'post' ) {
       store.posts = storePosts;
     } else if ( postType === 'page' ) {
@@ -1005,14 +1065,20 @@ var editor = {
     } else {
       store.settings = storePosts;
     }
-
     model.updateLocalStore( store );
+
+    // Update url and current post
     router.updateHash( 'blog/' + editor.currentPost.slug );
     view.currentPost = editor.currentPost;
     view.update();
     editor.updateSaveBtnText();
   },
 
+
+  /**
+   * Listener to delete post
+   *
+   */
   listenDeletePost: function(){
     var store = model.getLocalStore(),
         storePosts = store.posts,
@@ -1020,18 +1086,21 @@ var editor = {
         deleteId,
         deleteIdIndex;
 
+    // Get the index of the item to delete from store
     for ( var i = 0, max = storePosts.length; i < max ; i++) {
       if ( editor.currentPost.id === storePosts[i].id ) {
         deleteIdIndex = i;
       }
     }
 
-    // Confirm detele
-    // Return to posts page
+    // Only procude with delete if confirmation
     if ( confirmation === true ) {
+      // Remove item from store
       storePosts.splice( deleteIdIndex, 1 );
       store.posts = storePosts;
       model.updateLocalStore( store );
+
+      // Update current post to empty, show blog posts
       editor.currentPost = {};
       view.currentPost = model.getPostBySlug( 'blog', 'pages' );
       view.update();
@@ -1042,23 +1111,18 @@ var editor = {
     event.preventDefault();
   },
 
-  showCurrentMenu: function(){
-    if ( editor.currentMenu === 'primary' ) {
-      showPrimaryMenu();
-    } else if ( postType === 'secondary' ) {
-      showSecondaryMenu();
-    } else if ( postType === 'edit' ) {
-      showEditPanel();
-    } else {
-      showPrimaryMenu();
-    }
-  },
 
+  /**
+   * Displays the primary menu.
+   *
+   */
   showPrimaryMenu: function(){
     var primaryNav = helpers.getEditorPrimaryNav(),
         primaryLinks = helpers.getEditorPrimaryNavLinks();
 
     primaryNav.classList.add( 'active' );
+
+    // Add event listeners to primary links
     for ( var i = 0, max = primaryLinks.length; i < max; i++ ) {
       primaryLinks[i].addEventListener(
         'click',
@@ -1069,20 +1133,26 @@ var editor = {
     editor.currentMenu = 'primary';
   },
 
+  /**
+   * Displays the secondary menu
+   *
+   */
   showSecondaryMenu: function(){
     var secondaryNav = helpers.getEditorSecondaryNav(),
         postType = editor.currentPostType,
-        menuItems = model.getContent( postType ),
+        menuItems = model.getPostsByType( postType ),
         secondaryUl =  helpers.getEditorSecondaryNavUl(),
         secondaryLinks = secondaryUl.getElementsByTagName( 'a' ),
         addNewPostLink = helpers.getEditorAddNewPost(),
         deletePostLink = helpers.getDeletePostLink();
 
+    // Display secondary menu
     secondaryNav.classList.add( 'active' );
     editor.currentMenu = 'secondary';
     editor.updateNavTitle();
     helpers.addMenuItems( menuItems, postType );
 
+    // Add listeners to secondary links
     for ( var i = 0, max = secondaryLinks.length; i < max; i++ ) {
       secondaryLinks[i].addEventListener(
         'click',
@@ -1090,35 +1160,38 @@ var editor = {
         false);
     }
 
+    // Add listener to new post link
     addNewPostLink.addEventListener(
       'click',
       editor.listenLoadNewPostForm,
       false
     );
-    deletePostLink.addEventListener(
-      'click',
-      editor.listenDeletePost,
-      false
-    );
   },
 
+  /**
+   * Displays the edit post panel
+   *
+   */
   showEditPanel: function() {
     var post = editor.currentPost,
         editNav = helpers.getEditorEditNav(),
         editForm = helpers.getEditorForm(),
         deleteBtn = helpers.getDeletePostLink();
 
+    // Display the edit panel and form
     editor.clearEditForm();
     editNav.classList.toggle('active');
     editor.currentMenu = 'edit';
     editor.updateNavTitle();
     editor.fillEditForm();
 
+    // Add event listener to update post
     editForm.addEventListener(
       'submit',
       editor.listenUpdatePost,
       false
     );
+    // Add event listener to delete post
     deleteBtn.addEventListener(
       'click',
       editor.listenDeletePost,
@@ -1126,18 +1199,27 @@ var editor = {
     );
   },
 
+  /**
+   * Dynamically fill the edit post form based on the
+   * current post.
+   *
+   */
   fillEditForm: function() {
     var post = editor.currentPost,
         editTitle = document.getElementById('editTitle'),
         postTitle = helpers.getPostTitle(),
         titleField = helpers.getEditorTitleField();
 
+    // Update the title and content fields
     editTitle.value = post.title;
     editContent.value = post.content;
 
+    // Initialize the wysiwyg editor
     wysiwyg = wysiwygEditor(document.getElementById('editContent'));
 
+    //  Add listeners to update the view on field changes
     if ( post.type !== 'setting' ) {
+      // Actions if not editing a setting
       titleField.addEventListener( 'input', function() {
         editor.currentPost.title = this.value;
         view.updateTitle( this.value );
@@ -1147,6 +1229,7 @@ var editor = {
         editor.currentPost.content = wysiwyg.read();
       });
     } else {
+      // Live update controls for settings
       if (  post.slug === 'site-name' ) {
         wysiwyg.onUpdate(function () {
           view.updateSiteName( wysiwyg.read() );
@@ -1162,16 +1245,30 @@ var editor = {
       }
     }
   },
+
+  /**
+   * Clears the edit form.
+   * Must call before loading data to form.
+   *
+   */
   clearEditForm: function() {
     var editTitle = document.getElementById( 'editTitle' ),
         wysiwyg = helpers.getEditorWysiwyg();
 
+    // Set the edit fields blank
     editTitle.value = '';
     editContent.value = '';
+    // Remove the wysiwyg editor
     if ( wysiwyg !== null ) {
       wysiwyg.remove();
     }
   },
+
+  /**
+   * Clears the current menu.
+   * Must call before loading a menu.
+   *
+   */
   clearMenus: function(){
     var navs = helpers.getEditorNavs(),
         navUl = helpers.getEditorSecondaryNavUl(),
@@ -1183,38 +1280,48 @@ var editor = {
       nav.classList.remove( 'active' );
     }
 
-    // Remove all children from #editor nav.secondary ul
+    // Remove event listeners from all previous nav links
+    for ( var i = 0, navMax = navlinks.length; i < navMax; i++ ) {
+      navlinks[i].removeEventListener(
+        'click',
+        editor.refreshMenu,
+        false
+      );
+    }
+
+    // Remove all list items from secondary nav ul tag
     while ( navUl.firstChild ) {
       navUl.removeChild( navUl.firstChild );
     }
 
-    // Remove event listeners
-    for ( var i = 0, navMax = navlinks.length; i < navMax; i++ ) {
-      editorLinks[i].removeEventListener(
-        'click',
-        refreshMenu,
-        false
-      );
-    }
   },
 
+
+  /**
+   * Main control for the editor toggle.
+   *
+   */
   toggle: function() {
     var editorEl = helpers.getEditorEl(),
         toggleEl = helpers.getEditorToggleEl(),
         mainNav = helpers.getMainNavEl();
 
+    // Clear menus and load edit panel
     editor.clearMenus();
     editor.currentPost = view.currentPost;
     editor.currentPostType = view.currentPost.type;
     editor.currentMenu = 'edit';
 
+    // Toggle editor and nav hidden classes
     editorEl.classList.toggle('hidden');
     toggleEl.classList.toggle('hidden');
+    // Toggle whether view nav is disabled
     mainNav.classList.toggle('inactive');
 
-    if( toggleEl.classList.contains( 'hidden' ) === false ) {
+    // Take specific actions if opening or closing editor
+    if ( toggleEl.classList.contains( 'hidden' ) === false ) {
+      // If opening editor
       var navTitleLink = helpers.getEditorNavTitleLink();
-
       editor.showEditPanel();
       navTitleLink.addEventListener(
         'click',
@@ -1223,6 +1330,7 @@ var editor = {
       );
       view.listenDisableMainNavLinks();
     } else {
+      // If closing editor
       if ( view.currentPost.type === 'post' ) {
         router.updateHash( 'blog/' + view.currentPost.slug );
       } else {
@@ -1233,22 +1341,30 @@ var editor = {
 
   },
 
+  /**
+   * Update the editor breadcrumb navigation
+   * (i.e. Admin / Posts, Admin / Pages, Admin / Settings, etc. )
+   *
+   */
   updateNavTitle: function() {
-
     var postType = editor.currentPostType,
         currentMenu = editor.currentMenu,
-        homeLink = helpers.getEditorHomeLinkEl(currentMenu);
+        homeLink = helpers.getEditorHomeLinkEl( currentMenu );
 
+    // Add event listener to Admin home link
     homeLink.addEventListener(
       'click',
       editor.listenAdminHomeLink,
       false
     );
 
+    // Add secondary link based on current nav and post type
     if( currentMenu === 'secondary' ) {
+      // If on secondary nav
       var navTitleEl = helpers.getEditorNavTitleEl( currentMenu );
       navTitleEl.innerHTML = postType + 's';
     } else {
+      // If editing post
       var navTitleLink = helpers.getEditorNavTitleLink();
       navTitleLink.textContent = postType + 's';
       navTitleLink.addEventListener(
@@ -1260,19 +1376,27 @@ var editor = {
 
   },
 
-  updateSaveBtnText: function( text ) {
-
+  /**
+   * Saves post in edit form.
+   * Mimics live updating text: "Saving, Saved!"
+   *
+   */
+  updateSaveBtnText: function() {
     var btn = helpers.getEditorEditUpdateBtn(),
+        finalText = 'Udpate',
+        savedText = 'Saved!',
+        // Displays save text
         saving = function() {
           setTimeout( function () {
             Spinner.stop();
-            btn.innerText = 'Saved!';
+            btn.innerText = savedText;
             saved();
           }, 900 );
         },
+        // Displays final text
         saved = function(){
           setTimeout( function () {
-            btn.innerText = 'Update';
+            btn.innerText = finalText;
           }, 1000 );
         },
         spinnerOpts = {
@@ -1282,10 +1406,11 @@ var editor = {
           radius: 3,
           width: 1,
           left: '10%'
-        };
+        },
         Spinner = new Spinner( spinnerOpts )
                         .spin( btn );
 
+    // Update btn text and start saving
     btn.innerText = 'Saving...';
     saving();
   }
@@ -1294,6 +1419,9 @@ var editor = {
 module.exports = editor;
 
 },{"./lib/helpers.js":12,"./model.js":13,"./router.js":14,"./view.js":15,"spin.js":1,"wysiwyg":2}],11:[function(require,module,exports){
+/**
+ * Main JSON object of posts, pages and settings
+ */
 var jsonData = [
   {
     posts: [
@@ -1628,11 +1756,21 @@ var helpers = {
 module.exports = helpers;
 
 },{}],13:[function(require,module,exports){
+/**
+ * This file contains methods having to do with
+ * getting and setting of data.  Leverages local
+ * store.
+ *
+ * @exports model
+ *
+ */
+
 var data = require( './data.js' ),
     jsonData = require( './json.js' ),
     helpers = require( './lib/helpers.js' );
 
 var model = {
+  // Init function to load data into local store
   init: function() {
     var localStore = model.getLocalStore();
     if( typeof localStore === 'undefined' || localStore === null ||
@@ -1645,83 +1783,134 @@ var model = {
     }
   },
 
-  getContent: function( postType ) {
-    var data = model.getLocalStore();
+  /**
+   * Gets posts based on post type.
+   *
+   * @param postType {string} The type of content needed (post, page, etc)
+   * @return posts {array} Posts matching post type (Posts, Pages, etc)
+   */
+  getPostsByType: function( postType ) {
+    // Get content from local store
+    var data = model.getLocalStore(),
+        posts;
 
+    // Get posts from local store
     if ( postType === 'post' ) {
-      content = data.posts;
+      posts = data.posts;
     } else if ( postType === 'page' ) {
-      content = data.pages;
+      posts = data.pages;
     } else if ( postType === 'setting' ) {
-      content = data.settings;
+      posts = data.settings;
     } else {
-      content =  [{type:'404',title:'404 Error'}];
+      posts =  [{type:'404',title:'404 Error'}];
     }
-
-    return content;
+    return posts;
   },
 
+  /**
+   * Get a single post based on url slugs
+   *
+   * @param slugs {array} The url slugs for the post
+   * @return post {object} Single post based on url slugs
+   *
+   */
   getPostBySlugs: function( slugs ) {
     var post;
 
-    if ( slugs.length > 1 && ( slugs[0] === 'posts' || slugs[0] === 'blog' ) ) {
+    if ( slugs.length > 1 &&
+      ( slugs[0] === 'posts' || slugs[0] === 'blog' ) ) {
+      // If blog post
       post = model.getPostBySlug( slugs[1], 'posts' );
     } else if ( slugs.length > 1 && slugs[0] === 'settings' ) {
+      // If setting
       post = model.getPostBySlug( slugs[1], 'settings' );
     } else {
+      // If page
       if( slugs[0] === '') slugs[0] = 'home';
       post = model.getPostBySlug( slugs[0], 'pages');
     }
+
     return post;
   },
 
+  /**
+   * Get single post slug and post type
+   *
+   * @param slug {string} The url slug for the post
+   * @param postType {string} The post type for the post
+   * @return post {object} Single post based on url slugs
+   *
+   */
   getPostBySlug: function( slug, postType ){
     // Get contet from local storage
     var data = model.getLocalStore(),
-        content,
+        posts,
         item;
 
     if ( postType === 'posts' ) {
-      content = data.posts;
+      posts = data.posts;
     } else if ( postType === 'pages' ) {
-      content = data.pages;
+      posts = data.pages;
     } else if ( postType === 'settings' ) {
-      content = data.settings;
+      posts = data.settings;
     } else {
-      content =  [{type:'404',title:'404 Error'}];
+      posts =  [{type:'404',title:'404 Error'}];
     }
 
-    item = content.filter( function( obj ) {
+    // Get the post from store based on the slug
+    item = posts.filter( function( obj ) {
       return obj.slug == slug;
     });
+
     return item[0];
   },
 
-  getCurrentContentObj: function() {
-    var newPageSlugs = helpers.getAfterHash(),
-        post;
+  // getCurrentContentObj: function() {
+  //   var newPageSlugs = helpers.getAfterHash(),
+  //       post;
+  //
+  //   if ( newPageSlugs.length > 1 ) {
+  //     post = model.getPostBySlug( newPageSlugs[1], 'posts' );
+  //   } else {
+  //     if ( newPageSlugs[0] === '' ) newPageSlugs[0] = 'home';
+  //     post = model.getPostBySlug( newPageSlugs[0], 'pages' );
+  //   }
+  //   return post;
+  // },
 
-    if ( newPageSlugs.length > 1 ) {
-      post = model.getPostBySlug( newPageSlugs[1], 'posts' );
-    } else {
-      if ( newPageSlugs[0] === '' ) newPageSlugs[0] = 'home';
-      post = model.getPostBySlug( newPageSlugs[0], 'pages' );
-    }
-    return post;
-  },
 
+  /**
+   * Gets content from local store
+   *
+   * @return store {object} Local storage object with all content
+   */
   getLocalStore: function() {
-    var store = JSON.parse( localStorage.getItem( 'vanillaPress' ) );
-    if( store === null ) {
-      store = [''];
+    var localStore = JSON.parse( localStorage.getItem( 'vanillaPress' ) ),
+        store = {};
+
+    if( localStore === null ) {
+      store = localStore;
+    } else {
+      store = localStore[0];
     }
-    return store[0];
+    return store;
   },
 
-  updateLocalStore: function(store) {
+  /**
+   * Saves temporary store to local storage.
+   *
+   * @param store {object} Temporary store to update
+   */
+  updateLocalStore: function( store ) {
     var newStore = [ store ];
+    // Makes sure to stringify store object before saving
     localStorage.setItem( 'vanillaPress', JSON.stringify( newStore ) );
   },
+
+  /**
+   * Deletes data from local storage.
+   *
+   */
   removeLocalStore: function() {
     localStorage.removeItem( 'vanillaPress' );
   }
@@ -1730,10 +1919,21 @@ var model = {
 module.exports = model;
 
 },{"./data.js":9,"./json.js":11,"./lib/helpers.js":12}],14:[function(require,module,exports){
+/**
+ * The router object takes actions based on the
+ * hash in the url (i.e. #content-here)
+ *
+ * @exports router
+ */
+
 var helpers = require( './lib/helpers.js' ),
     model = require( './model.js' ),
     view = require( './view.js' );
 
+/**
+ * The main router object.
+ *  
+ */
 var router = {
   init: function() {
     router.setCurrentPost();
@@ -1741,6 +1941,7 @@ var router = {
     router.listenPageChange();
   },
 
+  // Add listener to url changes
   listenPageChange: function() {
     window.addEventListener(
       'hashchange',
@@ -1749,6 +1950,7 @@ var router = {
     );
   },
 
+  // Updates the the current post based on url
   setCurrentPost: function() {
     var slugs = helpers.getAfterHash(),
         post = model.getPostBySlugs( slugs );
@@ -1757,6 +1959,7 @@ var router = {
     view.update();
   },
 
+  // Helper function to update hash based on slug
   updateHash: function(slug) {
     window.location.hash = slug;
   }
@@ -1766,9 +1969,20 @@ var router = {
 module.exports = router;
 
 },{"./lib/helpers.js":12,"./model.js":13,"./view.js":15}],15:[function(require,module,exports){
+
+/**
+ * This file controls the main front end view
+ * of the app.
+ *
+ * @exports view
+ */
 var helpers = require( './lib/helpers.js' ),
     model = require( './model.js' );
 
+
+/**
+ * Main view object
+ */
 var view = {
   init: function() {
     view.listenMainNavLinksUpdatePage();
@@ -1777,23 +1991,41 @@ var view = {
 
   currentPost: '',
 
+
+  /**
+   * Listener activate and deactivate main nav.
+   *
+   */
   listenMainNavLinksUpdatePage: function() {
     var mainNav = document.getElementById( 'mainNav' ),
         links = mainNav.getElementsByTagName( 'a' );
     for ( var i = 0, max = links.length; i < max; i++ ) {
+      // Add listener to activate main nav
       links[i].addEventListener('click',view.mainNavControl,false);
+      // Remove listener that disables main nav
       links[i].removeEventListener('click',view.disableNav );
     }
   },
 
+  /**
+   * Listener to disable the main nav while the
+   * editor is open.
+   *
+   */
   listenDisableMainNavLinks: function() {
     var links = helpers.getMainNavLinks();
     for ( var i = 0, len = links.length; i < len; i++ ) {
+      // Add listener to deactivate main nav
       links[i].removeEventListener('click', view.mainNavControl);
+      // Remove listener to disable main nav
       links[i].addEventListener('click', view.disableNav, false);
     }
   },
 
+  /**
+   * Main nav listener to load proper page
+   *
+   */
   mainNavControl: function() {
     var newPageSlugs = helpers.getAfterHash( this.href ),
         post = model.getPostBySlugs( newPageSlugs );
@@ -1801,34 +2033,60 @@ var view = {
     view.update();
   },
 
+  /**
+   * Updates the view based on current post
+   *
+   */
   update: function() {
-    view.removeBlogPosts();
     view.updateTitle( view.currentPost.title );
     view.updateContent( view.currentPost.content );
 
+
     if ( view.currentPost.slug === 'blog' ) {
+      // Append blog posts to blog page
       view.loadBlogPosts();
+    } else {
+      // Removes blog posts if not blog page
+      view.removeBlogPosts();
     }
   },
 
-  push: function( post ) {
-    router.updateHash( post );
-    view.updateTitle( post.title );
-    view.updateContent( post.content );
-  },
+  // push: function( post ) {
+  //   router.updateHash( post );
+  //   view.updateTitle( post.title );
+  //   view.updateContent( post.content );
+  // },
 
+  /**
+   * Loads the main header based on settings data in local store.
+   *
+   */
   loadMainHeader: function() {
+    // Get site name and description from store
     var siteName = model.getPostBySlug( 'site-name', 'settings' ),
-        siteDescription = model.getPostBySlug( 'site-description', 'settings' );
+        siteDescription = model.getPostBySlug(
+          'site-description',
+          'settings'
+        );
     view.updateSiteName( siteName.content );
     view.updateSiteDescription( siteDescription.content );
   },
 
+  /**
+   * Helper function to update to post content in the view
+   *
+   * @param content {string} The post content to display
+   */
   updateSiteName: function( content ) {
     var siteName = helpers.getSiteName();
     siteName.innerHTML = content;
   },
 
+  /**
+   * Helper function to update to post content in the view
+   *
+   * @param content {string} The post content to display
+   */
   updateSiteDescription: function( content ) {
     var siteDescription = helpers.getSiteDescription();
     siteDescription.innerHTML = content;
@@ -1844,7 +2102,7 @@ var view = {
     contentEl.innerHTML = content;
   },
   loadBlogPosts: function() {
-    var posts = model.getContent( 'post' ),
+    var posts = model.getPostsByType( 'post' ),
         postContent = document.createElement( 'section' ),
         primaryContentEL;
 

@@ -1,3 +1,6 @@
+/**
+ * Main JSON object of posts, pages and settings
+ */
 var jsonData = [
   {
     posts: [
