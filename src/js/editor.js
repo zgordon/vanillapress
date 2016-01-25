@@ -132,14 +132,17 @@ var editor = {
    *
    */
   listenUpdatePost: function() {
-    var newPost = false;
+    var newPost = false,
+        postType = editor.currentPostType,
+        store = model.getLocalStore(),
+        localStore = model.getLocalStore(),
+        storePosts;
 
     event.preventDefault();
 
     // If new post add to local store
     if( editor.currentPost.slug === '_new' ) {
-      var localStore = model.getLocalStore(),
-          postIds = [],
+      var postIds = [],
           highestId;
 
       newPost = true;
@@ -161,11 +164,7 @@ var editor = {
       editor.currentPost.modified = Date();
     }
 
-    // Get the local store of post type.
-    var postType = editor.currentPostType,
-        store = model.getLocalStore(),
-        storePosts;
-
+    // Get temp store of posts based on type
     if ( postType === 'post' ) {
       storePosts = store.posts;
     } else if ( postType === 'page' ) {
@@ -198,8 +197,14 @@ var editor = {
     model.updateLocalStore( store );
 
     // Update url and current post
-    router.updateHash( 'blog/' + editor.currentPost.slug );
-    view.currentPost = editor.currentPost;
+    if ( postType === 'post' ) {
+      router.updateHash( 'blog/' + editor.currentPost.slug );
+    } else if ( postType === 'page' ) {
+      router.updateHash( editor.currentPost.slug );
+    } else {
+
+    }
+
     view.update();
     editor.updateSaveBtnText();
   },
@@ -515,10 +520,20 @@ var editor = {
     var btn = helpers.getEditorEditUpdateBtn(),
         finalText = 'Udpate',
         savedText = 'Saved!',
+        spinnerOpts = {
+          color:'#fff',
+          lines: 8,
+          length: 4,
+          radius: 3,
+          width: 1,
+          left: '10%'
+        },
+        spinner = new Spinner( spinnerOpts )
+                        .spin( btn ),
         // Displays save text
         saving = function() {
           setTimeout( function () {
-            Spinner.stop();
+            spinner.stop();
             btn.innerText = savedText;
             saved();
           }, 900 );
@@ -528,17 +543,7 @@ var editor = {
           setTimeout( function () {
             btn.innerText = finalText;
           }, 1000 );
-        },
-        spinnerOpts = {
-          color:'#fff',
-          lines: 8,
-          length: 4,
-          radius: 3,
-          width: 1,
-          left: '10%'
-        },
-        Spinner = new Spinner( spinnerOpts )
-                        .spin( btn );
+        };
 
     // Update btn text and start saving
     btn.innerText = 'Saving...';
