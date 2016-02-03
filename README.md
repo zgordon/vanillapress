@@ -17,7 +17,7 @@ __This project is part of the [JavaScript for WordPress Master Course](http://ja
 *Changed*
 
 - Refactored with Babel and ES6
-- Light functional refactoring with Underscore
+- Refactored with more functional programming using Underscore
 
 *Added*
 
