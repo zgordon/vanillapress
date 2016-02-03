@@ -1,3 +1,7 @@
+(function() {
+
+'use strict';
+
 /**
  * Contains the properties and methods for the editor.
  *
@@ -537,7 +541,8 @@ var editor = {
    *
    */
   updateSaveBtnText: function() {
-    var btn = h.getEditorEditUpdateBtn(),
+
+    let btn = h.getEditorEditUpdateBtn(),
         finalText = 'Udpate',
         savedText = 'Saved!',
         spinnerOpts = {
@@ -552,7 +557,7 @@ var editor = {
                         .spin( btn ),
         // Displays save text
         saving = function() {
-          setTimeout( function () {
+          setTimeout( () => {
             spinner.stop();
             btn.innerText = savedText;
             saved();
@@ -560,7 +565,7 @@ var editor = {
         },
         // Displays final text
         saved = function(){
-          setTimeout( function () {
+          setTimeout( () => {
             btn.innerText = finalText;
           }, 1000 );
         };
@@ -572,3 +577,5 @@ var editor = {
 };
 
 module.exports = editor;
+
+}());

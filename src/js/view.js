@@ -186,7 +186,7 @@ var view = {
    * Prevents main nav from working. Used when editor is open.
    *
    */
-  disableNav: function(){
+  disableNav () {
     event.preventDefault();
   }
 };
