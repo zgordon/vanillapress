@@ -11,14 +11,20 @@ __This project is part of the [JavaScript for WordPress Master Course](http://ja
 *Changelog*
 
 [V2]
+
 **Changed**
+
 - Refactored with Babel and ES6
 - Light functional refactoring with Underscore
+
 **Added**
+
 - Underscore library
 
 [V1]
+
 **Added**
+
 - Front end view of pages
 - Front end blog section with single views
 - Toggle editor to edit current post/page
