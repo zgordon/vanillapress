@@ -2318,7 +2318,7 @@ var jsonData = [{
     date: "2016-01-09T22:05:09",
     modified: "2016-01-09T22:05:09",
     slug: "hello-world",
-    type: "post",
+    type: "posts",
     title: "Hello world!",
     content: "<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p> "
   }, {
@@ -2326,7 +2326,7 @@ var jsonData = [{
     date: "2016-01-10T22:05:09",
     modified: "2016-01-10T22:05:09",
     slug: "learning-javascript",
-    type: "post",
+    type: "posts",
     title: "Learning JavaScript!",
     content: "<p>I'm learning JavaScript and super excited!!!</p> "
   }, {
@@ -2334,7 +2334,7 @@ var jsonData = [{
     date: "2016-01-11T22:05:09",
     modified: "2016-01-11T22:05:09",
     slug: "rest-api",
-    type: "post",
+    type: "posts",
     title: "The REST API!",
     content: "<p>I've started working with the REST API in WordPress, what fun!</p> "
   }, {
@@ -2342,7 +2342,7 @@ var jsonData = [{
     date: "2016-01-12T22:05:09",
     modified: "2016-01-12T22:05:09",
     slug: "json-data",
-    type: "post",
+    type: "posts",
     title: "JSON Data!",
     content: "<p>So, with the REST API it is posible to pull in WordPress data as pure JSON.  Now I'm figuring out what to do with the data</p> "
   }, {
@@ -2350,7 +2350,7 @@ var jsonData = [{
     date: "2016-01-13T22:05:09",
     modified: "2016-01-13T22:05:09",
     slug: "javascript-project",
-    type: "post",
+    type: "posts",
     title: "JavaScript Project",
     content: "<p>I've started working with the REST API in WordPress, what fun!</p> "
   }],
@@ -2359,7 +2359,7 @@ var jsonData = [{
     date: "2016-01-07T22:05:09",
     modified: "2016-01-07T22:05:09",
     slug: "home",
-    type: "page",
+    type: "pages",
     title: "Home",
     content: "<p>Welcome!</p><p>Reprehenderit sit sunt nisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>"
   }, {
@@ -2367,7 +2367,7 @@ var jsonData = [{
     date: "2016-01-09T22:05:09",
     modified: "2016-01-09T22:05:09",
     slug: "about",
-    type: "page",
+    type: "pages",
     title: "About Me",
     content: "<p>Hi!  I'm me :)</p><p>Sisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>"
   }, {
@@ -2375,7 +2375,7 @@ var jsonData = [{
     date: "2016-01-09T22:05:09",
     modified: "2016-01-09T22:05:09",
     slug: "blog",
-    type: "page",
+    type: "pages",
     title: "Blog",
     content: "<p>Welcome to my blog page, please enjoy!</p>"
   }, {
@@ -2383,7 +2383,7 @@ var jsonData = [{
     date: "2016-01-19T22:06:09",
     modified: "2016-01-19T22:06:09",
     slug: "contact",
-    type: "page",
+    type: "pages",
     title: "Contact",
     content: "<p>Please get in touch!</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>"
   }],
@@ -2392,7 +2392,7 @@ var jsonData = [{
     date: "2016-01-09T22:05:09",
     modified: "2016-01-09T22:05:09",
     slug: "site-name",
-    type: "setting",
+    type: "settings",
     title: "Site Name",
     content: "VanillaPress"
   }, {
@@ -2400,7 +2400,7 @@ var jsonData = [{
     date: "2016-01-09T22:05:09",
     modified: "2016-01-09T22:05:09",
     slug: "site-description",
-    type: "setting",
+    type: "settings",
     title: "Site Description",
     content: "A JS Front & Back End"
   }]
@@ -2460,8 +2460,10 @@ module.exports = jsonData;
      *
      */
     listenPrimaryLinks() {
-      const urlSegments = h.getAfterHash(this.href);
-      const currentPost = urlSegments[0].substring(0, urlSegments[0].length - 1);
+      const urlSegments = h.getAfterHash(this.href),
+
+      //const currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
+      currentPost = urlSegments[0];
       editor.currentPostType = currentPost;
       editor.clearMenus();
       editor.showSecondaryMenu();
@@ -2492,7 +2494,7 @@ module.exports = jsonData;
       editor.currentPost = post;
       editor.currentPostType = post.type;
 
-      if (editor.currentPostType !== 'setting') {
+      if (editor.currentPostType !== 'settings') {
         view.currentPost = post;
         view.update();
       } else {
@@ -2515,7 +2517,7 @@ module.exports = jsonData;
       editor.clearMenus();
       editor.currentPost = post;
 
-      if (editor.currentPostType !== 'setting') {
+      if (editor.currentPostType !== 'settings') {
         // Clear the view
         view.clearContent();
       }
@@ -2556,7 +2558,7 @@ module.exports = jsonData;
             highestId;
 
         newPost = true;
-        editor.currentPost.type = 'post';
+        editor.currentPost.type = 'posts';
 
         // Slugify title
         editor.currentPost.slug = h.slugifyTitle(editor.currentPost.title);
@@ -2572,7 +2574,7 @@ module.exports = jsonData;
       }
 
       // Get temp store of posts based on type
-      storePosts = store[editor.currentPostType + 's']; //
+      storePosts = store[editor.currentPostType]; //
 
       if (newPost === true) {
         // If new post add post to store
@@ -2591,14 +2593,14 @@ module.exports = jsonData;
         });
       }
 
-      store[editor.currentPostType + 's'] = storePosts;
+      store[editor.currentPostType] = storePosts;
 
       model.updateLocalStore(store);
 
       // Update url and current post
-      if (editor.currentPostType === 'post') {
+      if (editor.currentPostType === 'posts') {
         router.updateHash('blog/' + editor.currentPost.slug);
-      } else if (editor.currentPostType === 'page') {
+      } else if (editor.currentPostType === 'pages') {
         router.updateHash(editor.currentPost.slug);
       } else {}
 
@@ -2683,6 +2685,8 @@ module.exports = jsonData;
       editor.updateNavTitle();
       h.addMenuItems(menuItems, postType);
 
+      console.log(postType);
+      console.log(secondaryLinks);
       // Add listeners to secondary links
       _.each(secondaryLinks, link => {
         link.addEventListener('click', editor.listenLoadEditForm, false);
@@ -2695,7 +2699,7 @@ module.exports = jsonData;
       // }
 
       // Check if need to show new post button
-      if (editor.currentPostType === 'post') {
+      if (editor.currentPostType === 'posts') {
         addNewPostLink.classList.remove('hidden');
         // Add listener to new post link
         addNewPostLink.addEventListener('click', editor.listenLoadNewPostForm, false);
@@ -2724,7 +2728,7 @@ module.exports = jsonData;
       // Add event listener to update post
       editForm.addEventListener('submit', editor.listenUpdatePost, false);
 
-      if (editor.currentPostType === 'post') {
+      if (editor.currentPostType === 'posts') {
         deleteBtn.classList.remove('hidden');
         // Add event listener to delete post
         deleteBtn.addEventListener('click', editor.listenDeletePost, false);
@@ -2752,7 +2756,7 @@ module.exports = jsonData;
       wysiwyg = wysiwygEditor(document.getElementById('editContent'));
 
       //  Add listeners to update the view on field changes
-      if (post.type !== 'setting') {
+      if (post.type !== 'settings') {
         // Actions if not editing a setting
         titleField.addEventListener('input', function () {
           editor.currentPost.title = this.value;
@@ -2812,9 +2816,11 @@ module.exports = jsonData;
       });
 
       // Remove event listeners from all previous nav links
-      _.each(navLinks, link => {
-        link.removeEventListener('click', editor.refreshMenu, false);
-      });
+      if (!_.isEmpty(navUl)) {
+        _.each(navLinks, link => {
+          link.removeEventListener('click', editor.refreshMenu, false);
+        });
+      }
 
       // Remove all list items from secondary nav ul tag
       while (navUl.firstChild) {
@@ -2852,7 +2858,7 @@ module.exports = jsonData;
         view.listenDisableMainNavLinks();
       } else {
         // If closing editor
-        if (view.currentPost.type === 'post') {
+        if (view.currentPost.type === 'posts') {
           router.updateHash('blog/' + view.currentPost.slug);
         } else {
           if (editor.currentPost.slug === '_new') {
@@ -2876,6 +2882,7 @@ module.exports = jsonData;
       let postType = editor.currentPostType,
           currentMenu = editor.currentMenu,
           homeLink = h.getEditorHomeLinkEl(currentMenu),
+          navTitleLink,
           navTitleEl;
 
       // Add event listener to Admin home link
@@ -2885,11 +2892,11 @@ module.exports = jsonData;
       if (currentMenu === 'secondary') {
         // If on secondary nav
         navTitleEl = h.getEditorNavTitleEl(currentMenu);
-        navTitleEl.innerHTML = postType + 's';
+        navTitleEl.innerHTML = postType;
       } else {
         // If editing post
         navTitleLink = h.getEditorNavTitleLink();
-        navTitleLink.textContent = postType + 's';
+        navTitleLink.textContent = postType;
         navTitleLink.addEventListener('click', editor.listenSecondaryNavTitle, false);
       }
     },
@@ -2965,9 +2972,9 @@ module.exports = jsonData;
       return urlSegments;
     },
 
-    addMenuItems(menuItems, contentType) {
+    addMenuItems(menuItems, postType) {
       _.map(menuItems, item => {
-        let link = h.createLink(item.title, contentType, item.slug);
+        let link = h.createLink(item.title, postType, item.slug);
         h.addMenuItem(link);
       });
     },
@@ -2986,9 +2993,9 @@ module.exports = jsonData;
 
       link.appendChild(linkText);
 
-      if (postType === 'post') {
+      if (postType === 'posts') {
         link.href = '#blog/' + slug;
-      } else if (postType === 'setting') {
+      } else if (postType === 'settings') {
         link.href = '#settings/' + slug;
       } else {
         link.href = '#' + slug;
@@ -3046,7 +3053,8 @@ module.exports = jsonData;
     },
 
     getEditorPrimaryNavLinks() {
-      return h.getEditorPrimaryNav().getElementsByTagName('a');
+      let primaryNav = h.getEditorPrimaryNav();
+      return primaryNav.getElementsByTagName('a');
     },
 
     getEditorSecondaryNav() {
@@ -3054,7 +3062,8 @@ module.exports = jsonData;
     },
 
     getEditorSecondaryNavUl() {
-      return h.getEditorSecondaryNav().querySelector('ul');
+      let secondaryNav = h.getEditorSecondaryNav();
+      return secondaryNav.querySelector('ul');
     },
 
     getEditorAddNewPost() {
@@ -3084,15 +3093,18 @@ module.exports = jsonData;
     },
 
     getEditorHomeLinkEl(currentMenu) {
-      return h.getCurrentNavEl(currentMenu).querySelector('h3 .go-home');
+      let currentNav = h.getCurrentNavEl(currentMenu);
+      return currentNav.querySelector('h3 .go-home');
     },
 
     getEditorNavTitleEl(currentMenu) {
-      return h.getCurrentNavEl(currentMenu).querySelector('h3 span');
+      let currentNav = h.getCurrentNavEl(currentMenu);
+      return currentNav.querySelector('h3 span');
     },
 
     getEditorNavTitleLink() {
-      return h.getEditorEditNav().querySelector('h3 span a');
+      let editNav = h.getEditorEditNav();
+      return editNav.querySelector('h3 span a');
     },
 
     getEditorTitleField() {
@@ -3104,11 +3116,13 @@ module.exports = jsonData;
     },
 
     getEditorWysiwyg() {
-      return h.getEditorEditNav().querySelector('form iframe');
+      let editNav = h.getEditorEditNav();
+      return editNav.querySelector('form iframe');
     },
 
     getEditorForm() {
-      return h.getEditorEditNav().querySelector('form');
+      let editNav = h.getEditorEditNav();
+      return editNav.querySelector('form');
     },
 
     getEditorEditUpdateBtn() {
@@ -3116,7 +3130,8 @@ module.exports = jsonData;
     },
 
     getSiteName() {
-      return document.getElementById('siteName').querySelector('a');
+      let siteName = document.getElementById('siteName');
+      return siteName.querySelector('a');
     },
 
     getSiteDescription() {
@@ -3128,7 +3143,8 @@ module.exports = jsonData;
     },
 
     getMainNavLinks() {
-      return document.getElementById('mainNav').getElementsByTagName('a');
+      let mainNav = document.getElementById('mainNav');
+      return mainNav.getElementsByTagName('a');
     },
 
     getPostTitle() {
@@ -3187,7 +3203,7 @@ module.exports = jsonData;
       // Get content from local store
       const data = model.getLocalStore();
       // Return just data.postType ie data.posts
-      return data[postType + 's'];
+      return data[postType];
     },
 
     /**
@@ -3557,7 +3573,7 @@ module.exports = jsonData;
      *
      */
     loadBlogPosts() {
-      var posts = model.getPostsByType('post'),
+      var posts = model.getPostsByType('posts'),
           postsSection = document.createElement('section'),
           primaryContentEL = h.getPrimaryContentEl();
 

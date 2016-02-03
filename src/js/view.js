@@ -157,7 +157,7 @@ var view = {
    *
    */
   loadBlogPosts () {
-    var posts = model.getPostsByType( 'post' ),
+    var posts = model.getPostsByType( 'posts' ),
         postsSection = document.createElement( 'section' ),
         primaryContentEL = h.getPrimaryContentEl();
 

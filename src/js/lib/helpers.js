@@ -23,9 +23,9 @@ const _ = require( 'underscore' ),
     return urlSegments;
   },
 
-  addMenuItems ( menuItems, contentType ) {
+  addMenuItems ( menuItems, postType ) {
      _.map( menuItems, ( item ) => {
-       let link = h.createLink( item.title, contentType, item.slug );
+       let link = h.createLink( item.title, postType, item.slug );
        h.addMenuItem( link );
      });
   },
@@ -45,9 +45,9 @@ const _ = require( 'underscore' ),
 
     link.appendChild( linkText );
 
-    if ( postType === 'post' ) {
+    if ( postType === 'posts' ) {
       link.href = '#blog/' + slug;
-    } else if ( postType === 'setting' ) {
+    } else if ( postType === 'settings' ) {
       link.href = '#settings/' + slug;
     } else {
       link.href = '#' + slug;
@@ -105,8 +105,8 @@ const _ = require( 'underscore' ),
   },
 
   getEditorPrimaryNavLinks () {
-    return h.getEditorPrimaryNav()
-            .getElementsByTagName( 'a' );
+    let primaryNav = h.getEditorPrimaryNav();
+    return primaryNav.getElementsByTagName( 'a' );
   },
 
   getEditorSecondaryNav () {
@@ -114,8 +114,8 @@ const _ = require( 'underscore' ),
   },
 
   getEditorSecondaryNavUl () {
-    return h.getEditorSecondaryNav()
-            .querySelector( 'ul' );
+    let secondaryNav = h.getEditorSecondaryNav();
+    return secondaryNav.querySelector( 'ul' );
   },
 
   getEditorAddNewPost () {
@@ -145,18 +145,18 @@ const _ = require( 'underscore' ),
   },
 
   getEditorHomeLinkEl ( currentMenu ) {
-    return h.getCurrentNavEl( currentMenu )
-            .querySelector( 'h3 .go-home' );
+    let currentNav = h.getCurrentNavEl( currentMenu );
+    return currentNav.querySelector( 'h3 .go-home' );
   },
 
   getEditorNavTitleEl ( currentMenu ) {
-    return h.getCurrentNavEl( currentMenu )
-            .querySelector( 'h3 span' );
+    let currentNav = h.getCurrentNavEl( currentMenu );
+    return currentNav.querySelector( 'h3 span' );
   },
 
   getEditorNavTitleLink () {
-    return h.getEditorEditNav()
-            .querySelector( 'h3 span a' );
+    let editNav = h.getEditorEditNav();
+    return editNav.querySelector( 'h3 span a' );
   },
 
   getEditorTitleField () {
@@ -171,13 +171,13 @@ const _ = require( 'underscore' ),
   },
 
   getEditorWysiwyg () {
-    return h.getEditorEditNav()
-            .querySelector( 'form iframe' );
+    let editNav = h.getEditorEditNav();
+    return editNav.querySelector( 'form iframe' );
   },
 
   getEditorForm () {
-    return h.getEditorEditNav()
-            .querySelector( 'form' );
+    let editNav = h.getEditorEditNav();
+    return editNav.querySelector( 'form' );
   },
 
   getEditorEditUpdateBtn () {
@@ -185,8 +185,8 @@ const _ = require( 'underscore' ),
   },
 
   getSiteName () {
-    return document.getElementById( 'siteName' )
-                    .querySelector( 'a' );
+    let siteName = document.getElementById( 'siteName' );
+    return siteName.querySelector( 'a' );
   },
 
   getSiteDescription () {
@@ -198,8 +198,8 @@ const _ = require( 'underscore' ),
   },
 
   getMainNavLinks () {
-    return document.getElementById( 'mainNav' )
-                    .getElementsByTagName( 'a' );
+    let mainNav = document.getElementById( 'mainNav' );
+    return mainNav.getElementsByTagName( 'a' );
   },
 
   getPostTitle () {

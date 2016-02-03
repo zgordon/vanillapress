@@ -42,9 +42,9 @@ var model = {
    */
   getPostsByType ( postType ) {
     // Get content from local store
-    const data = model.getLocalStore();  
+    const data = model.getLocalStore();
     // Return just data.postType ie data.posts
-    return data[ postType + 's'];
+    return data[ postType ];
   },
 
   /**

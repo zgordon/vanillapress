@@ -51,8 +51,9 @@ var editor = {
    *
    */
   listenPrimaryLinks () {
-    const urlSegments = h.getAfterHash( this.href );
-    const currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
+    const urlSegments = h.getAfterHash( this.href ),
+    //const currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
+          currentPost = urlSegments[0];
     editor.currentPostType = currentPost;
     editor.clearMenus();
     editor.showSecondaryMenu();
@@ -85,7 +86,7 @@ var editor = {
     editor.currentPost = post;
     editor.currentPostType = post.type;
 
-    if ( editor.currentPostType !== 'setting' ) {
+    if ( editor.currentPostType !== 'settings' ) {
       view.currentPost = post;
       view.update();
     } else {
@@ -109,7 +110,7 @@ var editor = {
     editor.clearMenus();
     editor.currentPost = post;
 
-    if ( editor.currentPostType !== 'setting' ) {
+    if ( editor.currentPostType !== 'settings' ) {
       // Clear the view
       view.clearContent();
     }
@@ -152,7 +153,7 @@ var editor = {
           highestId;
 
       newPost = true;
-      editor.currentPost.type = 'post';
+      editor.currentPost.type = 'posts';
 
       // Slugify title
       editor.currentPost.slug = h.slugifyTitle( editor.currentPost.title );
@@ -168,7 +169,7 @@ var editor = {
     }
 
     // Get temp store of posts based on type
-    storePosts = store[ editor.currentPostType + 's'];//
+    storePosts = store[ editor.currentPostType ];//
 
     if ( newPost === true ) {
       // If new post add post to store
@@ -187,14 +188,14 @@ var editor = {
        });
     }
 
-    store[ editor.currentPostType + 's' ] = storePosts;
+    store[ editor.currentPostType ] = storePosts;
 
     model.updateLocalStore( store );
 
     // Update url and current post
-    if ( editor.currentPostType === 'post' ) {
+    if ( editor.currentPostType === 'posts' ) {
       router.updateHash( 'blog/' + editor.currentPost.slug );
-    } else if ( editor.currentPostType === 'page' ) {
+    } else if ( editor.currentPostType === 'pages' ) {
       router.updateHash( editor.currentPost.slug );
     } else {
 
@@ -287,6 +288,8 @@ var editor = {
     editor.updateNavTitle();
     h.addMenuItems( menuItems, postType );
 
+    console.log( postType );
+    console.log( secondaryLinks );
     // Add listeners to secondary links
     _.each( secondaryLinks, (link) => {
       link.addEventListener(
@@ -302,7 +305,7 @@ var editor = {
     // }
 
     // Check if need to show new post button
-    if ( editor.currentPostType === 'post' ) {
+    if ( editor.currentPostType === 'posts' ) {
       addNewPostLink.classList.remove('hidden');
       // Add listener to new post link
       addNewPostLink.addEventListener(
@@ -340,7 +343,7 @@ var editor = {
       false
     );
 
-    if ( editor.currentPostType === 'post' ) {
+    if ( editor.currentPostType === 'posts' ) {
       deleteBtn.classList.remove( 'hidden' );
       // Add event listener to delete post
       deleteBtn.addEventListener(
@@ -372,7 +375,7 @@ var editor = {
     wysiwyg = wysiwygEditor(document.getElementById('editContent'));
 
     //  Add listeners to update the view on field changes
-    if ( post.type !== 'setting' ) {
+    if ( post.type !== 'settings' ) {
       // Actions if not editing a setting
       titleField.addEventListener( 'input', function() {
         editor.currentPost.title = this.value;
@@ -434,13 +437,15 @@ var editor = {
     });
 
     // Remove event listeners from all previous nav links
-    _.each( navLinks, (link) => {
-      link.removeEventListener(
-        'click',
-        editor.refreshMenu,
-        false
-      );
-    });
+    if( !_.isEmpty( navUl ) ) {
+      _.each( navLinks, (link) => {
+        link.removeEventListener(
+          'click',
+          editor.refreshMenu,
+          false
+        );
+      });
+    }
 
     // Remove all list items from secondary nav ul tag
     while ( navUl.firstChild ) {
@@ -484,7 +489,7 @@ var editor = {
       view.listenDisableMainNavLinks();
     } else {
       // If closing editor
-      if ( view.currentPost.type === 'post' ) {
+      if ( view.currentPost.type === 'posts' ) {
         router.updateHash( 'blog/' + view.currentPost.slug );
       } else {
         if ( editor.currentPost.slug === '_new' ) {
@@ -509,6 +514,7 @@ var editor = {
     let postType = editor.currentPostType,
         currentMenu = editor.currentMenu,
         homeLink = h.getEditorHomeLinkEl( currentMenu ),
+        navTitleLink,
         navTitleEl;
 
     // Add event listener to Admin home link
@@ -522,11 +528,11 @@ var editor = {
     if( currentMenu === 'secondary' ) {
       // If on secondary nav
       navTitleEl = h.getEditorNavTitleEl( currentMenu );
-      navTitleEl.innerHTML = postType + 's';
+      navTitleEl.innerHTML = postType;
     } else {
       // If editing post
       navTitleLink = h.getEditorNavTitleLink();
-      navTitleLink.textContent = postType + 's';
+      navTitleLink.textContent = postType;
       navTitleLink.addEventListener(
         'click',
         editor.listenSecondaryNavTitle,
