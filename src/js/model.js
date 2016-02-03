@@ -21,7 +21,7 @@ const _ = require( 'underscore' ),
  *
  * @namespace
  */
-const model = {
+var model = {
   // Init function to load data into local store
   init () {
     let localStore = model.getLocalStore();

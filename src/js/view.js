@@ -1,3 +1,6 @@
+(function() {
+
+'use strict';
 
 /**
  * This file controls the main front end view
@@ -6,8 +9,9 @@
  *
  * @exports view
  */
-var h = require( './lib/helpers.js' ),
-    model = require( './model.js' );
+ const _ = require( 'underscore' ),
+       h = require( './lib/helpers.js' ),
+       model = require( './model.js' );
 
 
 /**
@@ -16,27 +20,28 @@ var h = require( './lib/helpers.js' ),
  * @namespace
  */
 var view = {
-  init: function() {
+  init () {
     view.listenMainNavLinksUpdatePage();
     view.loadMainHeader();
   },
 
-    currentPost: '',
+  currentPost: '',
 
 
   /**
    * Listener activate and deactivate main nav.
    * @function
   */
-  listenMainNavLinksUpdatePage: function() {
-    var mainNav = document.getElementById( 'mainNav' ),
-        links = mainNav.getElementsByTagName( 'a' );
-    for ( var i = 0, max = links.length; i < max; i++ ) {
+  listenMainNavLinksUpdatePage () {
+    const links = document.querySelectorAll( 'mainNav a' );
+
+    _.each( links, ( link ) => {
       // Add listener to activate main nav
-      links[i].addEventListener('click',view.mainNavControl,false);
+      link.addEventListener( 'click', view.mainNavControl, false );
       // Remove listener that disables main nav
-      links[i].removeEventListener('click',view.disableNav );
-    }
+      link.removeEventListener( 'click', view.disableNav );
+    });
+
   },
 
   /**
@@ -44,23 +49,23 @@ var view = {
    * editor is open.
    *
    */
-  listenDisableMainNavLinks: function() {
-    var links = h.getMainNavLinks();
-    for ( var i = 0, len = links.length; i < len; i++ ) {
+  listenDisableMainNavLinks () {
+    const links = h.getMainNavLinks();
+    _.each( links, ( link ) => {
       // Add listener to deactivate main nav
-      links[i].removeEventListener('click', view.mainNavControl);
+      link.removeEventListener('click', view.mainNavControl);
       // Remove listener to disable main nav
-      links[i].addEventListener('click', view.disableNav, false);
-    }
+      link.addEventListener('click', view.disableNav, false);
+    });
   },
 
   /**
    * Main nav listener to load proper page
    *
    */
-  mainNavControl: function() {
-    var newPageSlugs = h.getAfterHash( this.href ),
-        post = model.getPostBySlugs( newPageSlugs );
+  mainNavControl () {
+    const newPageSlugs = h.getAfterHash( this.href ),
+          post = model.getPostBySlugs( newPageSlugs );
     view.currentPost = post;
     view.update();
   },
@@ -69,7 +74,7 @@ var view = {
    * Updates the view based on current post
    *
    */
-  update: function() {
+  update () {
     view.updateTitle( view.currentPost.title );
     view.updateContent( view.currentPost.content );
 
@@ -84,13 +89,13 @@ var view = {
    * Loads the main header based on settings data in local store.
    *
    */
-  loadMainHeader: function() {
+  loadMainHeader () {
     // Get site name and description from store
-    var siteName = model.getPostBySlug( 'site-name', 'settings' ),
-        siteDescription = model.getPostBySlug(
-          'site-description',
-          'settings'
-        );
+    const siteName = model.getPostBySlug( 'site-name', 'settings' ),
+          siteDescription = model.getPostBySlug(
+            'site-description',
+            'settings'
+          );
     view.updateSiteName( siteName.content );
     view.updateSiteDescription( siteDescription.content );
   },
@@ -100,8 +105,8 @@ var view = {
    *
    * @param content {string} The site name to display
    */
-  updateSiteName: function( content ) {
-    var siteName = h.getSiteName();
+  updateSiteName ( content ) {
+    let siteName = h.getSiteName();
     siteName.innerHTML = content;
   },
 
@@ -110,8 +115,8 @@ var view = {
    *
    * @param content {string} The site description to display
    */
-  updateSiteDescription: function( content ) {
-    var siteDescription = h.getSiteDescription();
+  updateSiteDescription ( content ) {
+    let siteDescription = h.getSiteDescription();
     siteDescription.innerHTML = content;
   },
 
@@ -120,8 +125,8 @@ var view = {
    *
    * @param title {string} The title to display
    */
-  updateTitle: function(title) {
-    var titleEl = document.getElementById( 'pageTitle' );
+  updateTitle ( title ) {
+    let titleEl = document.getElementById( 'pageTitle' );
     titleEl.innerHTML = title;
   },
 
@@ -130,8 +135,8 @@ var view = {
    *
    * @param content {string} The content to display
    */
-  updateContent: function(content) {
-    var contentEl = document.getElementById( 'pageContent' );
+  updateContent ( content ) {
+    let contentEl = document.getElementById( 'pageContent' );
     contentEl.innerHTML = content;
   },
 
@@ -140,8 +145,8 @@ var view = {
    * in the main view
    *
    */
-  clearContent: function() {
-    var titleEl = document.getElementById( 'pageTitle' ),
+  clearContent () {
+    let titleEl = document.getElementById( 'pageTitle' ),
         contentEl = document.getElementById( 'pageContent' );
 
     titleEl.innerHTML = '';
@@ -152,27 +157,26 @@ var view = {
    * Gets blog posts and appends them to the page.
    *
    */
-  loadBlogPosts: function() {
+  loadBlogPosts () {
     var posts = model.getPostsByType( 'post' ),
-        postsMarkup = document.createElement( 'section' ),
-        primaryContentEL;
+        postsSection = document.createElement( 'section' ),
+        primaryContentEL = h.getPrimaryContentEl();
 
-    postsMarkup.id = 'blogPosts';
+    postsSection.id = 'blogPosts';
     // Get markup for each post
-    for ( var i = 0, max = posts.length; i < max; i++ ) {
-      postsMarkup.appendChild( h.createPostMarkup( posts[i] ) );
-    }
-    primaryContentEL = h.getPrimaryContentEl();
+    _.each( posts, (post) => {
+      postsSection.appendChild( h.createPostMarkup( post ) );
+    });
     // Append posts to page
-    primaryContentEL.appendChild( postsMarkup );
+    primaryContentEL.appendChild( postsSection );
   },
 
   /**
    * Remove blog posts from page
    *
    */
-  removeBlogPosts: function(){
-    var blogPost = document.getElementById( 'blogPosts' );
+  removeBlogPosts () {
+    let blogPost = document.getElementById( 'blogPosts' );
     if( blogPost )  {
       blogPost.remove();
     }
@@ -187,3 +191,5 @@ var view = {
   }
 };
 module.exports = view;
+
+}());
