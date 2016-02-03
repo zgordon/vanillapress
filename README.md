@@ -2,10 +2,10 @@
 
 A simple, mock WordPress front and back end built in basic, vanilla JavaScript.
 
-**This project is part of the [JavaScript for WordPress Master Course](http://javascriptforwp.com).**
+__This project is part of the [JavaScript for WordPress Master Course](http://javascriptforwp.com).__
 
 #### Change Log
 
 ##### [1.0]
-###### Added
+**Added**
 - Basic functionality shipped
