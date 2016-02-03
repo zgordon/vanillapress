@@ -50,6 +50,9 @@
     font-size: .8rem;
     a {
       color: $editor-light-link;
+      &.hidden {
+        display: none;
+      }
     }
   }
 

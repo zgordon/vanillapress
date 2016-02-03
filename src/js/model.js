@@ -163,7 +163,7 @@ var model = {
 
     // Check if slug exists
     slugExists = model.checkIfSlugExists( slug );
-    
+
     // If slug exists, get unique string
     if ( slugExists === true ) {
       // Append -n to end of url

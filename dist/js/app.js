@@ -948,8 +948,9 @@ var editor = {
   */
   listenLoadEditForm: function(){
     editor.clearMenus();
-    var slugs = helpers.getAfterHash( this.href );
-    var post = model.getPostBySlugs( slugs );
+    var slugs = helpers.getAfterHash( this.href ),
+        post = model.getPostBySlugs( slugs );
+
     editor.currentPost = post;
     editor.currentPostType = post.type;
 
@@ -970,7 +971,8 @@ var editor = {
    */
   listenLoadNewPostForm: function(){
     var post = {slug: '_new',title:'',content:''},
-        updateBtn = helpers.getEditorEditUpdateBtn();
+        updateBtn = helpers.getEditorEditUpdateBtn(),
+        deleteBtn = helpers.getDeletePostLink();
 
     event.preventDefault();
     editor.clearMenus();
@@ -982,6 +984,7 @@ var editor = {
     }
 
     editor.showEditPanel();
+    deleteBtn.classList.add( 'hidden' );
     updateBtn.innerText = 'Save';
   },
 
@@ -1204,12 +1207,18 @@ var editor = {
       editor.listenUpdatePost,
       false
     );
-    // Add event listener to delete post
-    deleteBtn.addEventListener(
-      'click',
-      editor.listenDeletePost,
-      false
-    );
+
+    if ( editor.currentPostType === 'post' ) {
+      deleteBtn.classList.remove( 'hidden' );
+      // Add event listener to delete post
+      deleteBtn.addEventListener(
+        'click',
+        editor.listenDeletePost,
+        false
+      );
+    } else {
+      deleteBtn.classList.add( 'hidden' );
+    }
   },
 
   /**
@@ -1941,7 +1950,7 @@ var model = {
 
     // Check if slug exists
     slugExists = model.checkIfSlugExists( slug );
-    
+
     // If slug exists, get unique string
     if ( slugExists === true ) {
       // Append -n to end of url

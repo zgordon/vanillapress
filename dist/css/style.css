@@ -456,6 +456,9 @@ body {
 #edit #deletePost a {
   color: #999;
 }
+#edit #deletePost a.hidden {
+  display: none;
+}
 
 .loader:before,
 .loader:after,
