@@ -10,6 +10,8 @@ __This project is part of the [JavaScript for WordPress Master Course](http://ja
 
 ### Changelog
 
+***
+
 **[V2]**
 
 *Changed*
