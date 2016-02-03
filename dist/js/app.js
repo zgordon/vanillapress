@@ -3354,63 +3354,69 @@ var model = {
 module.exports = model;
 
 },{"./data.js":10,"./lib/helpers.js":12}],14:[function(require,module,exports){
-/**
- * The router object takes actions based on the
- * hash in the url (i.e. #content-here)
- *
- * @exports router
- */
+(function () {
 
-var h = require('./lib/helpers.js'),
-    model = require('./model.js'),
-    view = require('./view.js');
+  'use strict';
 
-/**
- * The main router object.
- *
- * @namespace
- */
-var router = {
-  init: function () {
-    router.setCurrentPost();
-    view.update();
-    router.listenPageChange();
-  },
+  /**
+   * The router object takes actions based on the
+   * hash in the url (i.e. #content-here)
+   *
+   * @exports router
+   */
 
-  // Add listener to url changes
-  listenPageChange: function () {
-    window.addEventListener('hashchange', router.setCurrentPost, false);
-  },
+  const _ = require('underscore'),
+        h = require('./lib/helpers.js'),
+        model = require('./model.js'),
+        view = require('./view.js');
 
-  // Updates the the current post based on url
-  setCurrentPost: function () {
-    var slugs = h.getAfterHash(),
-        post = model.getPostBySlugs(slugs);
+  /**
+   * The main router object.
+   *
+   * @namespace
+   */
+  var router = {
+    init() {
+      router.setCurrentPost();
+      view.update();
+      router.listenPageChange();
+    },
 
-    if (typeof post === 'undefined') {
-      // If page does not exist set 404 page
-      view.currentPost = {
-        title: '404',
-        content: '<p>Oops! Please try a different url</p>',
-        slug: '404'
-      };
-    } else {
-      view.currentPost = post;
+    // Add listener to url changes
+    listenPageChange() {
+      window.addEventListener('hashchange', router.setCurrentPost, false);
+    },
+
+    // Updates the the current post based on url
+    setCurrentPost() {
+      const slugs = h.getAfterHash(),
+            post = model.getPostBySlugs(slugs);
+
+      if (_.isUndefined(post)) {
+        // If page does not exist set 404 page
+        view.currentPost = {
+          title: '404',
+          content: '<p>Oops! Please try a different url</p>',
+          slug: '404'
+        };
+      } else {
+        view.currentPost = post;
+      }
+
+      view.update();
+    },
+
+    // Helper function to update hash based on slug
+    updateHash(slug) {
+      window.location.hash = slug;
     }
 
-    view.update();
-  },
+  };
 
-  // Helper function to update hash based on slug
-  updateHash: function (slug) {
-    window.location.hash = slug;
-  }
+  module.exports = router;
+})();
 
-};
-
-module.exports = router;
-
-},{"./lib/helpers.js":12,"./model.js":13,"./view.js":15}],15:[function(require,module,exports){
+},{"./lib/helpers.js":12,"./model.js":13,"./view.js":15,"underscore":2}],15:[function(require,module,exports){
 
 /**
  * This file controls the main front end view
