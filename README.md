@@ -14,14 +14,14 @@ A simple, mock WordPress front and back end built in basic, vanilla JavaScript.
 
 **[V2]**
 
+*Added*
+
+- Underscore library
+
 *Changed*
 
 - Refactored with Babel and ES6
 - Refactored with more functional programming using Underscore
-
-*Added*
-
-- Underscore library
 
 ***
 
