@@ -113,20 +113,6 @@ var model = {
     return item[0];
   },
 
-  // getCurrentContentObj: function() {
-  //   var newPageSlugs = helpers.getAfterHash(),
-  //       post;
-  //
-  //   if ( newPageSlugs.length > 1 ) {
-  //     post = model.getPostBySlug( newPageSlugs[1], 'posts' );
-  //   } else {
-  //     if ( newPageSlugs[0] === '' ) newPageSlugs[0] = 'home';
-  //     post = model.getPostBySlug( newPageSlugs[0], 'pages' );
-  //   }
-  //   return post;
-  // },
-
-
   /**
    * Gets content from local store
    *
@@ -142,6 +128,76 @@ var model = {
       store = localStore[0];
     }
     return store;
+  },
+
+  /**
+   * Gets a unique id for a new post
+   *
+   * @return next highest id based on existing posts
+   */
+  getNewPostId: function() {
+    var newId,
+        localStore = model.getLocalStore(),
+        postIds = [],
+        highestId;
+
+    localStore.posts.forEach(function( post ) {
+      postIds.push( Number( post.id ) );
+    });
+    highestId = Math.max.apply( Math, postIds );
+    newId = highestId + 1;
+    return newId;
+  },
+
+  /**
+   * Checks if slug exists.
+   * Adds a number to the end of the slug
+   * until finds a unique slug.
+   *
+   * @param slug {string}
+   * @return next highest id based on existing posts
+   */
+  uniqueifySlug: function( slug ) {
+    var slugExists,
+        n = 1;
+
+    // Check if slug exists
+    slugExists = model.checkIfSlugExists( slug );
+    
+    // If slug exists, get unique string
+    if ( slugExists === true ) {
+      // Append -n to end of url
+      slug = slug + '-' + n;
+      // Keep adding -n++ until get unique slug
+      while ( slugExists === true ) {
+        slug = slug.substring( 0, slug.lastIndexOf( '-' ) );
+        slug = slug + '-' + n;
+        slugExists = model.checkIfSlugExists( slug );
+        n++;
+      }
+    }
+
+    return slug;
+  },
+
+  /**
+   * Checks if slug exists.
+   *
+   * @param slug {string}
+   * @return true if slug exists or false if does not exist
+   */
+  checkIfSlugExists: function( slug ) {
+    var localStore = model.getLocalStore(),
+        slugs = [],
+        slugExists;
+
+    localStore.posts.forEach(function( post ) {
+      slugs.push( post.slug );
+    });
+
+    slugExists = ( slugs.indexOf( slug ) > -1 );
+
+    return slugExists;
   },
 
   /**

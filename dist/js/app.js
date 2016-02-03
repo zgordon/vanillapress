@@ -972,14 +972,13 @@ var editor = {
     var post = {slug: '_new',title:'',content:''},
         updateBtn = helpers.getEditorEditUpdateBtn();
 
+    event.preventDefault();
     editor.clearMenus();
     editor.currentPost = post;
 
     if ( editor.currentPostType !== 'setting' ) {
-      view.currentPost = post;
-      view.update();
-    } else {
-      event.preventDefault();
+      // Clear the view
+      view.clearContent();
     }
 
     editor.showEditPanel();
@@ -1025,14 +1024,11 @@ var editor = {
 
       // Slugify title
       editor.currentPost.slug = helpers.slugifyTitle( editor.currentPost.title );
+      // Make sure slug is unique
+      editor.currentPost.slug = model.uniqueifySlug( editor.currentPost.slug );
 
       // Get a new post id
-      localStore = localStore.posts;
-      localStore.forEach(function( post ) {
-        postIds.push( Number( post.id ) );
-      });
-      highestId = Math.max.apply( Math, postIds );
-      editor.currentPost.id = highestId + 1;
+      editor.currentPost.id = model.getNewPostId();
 
       // Set the date
       editor.currentPost.date = Date();
@@ -1160,7 +1156,6 @@ var editor = {
     secondaryNav.classList.add( 'active' );
     editor.currentMenu = 'secondary';
     editor.updateNavTitle();
-    console.log( menuItems );
     helpers.addMenuItems( menuItems, postType );
 
     // Add listeners to secondary links
@@ -1171,19 +1166,19 @@ var editor = {
         false);
     }
 
-    // Check to see if should add new post button
+    // Check if need to show new post button
     if ( editor.currentPostType === 'post' ) {
       addNewPostLink.classList.remove('hidden');
+      // Add listener to new post link
+      addNewPostLink.addEventListener(
+        'click',
+        editor.listenLoadNewPostForm,
+        false
+      );
     } else {
       addNewPostLink.classList.add('hidden');
     }
 
-    // Add listener to new post link
-    addNewPostLink.addEventListener(
-      'click',
-      editor.listenLoadNewPostForm,
-      false
-    );
   },
 
   /**
@@ -1352,7 +1347,14 @@ var editor = {
       if ( view.currentPost.type === 'post' ) {
         router.updateHash( 'blog/' + view.currentPost.slug );
       } else {
-        router.updateHash( view.currentPost.slug );
+        if ( editor.currentPost.slug === '_new' ) {
+          // If closing a new post editor
+          router.updateHash( 'blog' );
+          router.setCurrentPost();
+        } else {
+          router.updateHash( view.currentPost.slug );
+        }
+
       }
       view.listenMainNavLinksUpdatePage();
     }
@@ -1715,7 +1717,7 @@ var helpers = {
   },
 
   slugifyTitle: function( title ) {
-    var slug = title;
+    var slug = title.trim();    
 
     slug = slug.replace(/[^a-zA-Z0-9\s]/g,"");
     slug = slug.toLowerCase();
@@ -1889,20 +1891,6 @@ var model = {
     return item[0];
   },
 
-  // getCurrentContentObj: function() {
-  //   var newPageSlugs = helpers.getAfterHash(),
-  //       post;
-  //
-  //   if ( newPageSlugs.length > 1 ) {
-  //     post = model.getPostBySlug( newPageSlugs[1], 'posts' );
-  //   } else {
-  //     if ( newPageSlugs[0] === '' ) newPageSlugs[0] = 'home';
-  //     post = model.getPostBySlug( newPageSlugs[0], 'pages' );
-  //   }
-  //   return post;
-  // },
-
-
   /**
    * Gets content from local store
    *
@@ -1918,6 +1906,76 @@ var model = {
       store = localStore[0];
     }
     return store;
+  },
+
+  /**
+   * Gets a unique id for a new post
+   *
+   * @return next highest id based on existing posts
+   */
+  getNewPostId: function() {
+    var newId,
+        localStore = model.getLocalStore(),
+        postIds = [],
+        highestId;
+
+    localStore.posts.forEach(function( post ) {
+      postIds.push( Number( post.id ) );
+    });
+    highestId = Math.max.apply( Math, postIds );
+    newId = highestId + 1;
+    return newId;
+  },
+
+  /**
+   * Checks if slug exists.
+   * Adds a number to the end of the slug
+   * until finds a unique slug.
+   *
+   * @param slug {string}
+   * @return next highest id based on existing posts
+   */
+  uniqueifySlug: function( slug ) {
+    var slugExists,
+        n = 1;
+
+    // Check if slug exists
+    slugExists = model.checkIfSlugExists( slug );
+    
+    // If slug exists, get unique string
+    if ( slugExists === true ) {
+      // Append -n to end of url
+      slug = slug + '-' + n;
+      // Keep adding -n++ until get unique slug
+      while ( slugExists === true ) {
+        slug = slug.substring( 0, slug.lastIndexOf( '-' ) );
+        slug = slug + '-' + n;
+        slugExists = model.checkIfSlugExists( slug );
+        n++;
+      }
+    }
+
+    return slug;
+  },
+
+  /**
+   * Checks if slug exists.
+   *
+   * @param slug {string}
+   * @return true if slug exists or false if does not exist
+   */
+  checkIfSlugExists: function( slug ) {
+    var localStore = model.getLocalStore(),
+        slugs = [],
+        slugExists;
+
+    localStore.posts.forEach(function( post ) {
+      slugs.push( post.slug );
+    });
+
+    slugExists = ( slugs.indexOf( slug ) > -1 );
+
+    return slugExists;
   },
 
   /**
@@ -2129,6 +2187,19 @@ var view = {
   updateContent: function(content) {
     var contentEl = document.getElementById( 'pageContent' );
     contentEl.innerHTML = content;
+  },
+
+  /**
+   * Helper function to clear title and content
+   * in the main view
+   *
+   */
+  clearContent: function() {
+    var titleEl = document.getElementById( 'pageTitle' ),
+        contentEl = document.getElementById( 'pageContent' );
+
+    titleEl.innerHTML = '';
+    contentEl.innerHTML = '';
   },
 
   /**

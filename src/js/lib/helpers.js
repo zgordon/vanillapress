@@ -160,7 +160,7 @@ var helpers = {
   },
 
   slugifyTitle: function( title ) {
-    var slug = title;
+    var slug = title.trim();    
 
     slug = slug.replace(/[^a-zA-Z0-9\s]/g,"");
     slug = slug.toLowerCase();

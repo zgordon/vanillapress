@@ -98,14 +98,13 @@ var editor = {
     var post = {slug: '_new',title:'',content:''},
         updateBtn = helpers.getEditorEditUpdateBtn();
 
+    event.preventDefault();
     editor.clearMenus();
     editor.currentPost = post;
 
     if ( editor.currentPostType !== 'setting' ) {
-      view.currentPost = post;
-      view.update();
-    } else {
-      event.preventDefault();
+      // Clear the view
+      view.clearContent();
     }
 
     editor.showEditPanel();
@@ -151,14 +150,11 @@ var editor = {
 
       // Slugify title
       editor.currentPost.slug = helpers.slugifyTitle( editor.currentPost.title );
+      // Make sure slug is unique
+      editor.currentPost.slug = model.uniqueifySlug( editor.currentPost.slug );
 
       // Get a new post id
-      localStore = localStore.posts;
-      localStore.forEach(function( post ) {
-        postIds.push( Number( post.id ) );
-      });
-      highestId = Math.max.apply( Math, postIds );
-      editor.currentPost.id = highestId + 1;
+      editor.currentPost.id = model.getNewPostId();
 
       // Set the date
       editor.currentPost.date = Date();
@@ -286,7 +282,6 @@ var editor = {
     secondaryNav.classList.add( 'active' );
     editor.currentMenu = 'secondary';
     editor.updateNavTitle();
-    console.log( menuItems );
     helpers.addMenuItems( menuItems, postType );
 
     // Add listeners to secondary links
@@ -297,19 +292,19 @@ var editor = {
         false);
     }
 
-    // Check to see if should add new post button
+    // Check if need to show new post button
     if ( editor.currentPostType === 'post' ) {
       addNewPostLink.classList.remove('hidden');
+      // Add listener to new post link
+      addNewPostLink.addEventListener(
+        'click',
+        editor.listenLoadNewPostForm,
+        false
+      );
     } else {
       addNewPostLink.classList.add('hidden');
     }
 
-    // Add listener to new post link
-    addNewPostLink.addEventListener(
-      'click',
-      editor.listenLoadNewPostForm,
-      false
-    );
   },
 
   /**
@@ -478,7 +473,14 @@ var editor = {
       if ( view.currentPost.type === 'post' ) {
         router.updateHash( 'blog/' + view.currentPost.slug );
       } else {
-        router.updateHash( view.currentPost.slug );
+        if ( editor.currentPost.slug === '_new' ) {
+          // If closing a new post editor
+          router.updateHash( 'blog' );
+          router.setCurrentPost();
+        } else {
+          router.updateHash( view.currentPost.slug );
+        }
+
       }
       view.listenMainNavLinksUpdatePage();
     }

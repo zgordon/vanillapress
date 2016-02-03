@@ -136,6 +136,19 @@ var view = {
   },
 
   /**
+   * Helper function to clear title and content
+   * in the main view
+   *
+   */
+  clearContent: function() {
+    var titleEl = document.getElementById( 'pageTitle' ),
+        contentEl = document.getElementById( 'pageContent' );
+
+    titleEl.innerHTML = '';
+    contentEl.innerHTML = '';
+  },
+
+  /**
    * Gets blog posts and appends them to the page.
    *
    */
