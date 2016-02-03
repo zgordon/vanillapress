@@ -12,7 +12,7 @@ var helpers = require( './lib/helpers.js' ),
 /**
  * The main router object.
  *
- * @namespace 
+ * @namespace
  */
 var router = {
   init: function() {
@@ -35,7 +35,17 @@ var router = {
     var slugs = helpers.getAfterHash(),
         post = model.getPostBySlugs( slugs );
 
-    view.currentPost = post;
+    if( typeof post === 'undefined' ) {
+      // If page does not exist set 404 page
+      view.currentPost = {
+        title: '404',
+        content: '<p>Oops! Please try a different url</p>',
+        slug: '404'
+      };
+    } else {
+      view.currentPost = post;
+    }
+
     view.update();
   },
 

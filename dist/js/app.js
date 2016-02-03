@@ -758,118 +758,121 @@ var vanillaPress = {
 
 vanillaPress.init();
 
-},{"./editor.js":10,"./model.js":13,"./router.js":14,"./view.js":15}],9:[function(require,module,exports){
-var Posts = [
+},{"./editor.js":10,"./model.js":12,"./router.js":13,"./view.js":14}],9:[function(require,module,exports){
+/**
+ * Main JSON object of posts, pages and settings
+ */
+var jsonData = [
   {
-    id:1,
-    date:'2016-01-09T22:05:09',
-    modified:'2016-01-09T22:05:09',
-    slug:'hello-world',
-    type:'post',
-    title:'Hello world!',
-    content:'Welcome to WordPress.\nThis is your first post.\nEdit or delete it, then start writing!',
+    posts: [
+      {
+        id:1,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"hello-world",
+        type:"post",
+        title:"Hello world!",
+        content:"<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p> ",
+      },
+      {
+        id:2,
+        date:"2016-01-10T22:05:09",
+        modified:"2016-01-10T22:05:09",
+        slug:"learning-javascript",
+        type:"post",
+        title:"Learning JavaScript!",
+        content:"<p>I'm learning JavaScript and super excited!!!</p> ",
+      },
+      {
+        id:3,
+        date:"2016-01-11T22:05:09",
+        modified:"2016-01-11T22:05:09",
+        slug:"rest-api",
+        type:"post",
+        title:"The REST API!",
+        content:"<p>I've started working with the REST API in WordPress, what fun!</p> ",
+      },
+      {
+        id:4,
+        date:"2016-01-12T22:05:09",
+        modified:"2016-01-12T22:05:09",
+        slug:"json-data",
+        type:"post",
+        title:"JSON Data!",
+        content:"<p>So, with the REST API it is posible to pull in WordPress data as pure JSON.  Now I'm figuring out what to do with the data</p> ",
+      },
+      {
+        id:5,
+        date:"2016-01-13T22:05:09",
+        modified:"2016-01-13T22:05:09",
+        slug:"javascript-project",
+        type:"post",
+        title:"JavaScript Project",
+        content:"<p>I've started working with the REST API in WordPress, what fun!</p> ",
+      }
+    ],
+    pages: [
+      {
+        id:40,
+        date:"2016-01-07T22:05:09",
+        modified:"2016-01-07T22:05:09",
+        slug:"home",
+        type:"page",
+        title:"Home",
+        content:"<p>Welcome!</p><p>Reprehenderit sit sunt nisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
+      },
+      {
+        id:41,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"about",
+        type:"page",
+        title:"About Me",
+        content:"<p>Hi!  I'm me :)</p><p>Sisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
+      },
+      {
+        id:42,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"blog",
+        type:"page",
+        title:"Blog",
+        content:"<p>Welcome to my blog page, please enjoy!</p>",
+      },
+      {
+        id:43,
+        date:"2016-01-19T22:06:09",
+        modified:"2016-01-19T22:06:09",
+        slug:"contact",
+        type:"page",
+        title:"Contact",
+        content:"<p>Please get in touch!</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
+      }
+    ],
+    settings: [
+      {
+        id:991,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"site-name",
+        type:"setting",
+        title:"Site Name",
+        content:"VanillaPress"
+      },
+      {
+        id:992,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"site-description",
+        type:"setting",
+        title:"Site Description",
+        content:"A JS Front & Back End"
+      }
+    ]
   },
-  {
-    id:2,
-    date:'2016-01-10T22:05:09',
-    modified:'2016-01-10T22:05:09',
-    slug:'learning-javascript',
-    type:'post',
-    title:'Learning JavaScript!',
-    content:'<p>I\'m learning JavaScript and super excited!!!</p> ',
-  },
-  {
-    id:3,
-    date:'2016-01-11T22:05:09',
-    modified:'2016-01-11T22:05:09',
-    slug:'rest-api',
-    type:'post',
-    title:'The REST API!',
-    content:'<p>I\'ve started working with the REST API in WordPress, what fun!</p> ',
-  },
-  {
-    id:4,
-    date:'2016-01-12T22:05:09',
-    modified:'2016-01-12T22:05:09',
-    slug:'json-data',
-    type:'post',
-    title:'JSON Data!',
-    content:'<p>So, with the REST API it is posible to pull in WordPress data as pure JSON.  Now I\'m figuring out what to do with the data</p> ',
-  },
-  {
-    id:5,
-    date:'2016-01-13T22:05:09',
-    modified:'2016-01-13T22:05:09',
-    slug:'javascript-project',
-    type:'post',
-    title:'JavaScript Project',
-    content:'<p>I\'ve started working with the REST API in WordPress, what fun!</p> '
-  }
 ];
 
-var Pages = [
-  {
-    id:40,
-    date:'2016-01-07T22:05:09',
-    modified:'2016-01-07T22:05:09',
-    slug:'home',
-    type:'page',
-    title:'Home',
-    content:'<p>Welcome!</p><p>Reprehenderit sit sunt nisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>',
-  },
-  {
-    id:41,
-    date:'2016-01-09T22:05:09',
-    modified:'2016-01-09T22:05:09',
-    slug:'about',
-    type:'page',
-    title:'About Me',
-    content:'<p>Hi!  I\'m me :)</p><p>Sisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>',
-  },
-  {
-    id:42,
-    date:'2016-01-09T22:05:09',
-    modified:'2016-01-09T22:05:09',
-    slug:'blog',
-    type:'page',
-    title:'Blog',
-    content:'<p>Welcome to my blog page, please enjoy!</p>',
-  },
-  {
-    id:43,
-    date:'2016-01-19T22:06:09',
-    modified:'2016-01-19T22:06:09',
-    slug:'contact',
-    type:'page',
-    title:'Contact',
-    content:'<p>Please get in touch!</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>',
-  }
-];
-
-var Settings = [
-  {
-    id:991,
-    date:'2016-01-09T22:05:09',
-    modified:'2016-01-09T22:05:09',
-    slug:'site-name',
-    type:'setting',
-    title:'Site Name',
-    content:'VanillaPress'
-  },
-  {
-    id:992,
-    date:'2016-01-09T22:05:09',
-    modified:'2016-01-09T22:05:09',
-    slug:'site-description',
-    type:'setting',
-    title:'Site Description',
-    content:'A JS Front & Back End'
-  }
-];
-
-var data = [Posts, Pages, Settings];
-
-module.exports = data;
+module.exports = jsonData;
 
 },{}],10:[function(require,module,exports){
 /**
@@ -1447,123 +1450,7 @@ var editor = {
 
 module.exports = editor;
 
-},{"./lib/helpers.js":12,"./model.js":13,"./router.js":14,"./view.js":15,"spin.js":1,"wysiwyg":2}],11:[function(require,module,exports){
-/**
- * Main JSON object of posts, pages and settings
- */
-var jsonData = [
-  {
-    posts: [
-      {
-        id:1,
-        date:"2016-01-09T22:05:09",
-        modified:"2016-01-09T22:05:09",
-        slug:"hello-world",
-        type:"post",
-        title:"Hello world!",
-        content:"<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p> ",
-      },
-      {
-        id:2,
-        date:"2016-01-10T22:05:09",
-        modified:"2016-01-10T22:05:09",
-        slug:"learning-javascript",
-        type:"post",
-        title:"Learning JavaScript!",
-        content:"<p>I'm learning JavaScript and super excited!!!</p> ",
-      },
-      {
-        id:3,
-        date:"2016-01-11T22:05:09",
-        modified:"2016-01-11T22:05:09",
-        slug:"rest-api",
-        type:"post",
-        title:"The REST API!",
-        content:"<p>I've started working with the REST API in WordPress, what fun!</p> ",
-      },
-      {
-        id:4,
-        date:"2016-01-12T22:05:09",
-        modified:"2016-01-12T22:05:09",
-        slug:"json-data",
-        type:"post",
-        title:"JSON Data!",
-        content:"<p>So, with the REST API it is posible to pull in WordPress data as pure JSON.  Now I'm figuring out what to do with the data</p> ",
-      },
-      {
-        id:5,
-        date:"2016-01-13T22:05:09",
-        modified:"2016-01-13T22:05:09",
-        slug:"javascript-project",
-        type:"post",
-        title:"JavaScript Project",
-        content:"<p>I've started working with the REST API in WordPress, what fun!</p> ",
-      }
-    ],
-    pages: [
-      {
-        id:40,
-        date:"2016-01-07T22:05:09",
-        modified:"2016-01-07T22:05:09",
-        slug:"home",
-        type:"page",
-        title:"Home",
-        content:"<p>Welcome!</p><p>Reprehenderit sit sunt nisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
-      },
-      {
-        id:41,
-        date:"2016-01-09T22:05:09",
-        modified:"2016-01-09T22:05:09",
-        slug:"about",
-        type:"page",
-        title:"About Me",
-        content:"<p>Hi!  I'm me :)</p><p>Sisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
-      },
-      {
-        id:42,
-        date:"2016-01-09T22:05:09",
-        modified:"2016-01-09T22:05:09",
-        slug:"blog",
-        type:"page",
-        title:"Blog",
-        content:"<p>Welcome to my blog page, please enjoy!</p>",
-      },
-      {
-        id:43,
-        date:"2016-01-19T22:06:09",
-        modified:"2016-01-19T22:06:09",
-        slug:"contact",
-        type:"page",
-        title:"Contact",
-        content:"<p>Please get in touch!</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
-      }
-    ],
-    settings: [
-      {
-        id:991,
-        date:"2016-01-09T22:05:09",
-        modified:"2016-01-09T22:05:09",
-        slug:"site-name",
-        type:"setting",
-        title:"Site Name",
-        content:"VanillaPress"
-      },
-      {
-        id:992,
-        date:"2016-01-09T22:05:09",
-        modified:"2016-01-09T22:05:09",
-        slug:"site-description",
-        type:"setting",
-        title:"Site Description",
-        content:"A JS Front & Back End"
-      }
-    ]
-  },
-];
-
-module.exports = jsonData;
-
-},{}],12:[function(require,module,exports){
+},{"./lib/helpers.js":11,"./model.js":12,"./router.js":13,"./view.js":14,"spin.js":1,"wysiwyg":2}],11:[function(require,module,exports){
 Array.prototype.isArray = true;
 
 var helpers = {
@@ -1784,7 +1671,7 @@ var helpers = {
 
 module.exports = helpers;
 
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * This file contains methods having to do with
  * getting and setting of data.  Leverages local
@@ -1794,8 +1681,7 @@ module.exports = helpers;
  *
  */
 
-var data = require( './data.js' ),
-    jsonData = require( './json.js' ),
+var jsonData = require( './data.js' ),
     helpers = require( './lib/helpers.js' );
 
 
@@ -2009,7 +1895,7 @@ var model = {
 
 module.exports = model;
 
-},{"./data.js":9,"./json.js":11,"./lib/helpers.js":12}],14:[function(require,module,exports){
+},{"./data.js":9,"./lib/helpers.js":11}],13:[function(require,module,exports){
 /**
  * The router object takes actions based on the
  * hash in the url (i.e. #content-here)
@@ -2024,7 +1910,7 @@ var helpers = require( './lib/helpers.js' ),
 /**
  * The main router object.
  *
- * @namespace 
+ * @namespace
  */
 var router = {
   init: function() {
@@ -2047,7 +1933,17 @@ var router = {
     var slugs = helpers.getAfterHash(),
         post = model.getPostBySlugs( slugs );
 
-    view.currentPost = post;
+    if( typeof post === 'undefined' ) {
+      // If page does not exist set 404 page
+      view.currentPost = {
+        title: '404',
+        content: '<p>Oops! Please try a different url</p>',
+        slug: '404'
+      };
+    } else {
+      view.currentPost = post;
+    }
+
     view.update();
   },
 
@@ -2060,7 +1956,7 @@ var router = {
 
 module.exports = router;
 
-},{"./lib/helpers.js":12,"./model.js":13,"./view.js":15}],15:[function(require,module,exports){
+},{"./lib/helpers.js":11,"./model.js":12,"./view.js":14}],14:[function(require,module,exports){
 
 /**
  * This file controls the main front end view
@@ -2251,4 +2147,4 @@ var view = {
 };
 module.exports = view;
 
-},{"./lib/helpers.js":12,"./model.js":13}]},{},[8]);
+},{"./lib/helpers.js":11,"./model.js":12}]},{},[8]);
