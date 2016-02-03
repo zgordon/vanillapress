@@ -34,6 +34,8 @@ __This project is part of the [JavaScript for WordPress Master Course](http://ja
 - Toggle editor to edit current post/page
 - Navigate posts, pages, settings
 - Edit posts, pages, settings
+- wysiwyg npm editor
 - Add new posts
 - Read data from JSON object
 - Save data to local store
+- Vanilla JavaScript
