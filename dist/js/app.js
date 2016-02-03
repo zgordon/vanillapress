@@ -2420,6 +2420,7 @@ module.exports = jsonData;
    */
 
   var Spinner = require('spin.js'),
+      _ = require('underscore'),
       h = require('./lib/helpers.js'),
       router = require('./router.js'),
       model = require('./model.js'),
@@ -2433,7 +2434,7 @@ module.exports = jsonData;
    * @namespace
    */
   var editor = {
-    init: function () {
+    init() {
       editor.listenEditorToggle();
     },
 
@@ -2447,7 +2448,7 @@ module.exports = jsonData;
      * Clears menus and shows primary menu.
      *
      */
-    listenAdminHomeLink: function () {
+    listenAdminHomeLink() {
       editor.clearMenus();
       editor.showPrimaryMenu();
       event.preventDefault();
@@ -2458,9 +2459,9 @@ module.exports = jsonData;
      * Loads seconday menu
      *
      */
-    listenPrimaryLinks: function () {
-      var urlSegments = h.getAfterHash(this.href);
-      var currentPost = urlSegments[0].substring(0, urlSegments[0].length - 1);
+    listenPrimaryLinks() {
+      const urlSegments = h.getAfterHash(this.href);
+      const currentPost = urlSegments[0].substring(0, urlSegments[0].length - 1);
       editor.currentPostType = currentPost;
       editor.clearMenus();
       editor.showSecondaryMenu();
@@ -2473,7 +2474,7 @@ module.exports = jsonData;
      * Loads secondary menu.
      *
      */
-    listenSecondaryNavTitle: function () {
+    listenSecondaryNavTitle() {
       editor.clearMenus();
       editor.showSecondaryMenu();
       event.preventDefault();
@@ -2483,10 +2484,10 @@ module.exports = jsonData;
      * Listener to load the post edit field.
      *
     */
-    listenLoadEditForm: function () {
+    listenLoadEditForm() {
       editor.clearMenus();
-      var slugs = h.getAfterHash(this.href),
-          post = model.getPostBySlugs(slugs);
+      const slugs = h.getAfterHash(this.href),
+            post = model.getPostBySlugs(slugs);
 
       editor.currentPost = post;
       editor.currentPostType = post.type;
@@ -2505,8 +2506,8 @@ module.exports = jsonData;
      * Listener to the new post field
      *
      */
-    listenLoadNewPostForm: function () {
-      var post = { slug: '_new', title: '', content: '' },
+    listenLoadNewPostForm() {
+      let post = { slug: '_new', title: '', content: '' },
           updateBtn = h.getEditorEditUpdateBtn(),
           deleteBtn = h.getDeletePostLink();
 
@@ -2528,8 +2529,8 @@ module.exports = jsonData;
      * Listener for the editor toggle button
      *
      */
-    listenEditorToggle: function () {
-      var editorToggleEl = h.getEditorToggleLink();
+    listenEditorToggle() {
+      const editorToggleEl = h.getEditorToggleLink();
       editorToggleEl.addEventListener('click', function () {
         editor.toggle();
         event.preventDefault();
@@ -2542,18 +2543,16 @@ module.exports = jsonData;
      *
      * @todo Make sure url slug is unique
      */
-    listenUpdatePost: function () {
-      var newPost = false,
-          postType = editor.currentPostType,
-          store = model.getLocalStore(),
-          localStore = model.getLocalStore(),
+    listenUpdatePost() {
+      let store = model.getLocalStore(),
+          newPost = false,
           storePosts;
 
       event.preventDefault();
 
       // If new post add to local store
       if (editor.currentPost.slug === '_new') {
-        var postIds = [],
+        let postIds = [],
             highestId;
 
         newPost = true;
@@ -2573,44 +2572,37 @@ module.exports = jsonData;
       }
 
       // Get temp store of posts based on type
-      if (postType === 'post') {
-        storePosts = store.posts;
-      } else if (postType === 'page') {
-        storePosts = store.pages;
-      } else {
-        storePosts = store.settings;
-      }
+      storePosts = store[editor.currentPostType + 's']; //
 
-      // Get the current item to edit from store.
       if (newPost === true) {
+        // If new post add post to store
         storePosts.push(editor.currentPost);
       } else {
-        storePosts.forEach(function (item) {
-          if (editor.currentPost.id == item.id) {
-            item.title = editor.currentPost.title;
-            item.content = editor.currentPost.content;
-            item.modified = Date();
+        console.log('here now?');
+        // If existing post then update post in store
+        storePosts = _.map(storePosts, post => {
+          if (post.id === editor.currentPost.id) {
+            post.title = editor.currentPost.title;
+            post.content = editor.currentPost.content;
+            post.modified = Date();
           }
+          console.log(post);
+          return post;
         });
       }
 
-      // Add temp store data back
-      if (postType === 'post') {
-        store.posts = storePosts;
-      } else if (postType === 'page') {
-        store.pages = storePosts;
-      } else {
-        store.settings = storePosts;
-      }
+      store[editor.currentPostType + 's'] = storePosts;
+
       model.updateLocalStore(store);
 
       // Update url and current post
-      if (postType === 'post') {
+      if (editor.currentPostType === 'post') {
         router.updateHash('blog/' + editor.currentPost.slug);
-      } else if (postType === 'page') {
+      } else if (editor.currentPostType === 'page') {
         router.updateHash(editor.currentPost.slug);
       } else {}
 
+      view.currentPost = editor.currentPost;
       view.update();
       editor.updateSaveBtnText();
     },
@@ -2619,29 +2611,33 @@ module.exports = jsonData;
      * Listener to delete post
      *
      */
-    listenDeletePost: function () {
-      var store = model.getLocalStore(),
-          storePosts = store.posts,
+    listenDeletePost() {
+      let store = model.getLocalStore(),
           confirmation = confirm('Are you sure you want to delete this post?'),
+          storePosts,
           deleteId,
           deleteIdIndex;
 
       // Get the index of the item to delete from store
-      for (var i = 0, max = storePosts.length; i < max; i++) {
-        if (editor.currentPost.id === storePosts[i].id) {
-          deleteIdIndex = i;
-        }
-      }
+      storePosts = _.reject(store.posts, post => {
+        return post.id === editor.currentPost.id;
+      });
+      // for ( var i = 0, max = storePosts.length; i < max ; i++) {
+      //   if ( editor.currentPost.id === storePosts[i].id ) {
+      //     deleteIdIndex = i;
+      //   }
+      // }
 
       // Only procude with delete if confirmation
       if (confirmation === true) {
         // Remove item from store
-        storePosts.splice(deleteIdIndex, 1);
+        //storePosts.splice( deleteIdIndex, 1 );
         store.posts = storePosts;
         model.updateLocalStore(store);
 
         // Update current post to empty, show blog posts
         editor.currentPost = {};
+        router.updateHash('blog');
         view.currentPost = model.getPostBySlug('blog', 'pages');
         view.update();
         editor.clearMenus();
@@ -2655,16 +2651,16 @@ module.exports = jsonData;
      * Displays the primary menu.
      *
      */
-    showPrimaryMenu: function () {
-      var primaryNav = h.getEditorPrimaryNav(),
+    showPrimaryMenu() {
+      let primaryNav = h.getEditorPrimaryNav(),
           primaryLinks = h.getEditorPrimaryNavLinks();
 
       primaryNav.classList.add('active');
 
       // Add event listeners to primary links
-      for (var i = 0, max = primaryLinks.length; i < max; i++) {
-        primaryLinks[i].addEventListener('click', editor.listenPrimaryLinks, false);
-      }
+      _.each(primaryLinks, link => {
+        link.addEventListener('click', editor.listenPrimaryLinks, false);
+      });
       editor.currentMenu = 'primary';
     },
 
@@ -2672,8 +2668,8 @@ module.exports = jsonData;
      * Displays the secondary menu
      *
      */
-    showSecondaryMenu: function () {
-      var secondaryNav = h.getEditorSecondaryNav(),
+    showSecondaryMenu() {
+      let secondaryNav = h.getEditorSecondaryNav(),
           postType = editor.currentPostType,
           menuItems = model.getPostsByType(postType),
           secondaryUl = h.getEditorSecondaryNavUl(),
@@ -2688,9 +2684,15 @@ module.exports = jsonData;
       h.addMenuItems(menuItems, postType);
 
       // Add listeners to secondary links
-      for (var i = 0, max = secondaryLinks.length; i < max; i++) {
-        secondaryLinks[i].addEventListener('click', editor.listenLoadEditForm, false);
-      }
+      _.each(secondaryLinks, link => {
+        link.addEventListener('click', editor.listenLoadEditForm, false);
+      });
+      // for ( var i = 0, max = secondaryLinks.length; i < max; i++ ) {
+      //   secondaryLinks[i].addEventListener(
+      //     'click',
+      //     editor.listenLoadEditForm,
+      //     false);
+      // }
 
       // Check if need to show new post button
       if (editor.currentPostType === 'post') {
@@ -2706,8 +2708,8 @@ module.exports = jsonData;
      * Displays the edit post panel
      *
      */
-    showEditPanel: function () {
-      var post = editor.currentPost,
+    showEditPanel() {
+      let post = editor.currentPost,
           editNav = h.getEditorEditNav(),
           editForm = h.getEditorForm(),
           deleteBtn = h.getDeletePostLink();
@@ -2736,8 +2738,8 @@ module.exports = jsonData;
      * current post.
      *
      */
-    fillEditForm: function () {
-      var post = editor.currentPost,
+    fillEditForm() {
+      let post = editor.currentPost,
           editTitle = document.getElementById('editTitle'),
           postTitle = h.getPostTitle(),
           titleField = h.getEditorTitleField();
@@ -2781,15 +2783,15 @@ module.exports = jsonData;
      * Must call before loading data to form.
      *
      */
-    clearEditForm: function () {
-      var editTitle = document.getElementById('editTitle'),
+    clearEditForm() {
+      let editTitle = document.getElementById('editTitle'),
           wysiwyg = h.getEditorWysiwyg();
 
       // Set the edit fields blank
       editTitle.value = '';
       editContent.value = '';
       // Remove the wysiwyg editor
-      if (wysiwyg !== null) {
+      if (!_.isNull(wysiwyg)) {
         wysiwyg.remove();
       }
     },
@@ -2799,21 +2801,20 @@ module.exports = jsonData;
      * Must call before loading a menu.
      *
      */
-    clearMenus: function () {
-      var navs = h.getEditorNavs(),
+    clearMenus() {
+      let navs = h.getEditorNavs(),
           navUl = h.getEditorSecondaryNavUl(),
           navlinks = navUl.getElementsByTagName('a');
 
       // Remove active class from all navs
-      for (var j = 0, max = navs.length; j < max; j++) {
-        var nav = navs[j];
+      _.each(navs, nav => {
         nav.classList.remove('active');
-      }
+      });
 
       // Remove event listeners from all previous nav links
-      for (var i = 0, navMax = navlinks.length; i < navMax; i++) {
-        navlinks[i].removeEventListener('click', editor.refreshMenu, false);
-      }
+      _.each(navLinks, link => {
+        link.removeEventListener('click', editor.refreshMenu, false);
+      });
 
       // Remove all list items from secondary nav ul tag
       while (navUl.firstChild) {
@@ -2825,8 +2826,8 @@ module.exports = jsonData;
      * Main control for the editor toggle.
      *
      */
-    toggle: function () {
-      var editorEl = h.getEditorEl(),
+    toggle() {
+      let editorEl = h.getEditorEl(),
           toggleEl = h.getEditorToggleEl(),
           mainNav = h.getMainNavEl();
 
@@ -2871,10 +2872,11 @@ module.exports = jsonData;
      * (i.e. Admin / Posts, Admin / Pages, Admin / Settings, etc. )
      *
      */
-    updateNavTitle: function () {
-      var postType = editor.currentPostType,
+    updateNavTitle() {
+      let postType = editor.currentPostType,
           currentMenu = editor.currentMenu,
-          homeLink = h.getEditorHomeLinkEl(currentMenu);
+          homeLink = h.getEditorHomeLinkEl(currentMenu),
+          navTitleEl;
 
       // Add event listener to Admin home link
       homeLink.addEventListener('click', editor.listenAdminHomeLink, false);
@@ -2882,11 +2884,11 @@ module.exports = jsonData;
       // Add secondary link based on current nav and post type
       if (currentMenu === 'secondary') {
         // If on secondary nav
-        var navTitleEl = h.getEditorNavTitleEl(currentMenu);
+        navTitleEl = h.getEditorNavTitleEl(currentMenu);
         navTitleEl.innerHTML = postType + 's';
       } else {
         // If editing post
-        var navTitleLink = h.getEditorNavTitleLink();
+        navTitleLink = h.getEditorNavTitleLink();
         navTitleLink.textContent = postType + 's';
         navTitleLink.addEventListener('click', editor.listenSecondaryNavTitle, false);
       }
@@ -2897,7 +2899,7 @@ module.exports = jsonData;
      * Mimics live updating text: "Saving, Saved!"
      *
      */
-    updateSaveBtnText: function () {
+    updateSaveBtnText() {
 
       let btn = h.getEditorEditUpdateBtn(),
           finalText = 'Udpate',
@@ -2937,7 +2939,7 @@ module.exports = jsonData;
   module.exports = editor;
 })();
 
-},{"./lib/helpers.js":12,"./model.js":13,"./router.js":14,"./view.js":15,"spin.js":1,"wysiwyg":3}],12:[function(require,module,exports){
+},{"./lib/helpers.js":12,"./model.js":13,"./router.js":14,"./view.js":15,"spin.js":1,"underscore":2,"wysiwyg":3}],12:[function(require,module,exports){
 (function () {
 
   'use strict';
@@ -3435,8 +3437,7 @@ module.exports = jsonData;
      * @function
     */
     listenMainNavLinksUpdatePage() {
-      const links = document.querySelectorAll('mainNav a');
-
+      const links = document.querySelectorAll('#mainNav a');
       _.each(links, link => {
         // Add listener to activate main nav
         link.addEventListener('click', view.mainNavControl, false);
@@ -3562,6 +3563,7 @@ module.exports = jsonData;
 
       postsSection.id = 'blogPosts';
       // Get markup for each post
+      //console.log( posts );
       _.each(posts, post => {
         postsSection.appendChild(h.createPostMarkup(post));
       });

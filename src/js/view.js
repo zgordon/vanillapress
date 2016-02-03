@@ -33,8 +33,7 @@ var view = {
    * @function
   */
   listenMainNavLinksUpdatePage () {
-    const links = document.querySelectorAll( 'mainNav a' );
-
+    const links = document.querySelectorAll( '#mainNav a' );
     _.each( links, ( link ) => {
       // Add listener to activate main nav
       link.addEventListener( 'click', view.mainNavControl, false );
@@ -164,6 +163,7 @@ var view = {
 
     postsSection.id = 'blogPosts';
     // Get markup for each post
+    //console.log( posts );
     _.each( posts, (post) => {
       postsSection.appendChild( h.createPostMarkup( post ) );
     });
