@@ -73,21 +73,12 @@ var view = {
     view.updateTitle( view.currentPost.title );
     view.updateContent( view.currentPost.content );
 
-
+    view.removeBlogPosts();
     if ( view.currentPost.slug === 'blog' ) {
       // Append blog posts to blog page
       view.loadBlogPosts();
-    } else {
-      // Removes blog posts if not blog page
-      view.removeBlogPosts();
     }
   },
-
-  // push: function( post ) {
-  //   router.updateHash( post );
-  //   view.updateTitle( post.title );
-  //   view.updateContent( post.content );
-  // },
 
   /**
    * Loads the main header based on settings data in local store.

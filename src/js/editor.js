@@ -130,6 +130,7 @@ var editor = {
    * Listener to update content from the post add / edit
    * form.
    *
+   * @todo Make sure url slug is unique
    */
   listenUpdatePost: function() {
     var newPost = false,
@@ -285,6 +286,7 @@ var editor = {
     secondaryNav.classList.add( 'active' );
     editor.currentMenu = 'secondary';
     editor.updateNavTitle();
+    console.log( menuItems );
     helpers.addMenuItems( menuItems, postType );
 
     // Add listeners to secondary links

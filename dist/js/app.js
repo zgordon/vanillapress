@@ -1004,6 +1004,7 @@ var editor = {
    * Listener to update content from the post add / edit
    * form.
    *
+   * @todo Make sure url slug is unique
    */
   listenUpdatePost: function() {
     var newPost = false,
@@ -1159,6 +1160,7 @@ var editor = {
     secondaryNav.classList.add( 'active' );
     editor.currentMenu = 'secondary';
     editor.updateNavTitle();
+    console.log( menuItems );
     helpers.addMenuItems( menuItems, postType );
 
     // Add listeners to secondary links
@@ -2060,21 +2062,12 @@ var view = {
     view.updateTitle( view.currentPost.title );
     view.updateContent( view.currentPost.content );
 
-
+    view.removeBlogPosts();
     if ( view.currentPost.slug === 'blog' ) {
       // Append blog posts to blog page
       view.loadBlogPosts();
-    } else {
-      // Removes blog posts if not blog page
-      view.removeBlogPosts();
     }
   },
-
-  // push: function( post ) {
-  //   router.updateHash( post );
-  //   view.updateTitle( post.title );
-  //   view.updateContent( post.content );
-  // },
 
   /**
    * Loads the main header based on settings data in local store.
