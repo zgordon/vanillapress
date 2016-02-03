@@ -3,15 +3,6 @@ module.exports = function(grunt) {
   grunt.initConfig({
 		pkg: grunt.file.readJSON( 'package.json' ),
 
-		jshint: {
-			files: [ 'Gruntfile.js', 'src/js/**/*.js', 'src/js/*.js' ],
-      options: {
-        globals: {
-          console: true
-        }
-      },
-		},
-
 		sass: {
 		  dev: {
 		    options: {
@@ -23,6 +14,29 @@ module.exports = function(grunt) {
 		    }
 		  }
 		},
+
+    jshint: {
+			files: [ 'Gruntfile.js', 'src/js/**/*.js', 'src/js/*.js' ],
+      options: {
+        globals: {
+          console: true,
+        },
+        esnext: true
+      },
+		},
+
+    browserify: {
+      dist: {
+        options: {
+            transform: [
+               ['babelify']
+            ]
+         },
+         files: {
+            'dist/js/app.js': [ 'src/js/app.js' ]
+         }
+      }
+    },
 
     jsdoc : {
         dist : {
@@ -60,13 +74,9 @@ module.exports = function(grunt) {
 			},
       js: {
         files: [ 'src/js/*.js','src/js/**/*.js' ],
-        tasks: [ 'jshint', 'jsdoc', 'browserify' ]
+        tasks: [ 'jshint', 'browserify' ] //jsdoc
       },
-		},
-
-    browserify: {
-      'dist/js/app.js': [ 'src/js/app.js' ]
-    }
+		}
 
    });
 

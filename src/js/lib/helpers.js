@@ -1,61 +1,65 @@
+(function() {
+
+'use strict';
+
 Array.prototype.isArray = true;
+const _ = require( 'underscore' ),
+    h = {
 
-var helpers = {
-
-  getAfterHash: function( url ) {
+  getAfterHash ( url ) {
     url = url || '';
-    var urlSegments = [];
+    let urlSegments = [],
+        pageUrl;
 
     if( url !== '' ) {
       url = url.substring( url.indexOf( '#' ) + 1 );
       urlSegments = url.split( '/' );
     } else {
-      var pageUrl = window.location.hash.substr( 1 );
+      pageUrl = window.location.hash.substr( 1 );
       urlSegments = pageUrl.split( '/' );
     }
 
     return urlSegments;
   },
 
-  addMenuItems: function( menuItems, contentType ) {
-    menuItems.forEach( function( item ){
-
-      var a = helpers.createLink( item.title, contentType, item.slug );
-      helpers.addMenuItem( a );
-
-    });
+  addMenuItems ( menuItems, contentType ) {
+     _.map( menuItems, ( item ) => {
+       let link = h.createLink( item.title, contentType, item.slug );
+       h.addMenuItem( link );
+     });
   },
 
-  addMenuItem: function( menuItem ) {
-    var ul = document.querySelector( '#editor nav#secondary ul' ),
+  addMenuItem ( menuItem ) {
+    let ul = document.querySelector( '#editor nav#secondary ul' ),
         li = document.createElement( 'li' );
 
     li.appendChild( menuItem );
     ul.appendChild( li );
   },
 
-  createLink: function( text, postType, slug ) {
-    var a = document.createElement( 'a' ),
-        aText = document.createTextNode( text );
+  createLink ( text, postType, slug ) {
+    const linkText = document.createTextNode( text );
+    let link = document.createElement( 'a' );
 
-    a.appendChild( aText );
+
+    link.appendChild( linkText );
 
     if ( postType === 'post' ) {
-      a.href = '#blog/' + slug;
+      link.href = '#blog/' + slug;
     } else if ( postType === 'setting' ) {
-      a.href = '#settings/' + slug;
+      link.href = '#settings/' + slug;
     } else {
-      a.href = '#' + slug;
+      link.href = '#' + slug;
     }
 
-    return a;
+    return link;
   },
 
-  createPostMarkup: function( post ) {
-    var articleEl = document.createElement( 'article' ),
+  createPostMarkup ( post ) {
+    const title = document.createTextNode( post.title );
+    let articleEl = document.createElement( 'article' ),
         titleEl = document.createElement( 'h3' ),
         titleLink = document.createElement( 'a' ),
-        title = document.createTextNode( post.title ),
         contentDiv,
         excerpt;
 
@@ -78,142 +82,135 @@ var helpers = {
     return articleEl;
   },
 
-  getEditorEl: function() {
+  getEditorEl () {
     return document.getElementById( 'editor' );
   },
 
-  getEditorToggleEl: function() {
+  getEditorToggleEl () {
     return document.getElementById( 'editorToggle' );
   },
 
-  getEditorToggleLink: function() {
+  getEditorToggleLink () {
     return document.querySelector( '#editorToggle a' );
   },
 
-  getEditorNavs: function() {
-    var editorEl = helpers.getEditorEl(),
-        navs = editorEl.getElementsByTagName( 'nav' );
-    return  navs;
+  getEditorNavs () {
+    var editorEl = h.getEditorEl();
+    return editorEl.getElementsByTagName( 'nav' );
   },
 
-  getEditorPrimaryNav: function() {
-    return  document.querySelector( '#editor nav#primary' );
+  getEditorPrimaryNav () {
+    return document.querySelector( '#editor nav#primary' );
   },
 
-  getEditorPrimaryNavLinks: function() {
-    var primaryNav = helpers.getEditorPrimaryNav();
-    return  primaryNav.getElementsByTagName( 'a' );
+  getEditorPrimaryNavLinks () {
+    return h.getEditorPrimaryNav()
+            .getElementsByTagName( 'a' );
   },
 
-  getEditorSecondaryNav: function() {
-    return  document.querySelector( '#editor nav#secondary' );
+  getEditorSecondaryNav () {
+    return document.querySelector( '#editor nav#secondary' );
   },
 
-  getEditorSecondaryNavUl: function() {
-    var secondaryNav = helpers.getEditorSecondaryNav();
-    return  secondaryNav.querySelector( 'ul' );
+  getEditorSecondaryNavUl () {
+    return h.getEditorSecondaryNav()
+            .querySelector( 'ul' );
   },
 
-  getEditorAddNewPost: function() {
-    return  document.querySelector( '#editor #addNew a' );
+  getEditorAddNewPost () {
+    return document.querySelector( '#editor #addNew a' );
   },
 
-  getDeletePostLink: function() {
+  getDeletePostLink () {
     return document.querySelector( '#deletePost a' );
   },
 
-  getCurrentNavEl: function( currentMenu ) {
-    var nav;
+  getCurrentNavEl ( currentMenu ) {
+    let nav;
 
     if ( currentMenu === 'edit' ) {
-      nav = helpers.getEditorEditNav();
+      nav = h.getEditorEditNav();
     } else if ( currentMenu === 'secondary' ) {
-      nav = helpers.getEditorSecondaryNav();
+      nav = h.getEditorSecondaryNav();
     } else {
-      nav = helpers.getEditorPrimaryNav();
+      nav = h.getEditorPrimaryNav();
     }
 
     return nav;
   },
 
-  getEditorEditNav: function() {
-    return  document.querySelector( '#editor nav#edit' );
+  getEditorEditNav () {
+    return document.querySelector( '#editor nav#edit' );
   },
 
-  getEditorHomeLinkEl: function( currentMenu ) {
-    var nav = helpers.getCurrentNavEl( currentMenu );
-    return nav.querySelector( 'h3 .go-home' );
+  getEditorHomeLinkEl ( currentMenu ) {
+    return h.getCurrentNavEl( currentMenu )
+            .querySelector( 'h3 .go-home' );
   },
 
-  getEditorNavTitleEl: function( currentMenu ) {
-    var nav = helpers.getCurrentNavEl( currentMenu );
-    return nav.querySelector( 'h3 span' );
+  getEditorNavTitleEl ( currentMenu ) {
+    return h.getCurrentNavEl( currentMenu )
+            .querySelector( 'h3 span' );
   },
 
-  getEditorNavTitleLink: function() {
-    var editNav = helpers.getEditorEditNav();
-    return editNav.querySelector( 'h3 span a' );
+  getEditorNavTitleLink () {
+    return h.getEditorEditNav()
+            .querySelector( 'h3 span a' );
   },
 
-  getEditorTitleField: function() {
+  getEditorTitleField () {
     return document.getElementById( 'editTitle' );
   },
 
-  slugifyTitle: function( title ) {
-    var slug = title.trim();    
-
-    slug = slug.replace(/[^a-zA-Z0-9\s]/g,"");
-    slug = slug.toLowerCase();
-    slug = slug.replace(/\s/g,'-');
-
-    return slug;
+  slugifyTitle ( title ) {
+    return title.trim()
+                .replace(/[^a-zA-Z0-9\s]/g,"")
+                .toLowerCase()
+                .replace(/\s/g,'-');
   },
 
-  getEditorWysiwyg: function() {
-    var editNav = helpers.getEditorEditNav();
-    return editNav.querySelector( 'form iframe' );
+  getEditorWysiwyg () {
+    return h.getEditorEditNav()
+            .querySelector( 'form iframe' );
   },
 
-  getEditorForm: function() {
-    var editNav = helpers.getEditorEditNav();
-    return editNav.querySelector( 'form' );
+  getEditorForm () {
+    return h.getEditorEditNav()
+            .querySelector( 'form' );
   },
 
-  getEditorEditUpdateBtn: function() {
-    var editBtn = document.getElementById( 'editUpdateBtn' );
-    return editBtn;
+  getEditorEditUpdateBtn () {
+    return document.getElementById( 'editUpdateBtn' );
   },
 
-  getSiteName: function() {
-    var siteNameEl = document.getElementById( 'siteName' );
-    return siteNameEl.querySelector( 'a' );
+  getSiteName () {
+    return document.getElementById( 'siteName' )
+                    .querySelector( 'a' );
   },
 
-  getSiteDescription: function() {
+  getSiteDescription () {
     return document.getElementById( 'siteDesription' );
   },
 
-  getMainNavEl: function() {
-    var mainNavEl = document.getElementById( 'mainNav' );
-    return mainNavEl;
+  getMainNavEl () {
+    return document.getElementById( 'mainNav' );
   },
 
-  getMainNavLinks: function() {
-    var mainNav = document.getElementById( 'mainNav' ),
-        links = mainNav.getElementsByTagName( 'a' );
-    return links;
+  getMainNavLinks () {
+    return document.getElementById( 'mainNav' )
+                    .getElementsByTagName( 'a' );
   },
 
-  getPostTitle: function() {
-    var titleEl = document.getElementById( 'pageTitle' );
-    return titleEl;
+  getPostTitle () {
+    return document.getElementById( 'pageTitle' );
   },
 
-  getPrimaryContentEl: function(){
-    var primaryContentEL = document.querySelector( '#view .content .primary' );
-    return primaryContentEL;
+  getPrimaryContentEl (){
+    return document.querySelector( '#view .content .primary' );
   }
 
 };
 
-module.exports = helpers;
+module.exports = h;
+
+}());

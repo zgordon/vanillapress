@@ -8,7 +8,7 @@
  */
 
 var jsonData = require( './data.js' ),
-    helpers = require( './lib/helpers.js' );
+    h = require( './lib/helpers.js' );
 
 
 /**

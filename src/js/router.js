@@ -5,7 +5,7 @@
  * @exports router
  */
 
-var helpers = require( './lib/helpers.js' ),
+var h = require( './lib/helpers.js' ),
     model = require( './model.js' ),
     view = require( './view.js' );
 
@@ -32,7 +32,7 @@ var router = {
 
   // Updates the the current post based on url
   setCurrentPost: function() {
-    var slugs = helpers.getAfterHash(),
+    var slugs = h.getAfterHash(),
         post = model.getPostBySlugs( slugs );
 
     if( typeof post === 'undefined' ) {

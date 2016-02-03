@@ -5,7 +5,7 @@
  */
 
 var Spinner = require( 'spin.js' ),
-    helpers = require( './lib/helpers.js' ),
+    h = require( './lib/helpers.js' ),
     router = require( './router.js' ),
     model = require( './model.js' ),
     view = require( './view.js' ),
@@ -46,7 +46,7 @@ var editor = {
    *
    */
   listenPrimaryLinks: function() {
-    var urlSegments = helpers.getAfterHash( this.href );
+    var urlSegments = h.getAfterHash( this.href );
     var currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
     editor.currentPostType = currentPost;
     editor.clearMenus();
@@ -74,7 +74,7 @@ var editor = {
   */
   listenLoadEditForm: function(){
     editor.clearMenus();
-    var slugs = helpers.getAfterHash( this.href ),
+    var slugs = h.getAfterHash( this.href ),
         post = model.getPostBySlugs( slugs );
 
     editor.currentPost = post;
@@ -97,8 +97,8 @@ var editor = {
    */
   listenLoadNewPostForm: function(){
     var post = {slug: '_new',title:'',content:''},
-        updateBtn = helpers.getEditorEditUpdateBtn(),
-        deleteBtn = helpers.getDeletePostLink();
+        updateBtn = h.getEditorEditUpdateBtn(),
+        deleteBtn = h.getDeletePostLink();
 
     event.preventDefault();
     editor.clearMenus();
@@ -120,7 +120,7 @@ var editor = {
    *
    */
   listenEditorToggle: function(){
-    var editorToggleEl = helpers.getEditorToggleLink();
+    var editorToggleEl = h.getEditorToggleLink();
     editorToggleEl.addEventListener( 'click', function(){
       editor.toggle();
       event.preventDefault();
@@ -152,7 +152,7 @@ var editor = {
       editor.currentPost.type = 'post';
 
       // Slugify title
-      editor.currentPost.slug = helpers.slugifyTitle( editor.currentPost.title );
+      editor.currentPost.slug = h.slugifyTitle( editor.currentPost.title );
       // Make sure slug is unique
       editor.currentPost.slug = model.uniqueifySlug( editor.currentPost.slug );
 
@@ -252,8 +252,8 @@ var editor = {
    *
    */
   showPrimaryMenu: function(){
-    var primaryNav = helpers.getEditorPrimaryNav(),
-        primaryLinks = helpers.getEditorPrimaryNavLinks();
+    var primaryNav = h.getEditorPrimaryNav(),
+        primaryLinks = h.getEditorPrimaryNavLinks();
 
     primaryNav.classList.add( 'active' );
 
@@ -273,19 +273,19 @@ var editor = {
    *
    */
   showSecondaryMenu: function(){
-    var secondaryNav = helpers.getEditorSecondaryNav(),
+    var secondaryNav = h.getEditorSecondaryNav(),
         postType = editor.currentPostType,
         menuItems = model.getPostsByType( postType ),
-        secondaryUl =  helpers.getEditorSecondaryNavUl(),
+        secondaryUl =  h.getEditorSecondaryNavUl(),
         secondaryLinks = secondaryUl.getElementsByTagName( 'a' ),
-        addNewPostLink = helpers.getEditorAddNewPost(),
-        deletePostLink = helpers.getDeletePostLink();
+        addNewPostLink = h.getEditorAddNewPost(),
+        deletePostLink = h.getDeletePostLink();
 
     // Display secondary menu
     secondaryNav.classList.add( 'active' );
     editor.currentMenu = 'secondary';
     editor.updateNavTitle();
-    helpers.addMenuItems( menuItems, postType );
+    h.addMenuItems( menuItems, postType );
 
     // Add listeners to secondary links
     for ( var i = 0, max = secondaryLinks.length; i < max; i++ ) {
@@ -316,9 +316,9 @@ var editor = {
    */
   showEditPanel: function() {
     var post = editor.currentPost,
-        editNav = helpers.getEditorEditNav(),
-        editForm = helpers.getEditorForm(),
-        deleteBtn = helpers.getDeletePostLink();
+        editNav = h.getEditorEditNav(),
+        editForm = h.getEditorForm(),
+        deleteBtn = h.getDeletePostLink();
 
     // Display the edit panel and form
     editor.clearEditForm();
@@ -355,8 +355,8 @@ var editor = {
   fillEditForm: function() {
     var post = editor.currentPost,
         editTitle = document.getElementById('editTitle'),
-        postTitle = helpers.getPostTitle(),
-        titleField = helpers.getEditorTitleField();
+        postTitle = h.getPostTitle(),
+        titleField = h.getEditorTitleField();
 
     // Update the title and content fields
     editTitle.value = post.title;
@@ -401,7 +401,7 @@ var editor = {
    */
   clearEditForm: function() {
     var editTitle = document.getElementById( 'editTitle' ),
-        wysiwyg = helpers.getEditorWysiwyg();
+        wysiwyg = h.getEditorWysiwyg();
 
     // Set the edit fields blank
     editTitle.value = '';
@@ -418,8 +418,8 @@ var editor = {
    *
    */
   clearMenus: function(){
-    var navs = helpers.getEditorNavs(),
-        navUl = helpers.getEditorSecondaryNavUl(),
+    var navs = h.getEditorNavs(),
+        navUl = h.getEditorSecondaryNavUl(),
         navlinks = navUl.getElementsByTagName( 'a' );
 
     // Remove active class from all navs
@@ -450,9 +450,9 @@ var editor = {
    *
    */
   toggle: function() {
-    var editorEl = helpers.getEditorEl(),
-        toggleEl = helpers.getEditorToggleEl(),
-        mainNav = helpers.getMainNavEl();
+    var editorEl = h.getEditorEl(),
+        toggleEl = h.getEditorToggleEl(),
+        mainNav = h.getMainNavEl();
 
     // Clear menus and load edit panel
     editor.clearMenus();
@@ -469,7 +469,7 @@ var editor = {
     // Take specific actions if opening or closing editor
     if ( toggleEl.classList.contains( 'hidden' ) === false ) {
       // If opening editor
-      var navTitleLink = helpers.getEditorNavTitleLink();
+      var navTitleLink = h.getEditorNavTitleLink();
       editor.showEditPanel();
       navTitleLink.addEventListener(
         'click',
@@ -504,7 +504,7 @@ var editor = {
   updateNavTitle: function() {
     var postType = editor.currentPostType,
         currentMenu = editor.currentMenu,
-        homeLink = helpers.getEditorHomeLinkEl( currentMenu );
+        homeLink = h.getEditorHomeLinkEl( currentMenu );
 
     // Add event listener to Admin home link
     homeLink.addEventListener(
@@ -516,11 +516,11 @@ var editor = {
     // Add secondary link based on current nav and post type
     if( currentMenu === 'secondary' ) {
       // If on secondary nav
-      var navTitleEl = helpers.getEditorNavTitleEl( currentMenu );
+      var navTitleEl = h.getEditorNavTitleEl( currentMenu );
       navTitleEl.innerHTML = postType + 's';
     } else {
       // If editing post
-      var navTitleLink = helpers.getEditorNavTitleLink();
+      var navTitleLink = h.getEditorNavTitleLink();
       navTitleLink.textContent = postType + 's';
       navTitleLink.addEventListener(
         'click',
@@ -537,7 +537,7 @@ var editor = {
    *
    */
   updateSaveBtnText: function() {
-    var btn = helpers.getEditorEditUpdateBtn(),
+    var btn = h.getEditorEditUpdateBtn(),
         finalText = 'Udpate',
         savedText = 'Saved!',
         spinnerOpts = {

@@ -6,7 +6,7 @@
  *
  * @exports view
  */
-var helpers = require( './lib/helpers.js' ),
+var h = require( './lib/helpers.js' ),
     model = require( './model.js' );
 
 
@@ -45,7 +45,7 @@ var view = {
    *
    */
   listenDisableMainNavLinks: function() {
-    var links = helpers.getMainNavLinks();
+    var links = h.getMainNavLinks();
     for ( var i = 0, len = links.length; i < len; i++ ) {
       // Add listener to deactivate main nav
       links[i].removeEventListener('click', view.mainNavControl);
@@ -59,7 +59,7 @@ var view = {
    *
    */
   mainNavControl: function() {
-    var newPageSlugs = helpers.getAfterHash( this.href ),
+    var newPageSlugs = h.getAfterHash( this.href ),
         post = model.getPostBySlugs( newPageSlugs );
     view.currentPost = post;
     view.update();
@@ -101,7 +101,7 @@ var view = {
    * @param content {string} The site name to display
    */
   updateSiteName: function( content ) {
-    var siteName = helpers.getSiteName();
+    var siteName = h.getSiteName();
     siteName.innerHTML = content;
   },
 
@@ -111,7 +111,7 @@ var view = {
    * @param content {string} The site description to display
    */
   updateSiteDescription: function( content ) {
-    var siteDescription = helpers.getSiteDescription();
+    var siteDescription = h.getSiteDescription();
     siteDescription.innerHTML = content;
   },
 
@@ -160,9 +160,9 @@ var view = {
     postsMarkup.id = 'blogPosts';
     // Get markup for each post
     for ( var i = 0, max = posts.length; i < max; i++ ) {
-      postsMarkup.appendChild( helpers.createPostMarkup( posts[i] ) );
+      postsMarkup.appendChild( h.createPostMarkup( posts[i] ) );
     }
-    primaryContentEL = helpers.getPrimaryContentEl();
+    primaryContentEL = h.getPrimaryContentEl();
     // Append posts to page
     primaryContentEL.appendChild( postsMarkup );
   },
