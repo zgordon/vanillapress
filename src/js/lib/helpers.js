@@ -7,9 +7,10 @@ const _ = require( 'underscore' ),
     h = {
 
   getAfterHash ( url ) {
-    url = url || '';
     let urlSegments = [],
         pageUrl;
+
+    url = url || '';
 
     if( url !== '' ) {
       url = url.substring( url.indexOf( '#' ) + 1 );

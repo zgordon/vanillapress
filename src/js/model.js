@@ -1,3 +1,7 @@
+(function() {
+
+'use strict';
+
 /**
  * This file contains methods having to do with
  * getting and setting of data.  Leverages local
@@ -7,8 +11,9 @@
  *
  */
 
-var jsonData = require( './data.js' ),
-    h = require( './lib/helpers.js' );
+const _ = require( 'underscore' ),
+      h = require( './lib/helpers.js' ),
+      jsonData = require( './data.js' );
 
 
 /**
@@ -16,12 +21,11 @@ var jsonData = require( './data.js' ),
  *
  * @namespace
  */
-var model = {
+const model = {
   // Init function to load data into local store
-  init: function() {
-    var localStore = model.getLocalStore();
-    if( typeof localStore === 'undefined' || localStore === null ||
-        localStore === '' ) {
+  init () {
+    let localStore = model.getLocalStore();
+    if( _.isNull( localStore ) ) {
       localStorage.setItem(
         'vanillaPress',
         JSON.stringify( jsonData )
@@ -36,22 +40,11 @@ var model = {
    * @param postType {string} The type of content needed (post, page, etc)
    * @return posts {array} Posts matching post type (Posts, Pages, etc)
    */
-  getPostsByType: function( postType ) {
+  getPostsByType ( postType ) {
     // Get content from local store
-    var data = model.getLocalStore(),
-        posts;
-
-    // Get posts from local store
-    if ( postType === 'post' ) {
-      posts = data.posts;
-    } else if ( postType === 'page' ) {
-      posts = data.pages;
-    } else if ( postType === 'setting' ) {
-      posts = data.settings;
-    } else {
-      posts =  [{type:'404',title:'404 Error'}];
-    }
-    return posts;
+    const data = model.getLocalStore();
+    // Return just data.postType ie data.posts
+    return data[ postType + 's'];
   },
 
   /**
@@ -61,11 +54,11 @@ var model = {
    * @return post {object} Single post based on url slugs
    *
    */
-  getPostBySlugs: function( slugs ) {
-    var post;
+  getPostBySlugs ( slugs ) {
+    let post;
 
     if ( slugs.length > 1 &&
-      ( slugs[0] === 'posts' || slugs[0] === 'blog' ) ) {
+      ( slugs[0] === 'blog' ) ) {
       // If blog post
       post = model.getPostBySlug( slugs[1], 'posts' );
     } else if ( slugs.length > 1 && slugs[0] === 'settings' ) {
@@ -88,28 +81,19 @@ var model = {
    * @return post {object} Single post based on url slugs
    *
    */
-  getPostBySlug: function( slug, postType ){
-    // Get contet from local storage
-    var data = model.getLocalStore(),
-        posts,
-        item;
+  getPostBySlug ( slug, postType ) {
+    const store = model.getLocalStore();
+    let posts,
+        post;
 
-    if ( postType === 'posts' ) {
-      posts = data.posts;
-    } else if ( postType === 'pages' ) {
-      posts = data.pages;
-    } else if ( postType === 'settings' ) {
-      posts = data.settings;
-    } else {
-      posts =  [{type:'404',title:'404 Error'}];
-    }
-
-    // Get the post from store based on the slug
-    item = posts.filter( function( obj ) {
-      return obj.slug == slug;
+    // Get posts from local storage
+    posts = store[ postType ];
+    // Filter the posts to match the slug
+    post = _.filter( posts, (post) => {
+      return post.slug == slug;
     });
 
-    return item[0];
+    return post[0];
   },
 
   /**
@@ -117,16 +101,18 @@ var model = {
    *
    * @return store {object} Local storage object with all content
    */
-  getLocalStore: function() {
-    var localStore = JSON.parse( localStorage.getItem( 'vanillaPress' ) ),
-        store = {};
+  getLocalStore () {
+    const store = JSON.parse(
+                        localStorage.getItem( 'vanillaPress' )
+                      );
+    let newStore = {};
 
-    if( localStore === null ) {
-      store = localStore;
+    if( _.isNull( store ) ) {
+      newStore = store;
     } else {
-      store = localStore[0];
+      newStore = store[0];
     }
-    return store;
+    return newStore;
   },
 
   /**
@@ -134,18 +120,15 @@ var model = {
    *
    * @return next highest id based on existing posts
    */
-  getNewPostId: function() {
-    var newId,
-        localStore = model.getLocalStore(),
-        postIds = [],
-        highestId;
+  getNewPostId () {
+    const store = model.getLocalStore();
 
-    localStore.posts.forEach(function( post ) {
-      postIds.push( Number( post.id ) );
-    });
-    highestId = Math.max.apply( Math, postIds );
-    newId = highestId + 1;
-    return newId;
+    // Get the current highest post id
+    let latestPost = _.max( store.posts, (post) => {
+      return post.id;
+    } );
+    // Return new unique id
+    return latestPost.id + 1;
   },
 
   /**
@@ -157,7 +140,7 @@ var model = {
    * @return next highest id based on existing posts
    */
   uniqueifySlug: function( slug ) {
-    var slugExists,
+    let slugExists,
         n = 1;
 
     // Check if slug exists
@@ -186,17 +169,14 @@ var model = {
    * @return true if slug exists or false if does not exist
    */
   checkIfSlugExists: function( slug ) {
-    var localStore = model.getLocalStore(),
-        slugs = [],
-        slugExists;
+    const store = model.getLocalStore();
 
-    localStore.posts.forEach(function( post ) {
-      slugs.push( post.slug );
-    });
+    // Check if filtering posts for slug is empty
+    return _.isEmpty(
+           _.filter( store.posts, ( post ) => {
+             return post.slug === slug;
+           }) ) ? false : true;
 
-    slugExists = ( slugs.indexOf( slug ) > -1 );
-
-    return slugExists;
   },
 
   /**
@@ -205,7 +185,7 @@ var model = {
    * @param store {object} Temporary store to update
    */
   updateLocalStore: function( store ) {
-    var newStore = [ store ];
+    let newStore = [ store ];
     // Makes sure to stringify store object before saving
     localStorage.setItem( 'vanillaPress', JSON.stringify( newStore ) );
   },
@@ -220,3 +200,5 @@ var model = {
 };
 
 module.exports = model;
+
+}());
