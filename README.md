@@ -10,20 +10,20 @@ __This project is part of the [JavaScript for WordPress Master Course](http://ja
 
 *Changelog*
 
-[V2]
+**[V2]**
 
-**Changed**
+*Changed*
 
 - Refactored with Babel and ES6
 - Light functional refactoring with Underscore
 
-**Added**
+*Added*
 
 - Underscore library
 
-[V1]
+**[V1]**
 
-**Added**
+*Added*
 
 - Front end view of pages
 - Front end blog section with single views
