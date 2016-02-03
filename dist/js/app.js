@@ -1171,6 +1171,13 @@ var editor = {
         false);
     }
 
+    // Check to see if should add new post button
+    if ( editor.currentPostType === 'post' ) {
+      addNewPostLink.classList.remove('hidden');
+    } else {
+      addNewPostLink.classList.add('hidden');
+    }
+
     // Add listener to new post link
     addNewPostLink.addEventListener(
       'click',
@@ -2010,7 +2017,7 @@ var view = {
     view.loadMainHeader();
   },
 
-  currentPost: '',
+    currentPost: '',
 
 
   /**

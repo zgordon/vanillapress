@@ -94,6 +94,9 @@ body {
   color: #fff;
   font-weight: bold;
 }
+#editor nav #addNew a.hidden {
+  display: none;
+}
 #editor nav h3 {
   padding: 20px;
   text-transform: capitalize;

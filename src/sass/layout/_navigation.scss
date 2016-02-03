@@ -37,6 +37,9 @@
           &:hover {
 
           }
+          &.hidden {
+            display: none;
+          }
       }
     }
 

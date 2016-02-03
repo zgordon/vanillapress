@@ -21,7 +21,7 @@ var view = {
     view.loadMainHeader();
   },
 
-  currentPost: '',
+    currentPost: '',
 
 
   /**
