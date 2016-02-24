@@ -79,18 +79,25 @@ var editor = {
    *
   */
   listenLoadEditForm () {
+    //event.preventDefault();
     editor.clearMenus();
     const slugs = h.getAfterHash( this.href ),
           post = model.getPostBySlugs( slugs );
+
+    console.log( 'url: ' + this.href );
+
+    console.log( 'slugs: ' + slugs );
+    console.log( 'post: ' + post );
 
     editor.currentPost = post;
     editor.currentPostType = post.type;
 
     if ( editor.currentPostType !== 'settings' ) {
-      view.currentPost = post;
-      view.update();
+      //view.currentPost = post;
+      router.updatePage( this.href );
+      console.log( view.currentPost );
     } else {
-      event.preventDefault();
+
     }
 
     editor.showEditPanel();
@@ -175,7 +182,6 @@ var editor = {
       // If new post add post to store
       storePosts.push( editor.currentPost );
     } else {
-      console.log( 'here now?' );
       // If existing post then update post in store
        storePosts = _.map( storePosts, (post) => {
          if ( post.id === editor.currentPost.id ) {
@@ -183,7 +189,6 @@ var editor = {
            post.content = editor.currentPost.content;
            post.modified = Date();
          }
-         console.log( post );
          return post;
        });
     }
@@ -288,8 +293,6 @@ var editor = {
     editor.updateNavTitle();
     h.addMenuItems( menuItems, postType );
 
-    console.log( postType );
-    console.log( secondaryLinks );
     // Add listeners to secondary links
     _.each( secondaryLinks, (link) => {
       link.addEventListener(
@@ -490,14 +493,15 @@ var editor = {
     } else {
       // If closing editor
       if ( view.currentPost.type === 'posts' ) {
-        router.updateHash( 'blog/' + view.currentPost.slug );
+        router.updatePage( 'blog/' + view.currentPost.slug );
+        //router.updateHash( 'blog/' + view.currentPost.slug );
       } else {
         if ( editor.currentPost.slug === '_new' ) {
           // If closing a new post editor
-          router.updateHash( 'blog' );
-          router.setCurrentPost();
+          router.updatePage( 'blog' );
+          //router.setCurrentPost();
         } else {
-          router.updateHash( view.currentPost.slug );
+          router.updatePage( view.currentPost.slug );
         }
       }
       view.listenMainNavLinksUpdatePage();

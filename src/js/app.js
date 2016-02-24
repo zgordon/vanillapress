@@ -1,9 +1,14 @@
+(function() {
+
+'use strict';
+
 /**
  * Main app file.  Initializes app components.
  */
 
-var model = require( './model.js' ),
+var page = require( 'page' ),
     router = require( './router.js' ),
+    model = require( './model.js' ),
     view = require( './view.js' ),
     editor = require( './editor.js' );
 
@@ -25,3 +30,4 @@ var vanillaPress = {
 };
 
 vanillaPress.init();
+}());

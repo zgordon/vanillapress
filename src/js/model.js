@@ -55,8 +55,7 @@ var model = {
    *
    */
   getPostBySlugs ( slugs ) {
-    let post;
-
+    let post;    
     if ( slugs.length > 1 &&
       ( slugs[0] === 'blog' ) ) {
       // If blog post

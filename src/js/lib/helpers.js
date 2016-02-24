@@ -46,11 +46,11 @@ const _ = require( 'underscore' ),
     link.appendChild( linkText );
 
     if ( postType === 'posts' ) {
-      link.href = '#blog/' + slug;
+      link.href = '/blog/' + slug + '/';
     } else if ( postType === 'settings' ) {
-      link.href = '#settings/' + slug;
+      link.href = '/settings/' + slug + '/';
     } else {
-      link.href = '#' + slug;
+      link.href = '/' + slug + '/';
     }
 
     return link;
@@ -65,7 +65,7 @@ const _ = require( 'underscore' ),
         excerpt;
 
     titleLink.appendChild( title );
-    titleLink.href = '#blog/' + post.slug;
+    titleLink.href = '/blog/' + post.slug + '/';
     titleEl.appendChild( titleLink );
 
     contentDiv = document.createElement( 'div' );

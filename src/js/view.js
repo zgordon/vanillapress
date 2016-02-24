@@ -36,7 +36,7 @@ var view = {
     const links = document.querySelectorAll( '#mainNav a' );
     _.each( links, ( link ) => {
       // Add listener to activate main nav
-      link.addEventListener( 'click', view.mainNavControl, false );
+//      link.addEventListener( 'click', view.mainNavControl, false );
       // Remove listener that disables main nav
       link.removeEventListener( 'click', view.disableNav );
     });
