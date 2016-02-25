@@ -1,7 +1,9 @@
 #view {
   background: $view-background-color;
   padding: 40px 20px;
-
+  .inactive a {
+    cursor: not-allowed;
+  }
   .container {
     // padding: 20px;
     margin: 20px auto 0;

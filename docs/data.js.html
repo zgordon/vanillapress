@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: data.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: data.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Main JSON object of posts, pages and settings
+ */
+var jsonData =
+  {
+    posts: [
+      {
+        id:1,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"hello-world",
+        type:"posts",
+        title:"Hello world!",
+        content:"&lt;p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!&lt;/p> ",
+      },
+      {
+        id:2,
+        date:"2016-01-10T22:05:09",
+        modified:"2016-01-10T22:05:09",
+        slug:"learning-javascript",
+        type:"posts",
+        title:"Learning JavaScript!",
+        content:"&lt;p>I'm learning JavaScript and super excited!!!&lt;/p> ",
+      },
+      {
+        id:3,
+        date:"2016-01-11T22:05:09",
+        modified:"2016-01-11T22:05:09",
+        slug:"rest-api",
+        type:"posts",
+        title:"The REST API!",
+        content:"&lt;p>I've started working with the REST API in WordPress, what fun!&lt;/p> ",
+      },
+      {
+        id:4,
+        date:"2016-01-12T22:05:09",
+        modified:"2016-01-12T22:05:09",
+        slug:"json-data",
+        type:"posts",
+        title:"JSON Data!",
+        content:"&lt;p>So, with the REST API it is posible to pull in WordPress data as pure JSON.  Now I'm figuring out what to do with the data&lt;/p> ",
+      },
+      {
+        id:5,
+        date:"2016-01-13T22:05:09",
+        modified:"2016-01-13T22:05:09",
+        slug:"javascript-project",
+        type:"posts",
+        title:"JavaScript Project",
+        content:"&lt;p>I've started working with the REST API in WordPress, what fun!&lt;/p> ",
+      }
+    ],
+    pages: [
+      {
+        id:40,
+        date:"2016-01-07T22:05:09",
+        modified:"2016-01-07T22:05:09",
+        slug:"home",
+        type:"pages",
+        title:"Home",
+        content:"&lt;p>Welcome!&lt;/p>&lt;p>Reprehenderit sit sunt nisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.&lt;/p>&lt;p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.&lt;/p>&lt;p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.&lt;/p>",
+      },
+      {
+        id:41,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"about",
+        type:"pages",
+        title:"About Me",
+        content:"&lt;p>Hi!  I'm me :)&lt;/p>&lt;p>Sisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.&lt;/p>&lt;p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.&lt;/p>&lt;p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.&lt;/p>",
+      },
+      {
+        id:42,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"blog",
+        type:"pages",
+        title:"Blog",
+        content:"&lt;p>Welcome to my blog page, please enjoy!&lt;/p>",
+      },
+      {
+        id:43,
+        date:"2016-01-19T22:06:09",
+        modified:"2016-01-19T22:06:09",
+        slug:"contact",
+        type:"pages",
+        title:"Contact",
+        content:"&lt;p>Please get in touch!&lt;/p>&lt;p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.&lt;/p>",
+      }
+    ],
+    settings: [
+      {
+        id:991,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"site-name",
+        type:"settings",
+        title:"Site Name",
+        content:"VanillaPress"
+      },
+      {
+        id:992,
+        date:"2016-01-09T22:05:09",
+        modified:"2016-01-09T22:05:09",
+        slug:"site-description",
+        type:"settings",
+        title:"Site Description",
+        content:"A JS Front &amp; Back End"
+      }
+    ]
+  };
+
+module.exports = jsonData;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-editor.html">editor</a></li><li><a href="module-model.html">model</a></li><li><a href="module-router.html">router</a></li><li><a href="module-view.html">view</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-editor-editor.html">editor</a></li><li><a href="module-model-model.html">model</a></li><li><a href="module-router-router.html">router</a></li><li><a href="module-view-view.html">view</a></li><li><a href="vanillaPress.html">vanillaPress</a></li></ul><h3>Global</h3><ul><li><a href="global.html#jsonData">jsonData</a></li><li><a href="global.html#model">model</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 25 2016 14:52:04 GMT-0500 (EST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

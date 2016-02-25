@@ -8,7 +8,7 @@
  */
 
 var jsonData = require( './data.js' ),
-    helpers = require( './lib/helpers.js' );
+    error404 = {type:'404',title:'404 Error', content: 'Please try another page'};
 
 
 /**
@@ -17,7 +17,10 @@ var jsonData = require( './data.js' ),
  * @namespace
  */
 var model = {
-  // Init function to load data into local store
+  /**
+   * Initializes model and sets local store if empty
+   *
+   */
   init: function() {
     var localStore = model.getLocalStore();
     if( typeof localStore === 'undefined' || localStore === null ||
@@ -26,7 +29,6 @@ var model = {
         'vanillaPress',
         JSON.stringify( jsonData )
       );
-      localStore = model.getLocalStore();
     }
   },
 
@@ -42,16 +44,15 @@ var model = {
         posts;
 
     // Get posts from local store
-    if ( postType === 'post' ) {
-      posts = data.posts;
-    } else if ( postType === 'page' ) {
-      posts = data.pages;
-    } else if ( postType === 'setting' ) {
-      posts = data.settings;
+    if ( 'posts' === postType ) {
+      return data.posts;
+    } else if ( 'pages' === postType ) {
+      return data.pages;
+    } else if ( 'settings' === postType ) {
+      return data.settings;
     } else {
-      posts =  [{type:'404',title:'404 Error'}];
+      return  [ error404 ];
     }
-    return posts;
   },
 
   /**
@@ -64,20 +65,17 @@ var model = {
   getPostBySlugs: function( slugs ) {
     var post;
 
-    if ( slugs.length > 1 &&
-      ( slugs[0] === 'posts' || slugs[0] === 'blog' ) ) {
+    if ( slugs.length > 1 && 'blog' === slugs[0] ) {
       // If blog post
-      post = model.getPostBySlug( slugs[1], 'posts' );
-    } else if ( slugs.length > 1 && slugs[0] === 'settings' ) {
+      return model.getPostBySlug( slugs[1], 'posts' );
+    } else if ( slugs.length > 1 && 'settings' === slugs[0] ) {
       // If setting
-      post = model.getPostBySlug( slugs[1], 'settings' );
+      return model.getPostBySlug( slugs[1], 'settings' );
     } else {
       // If page
-      if( slugs[0] === '') slugs[0] = 'home';
-      post = model.getPostBySlug( slugs[0], 'pages');
+      if( '' === slugs[0] ) slugs[0] = 'home';
+      return model.getPostBySlug( slugs[0], 'pages');
     }
-
-    return post;
   },
 
   /**
@@ -91,42 +89,15 @@ var model = {
   getPostBySlug: function( slug, postType ){
     // Get contet from local storage
     var data = model.getLocalStore(),
-        posts,
-        item;
-
-    if ( postType === 'posts' ) {
-      posts = data.posts;
-    } else if ( postType === 'pages' ) {
-      posts = data.pages;
-    } else if ( postType === 'settings' ) {
-      posts = data.settings;
-    } else {
-      posts =  [{type:'404',title:'404 Error'}];
-    }
+        posts = model.getPostsByType ( postType ),
+        post;
 
     // Get the post from store based on the slug
-    item = posts.filter( function( obj ) {
-      return obj.slug == slug;
+    post = posts.filter( function( post ) {
+      return post.slug == slug;
     });
 
-    return item[0];
-  },
-
-  /**
-   * Gets content from local store
-   *
-   * @return store {object} Local storage object with all content
-   */
-  getLocalStore: function() {
-    var localStore = JSON.parse( localStorage.getItem( 'vanillaPress' ) ),
-        store = {};
-
-    if( localStore === null ) {
-      store = localStore;
-    } else {
-      store = localStore[0];
-    }
-    return store;
+    return post[0];
   },
 
   /**
@@ -135,9 +106,9 @@ var model = {
    * @return next highest id based on existing posts
    */
   getNewPostId: function() {
-    var newId,
-        localStore = model.getLocalStore(),
+    var localStore = model.getLocalStore(),
         postIds = [],
+        newId,
         highestId;
 
     localStore.posts.forEach(function( post ) {
@@ -158,25 +129,18 @@ var model = {
    */
   uniqueifySlug: function( slug ) {
     var slugExists,
-        n = 1;
+        n = 1,
+        uniqueSlug = slug;
 
     // Check if slug exists
     slugExists = model.checkIfSlugExists( slug );
-
-    // If slug exists, get unique string
-    if ( slugExists === true ) {
-      // Append -n to end of url
-      slug = slug + '-' + n;
-      // Keep adding -n++ until get unique slug
-      while ( slugExists === true ) {
-        slug = slug.substring( 0, slug.lastIndexOf( '-' ) );
-        slug = slug + '-' + n;
-        slugExists = model.checkIfSlugExists( slug );
-        n++;
-      }
+    while ( slugExists ) {
+      uniqueSlug = slug + '-' + n;
+      slugExists = model.checkIfSlugExists( uniqueSlug );
+      n++;
     }
 
-    return slug;
+    return uniqueSlug;
   },
 
   /**
@@ -200,14 +164,22 @@ var model = {
   },
 
   /**
+   * Gets content from local store
+   *
+   * @return store {object} Local storage object with all content
+   */
+  getLocalStore: function() {
+    return JSON.parse( localStorage.getItem( 'vanillaPress' ) );
+  },
+
+  /**
    * Saves temporary store to local storage.
    *
    * @param store {object} Temporary store to update
    */
   updateLocalStore: function( store ) {
-    var newStore = [ store ];
     // Makes sure to stringify store object before saving
-    localStorage.setItem( 'vanillaPress', JSON.stringify( newStore ) );
+    localStorage.setItem( 'vanillaPress', JSON.stringify( store ) );
   },
 
   /**

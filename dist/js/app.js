@@ -762,7 +762,7 @@ vanillaPress.init();
 /**
  * Main JSON object of posts, pages and settings
  */
-var jsonData = [
+var jsonData =
   {
     posts: [
       {
@@ -770,7 +770,7 @@ var jsonData = [
         date:"2016-01-09T22:05:09",
         modified:"2016-01-09T22:05:09",
         slug:"hello-world",
-        type:"post",
+        type:"posts",
         title:"Hello world!",
         content:"<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p> ",
       },
@@ -779,7 +779,7 @@ var jsonData = [
         date:"2016-01-10T22:05:09",
         modified:"2016-01-10T22:05:09",
         slug:"learning-javascript",
-        type:"post",
+        type:"posts",
         title:"Learning JavaScript!",
         content:"<p>I'm learning JavaScript and super excited!!!</p> ",
       },
@@ -788,7 +788,7 @@ var jsonData = [
         date:"2016-01-11T22:05:09",
         modified:"2016-01-11T22:05:09",
         slug:"rest-api",
-        type:"post",
+        type:"posts",
         title:"The REST API!",
         content:"<p>I've started working with the REST API in WordPress, what fun!</p> ",
       },
@@ -797,7 +797,7 @@ var jsonData = [
         date:"2016-01-12T22:05:09",
         modified:"2016-01-12T22:05:09",
         slug:"json-data",
-        type:"post",
+        type:"posts",
         title:"JSON Data!",
         content:"<p>So, with the REST API it is posible to pull in WordPress data as pure JSON.  Now I'm figuring out what to do with the data</p> ",
       },
@@ -806,7 +806,7 @@ var jsonData = [
         date:"2016-01-13T22:05:09",
         modified:"2016-01-13T22:05:09",
         slug:"javascript-project",
-        type:"post",
+        type:"posts",
         title:"JavaScript Project",
         content:"<p>I've started working with the REST API in WordPress, what fun!</p> ",
       }
@@ -817,7 +817,7 @@ var jsonData = [
         date:"2016-01-07T22:05:09",
         modified:"2016-01-07T22:05:09",
         slug:"home",
-        type:"page",
+        type:"pages",
         title:"Home",
         content:"<p>Welcome!</p><p>Reprehenderit sit sunt nisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
       },
@@ -826,7 +826,7 @@ var jsonData = [
         date:"2016-01-09T22:05:09",
         modified:"2016-01-09T22:05:09",
         slug:"about",
-        type:"page",
+        type:"pages",
         title:"About Me",
         content:"<p>Hi!  I'm me :)</p><p>Sisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
       },
@@ -835,7 +835,7 @@ var jsonData = [
         date:"2016-01-09T22:05:09",
         modified:"2016-01-09T22:05:09",
         slug:"blog",
-        type:"page",
+        type:"pages",
         title:"Blog",
         content:"<p>Welcome to my blog page, please enjoy!</p>",
       },
@@ -844,7 +844,7 @@ var jsonData = [
         date:"2016-01-19T22:06:09",
         modified:"2016-01-19T22:06:09",
         slug:"contact",
-        type:"page",
+        type:"pages",
         title:"Contact",
         content:"<p>Please get in touch!</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
       }
@@ -855,7 +855,7 @@ var jsonData = [
         date:"2016-01-09T22:05:09",
         modified:"2016-01-09T22:05:09",
         slug:"site-name",
-        type:"setting",
+        type:"settings",
         title:"Site Name",
         content:"VanillaPress"
       },
@@ -864,13 +864,12 @@ var jsonData = [
         date:"2016-01-09T22:05:09",
         modified:"2016-01-09T22:05:09",
         slug:"site-description",
-        type:"setting",
+        type:"settings",
         title:"Site Description",
         content:"A JS Front & Back End"
       }
     ]
-  },
-];
+  };
 
 module.exports = jsonData;
 
@@ -924,8 +923,7 @@ var editor = {
    */
   listenPrimaryLinks: function() {
     var urlSegments = helpers.getAfterHash( this.href );
-    var currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
-    editor.currentPostType = currentPost;
+    editor.currentPostType = urlSegments[0];
     editor.clearMenus();
     editor.showSecondaryMenu();
     event.preventDefault();
@@ -957,7 +955,7 @@ var editor = {
     editor.currentPost = post;
     editor.currentPostType = post.type;
 
-    if ( editor.currentPostType !== 'setting' ) {
+    if ( editor.currentPostType !== 'settings' ) {
       view.currentPost = post;
       view.update();
     } else {
@@ -981,7 +979,7 @@ var editor = {
     editor.clearMenus();
     editor.currentPost = post;
 
-    if ( editor.currentPostType !== 'setting' ) {
+    if ( editor.currentPostType !== 'settings' ) {
       // Clear the view
       view.clearContent();
     }
@@ -1026,7 +1024,7 @@ var editor = {
           highestId;
 
       newPost = true;
-      editor.currentPost.type = 'post';
+      editor.currentPost.type = 'posts';
 
       // Slugify title
       editor.currentPost.slug = helpers.slugifyTitle( editor.currentPost.title );
@@ -1042,9 +1040,9 @@ var editor = {
     }
 
     // Get temp store of posts based on type
-    if ( postType === 'post' ) {
+    if ( postType === 'posts' ) {
       storePosts = store.posts;
-    } else if ( postType === 'page' ) {
+    } else if ( postType === 'pages' ) {
       storePosts = store.pages;
     } else {
       storePosts = store.settings;
@@ -1064,9 +1062,9 @@ var editor = {
     }
 
     // Add temp store data back
-    if ( postType === 'post' ) {
+    if ( postType === 'posts' ) {
       store.posts = storePosts;
-    } else if ( postType === 'page' ) {
+    } else if ( postType === 'pages' ) {
       store.pages = storePosts;
     } else {
       store.settings = storePosts;
@@ -1074,9 +1072,9 @@ var editor = {
     model.updateLocalStore( store );
 
     // Update url and current post
-    if ( postType === 'post' ) {
+    if ( postType === 'posts' ) {
       router.updateHash( 'blog/' + editor.currentPost.slug );
-    } else if ( postType === 'page' ) {
+    } else if ( postType === 'pages' ) {
       router.updateHash( editor.currentPost.slug );
     } else {
 
@@ -1173,7 +1171,7 @@ var editor = {
     }
 
     // Check if need to show new post button
-    if ( editor.currentPostType === 'post' ) {
+    if ( editor.currentPostType === 'posts' ) {
       addNewPostLink.classList.remove('hidden');
       // Add listener to new post link
       addNewPostLink.addEventListener(
@@ -1195,6 +1193,7 @@ var editor = {
     var post = editor.currentPost,
         editNav = helpers.getEditorEditNav(),
         editForm = helpers.getEditorForm(),
+        titleField = helpers.getEditorTitleField();
         deleteBtn = helpers.getDeletePostLink();
 
     // Display the edit panel and form
@@ -1211,7 +1210,9 @@ var editor = {
       false
     );
 
-    if ( editor.currentPostType === 'post' ) {
+    titleField.removeAttribute( 'readonly', 'readonly' );
+
+    if ( editor.currentPostType === 'posts' ) {
       deleteBtn.classList.remove( 'hidden' );
       // Add event listener to delete post
       deleteBtn.addEventListener(
@@ -1219,6 +1220,10 @@ var editor = {
         editor.listenDeletePost,
         false
       );
+    } else if ( editor.currentPostType === 'settings' ) {
+      // Make title input read only
+      titleField.setAttribute( 'readonly', 'readonly' );
+      deleteBtn.classList.add( 'hidden' );
     } else {
       deleteBtn.classList.add( 'hidden' );
     }
@@ -1243,7 +1248,7 @@ var editor = {
     wysiwyg = wysiwygEditor(document.getElementById('editContent'));
 
     //  Add listeners to update the view on field changes
-    if ( post.type !== 'setting' ) {
+    if ( post.type !== 'settings' ) {
       // Actions if not editing a setting
       titleField.addEventListener( 'input', function() {
         editor.currentPost.title = this.value;
@@ -1253,21 +1258,17 @@ var editor = {
         view.updateContent( wysiwyg.read() );
         editor.currentPost.content = wysiwyg.read();
       });
-    } else {
-      // Live update controls for settings
-      if (  post.slug === 'site-name' ) {
-        wysiwyg.onUpdate(function () {
-          view.updateSiteName( wysiwyg.read() );
-          editor.currentPost.content = wysiwyg.read();
-        });
-      } else if( post.slug == 'site-description' ) {
-        wysiwyg.onUpdate( function () {
-          view.updateSiteDescription( wysiwyg.read() );
-          editor.currentPost.content = wysiwyg.read();
-        });
-      } else {
-
-      }
+    } else if (  post.slug === 'site-name' ) {
+    // Live update controls for settings
+      wysiwyg.onUpdate(function () {
+        view.updateSiteName( wysiwyg.read() );
+        editor.currentPost.content = wysiwyg.read();
+      });
+    } else if( post.slug == 'site-description' ) {
+      wysiwyg.onUpdate( function () {
+        view.updateSiteDescription( wysiwyg.read() );
+        editor.currentPost.content = wysiwyg.read();
+      });
     }
   },
 
@@ -1329,7 +1330,7 @@ var editor = {
   toggle: function() {
     var editorEl = helpers.getEditorEl(),
         toggleEl = helpers.getEditorToggleEl(),
-        mainNav = helpers.getMainNavEl();
+        viewEl = helpers.getViewEl();
 
     // Clear menus and load edit panel
     editor.clearMenus();
@@ -1341,7 +1342,7 @@ var editor = {
     editorEl.classList.toggle('hidden');
     toggleEl.classList.toggle('hidden');
     // Toggle whether view nav is disabled
-    mainNav.classList.toggle('inactive');
+    viewEl.classList.toggle('inactive');
 
     // Take specific actions if opening or closing editor
     if ( toggleEl.classList.contains( 'hidden' ) === false ) {
@@ -1353,10 +1354,10 @@ var editor = {
         editor.listenSecondaryNavTitle,
         false
       );
-      view.listenDisableMainNavLinks();
+      view.listenDisableViewLinks();
     } else {
       // If closing editor
-      if ( view.currentPost.type === 'post' ) {
+      if ( view.currentPost.type === 'posts' ) {
         router.updateHash( 'blog/' + view.currentPost.slug );
       } else {
         if ( editor.currentPost.slug === '_new' ) {
@@ -1366,9 +1367,8 @@ var editor = {
         } else {
           router.updateHash( view.currentPost.slug );
         }
-
       }
-      view.listenMainNavLinksUpdatePage();
+      view.listenEnableViewLinks();
     }
 
   },
@@ -1394,11 +1394,11 @@ var editor = {
     if( currentMenu === 'secondary' ) {
       // If on secondary nav
       var navTitleEl = helpers.getEditorNavTitleEl( currentMenu );
-      navTitleEl.innerHTML = postType + 's';
+      navTitleEl.innerHTML = postType;
     } else {
       // If editing post
       var navTitleLink = helpers.getEditorNavTitleLink();
-      navTitleLink.textContent = postType + 's';
+      navTitleLink.textContent = postType;
       navTitleLink.addEventListener(
         'click',
         editor.listenSecondaryNavTitle,
@@ -1470,10 +1470,10 @@ var helpers = {
     return urlSegments;
   },
 
-  addMenuItems: function( menuItems, contentType ) {
+  addMenuItems: function( menuItems, postType ) {
     menuItems.forEach( function( item ){
 
-      var a = helpers.createLink( item.title, contentType, item.slug );
+      var a = helpers.createLink( item.title, postType, item.slug );
       helpers.addMenuItem( a );
 
     });
@@ -1493,9 +1493,9 @@ var helpers = {
 
     a.appendChild( aText );
 
-    if ( postType === 'post' ) {
+    if ( 'posts' === postType  ) {
       a.href = '#blog/' + slug;
-    } else if ( postType === 'setting' ) {
+    } else if ( 'settings' === postType ) {
       a.href = '#settings/' + slug;
     } else {
       a.href = '#' + slug;
@@ -1517,6 +1517,7 @@ var helpers = {
     titleEl.appendChild( titleLink );
 
     contentDiv = document.createElement( 'div' );
+    console.log( post );
     excerpt = post.content;
 
     if ( excerpt.length > 100 ) {
@@ -1613,7 +1614,7 @@ var helpers = {
   },
 
   slugifyTitle: function( title ) {
-    var slug = title.trim();    
+    var slug = title.trim();
 
     slug = slug.replace(/[^a-zA-Z0-9\s]/g,"");
     slug = slug.toLowerCase();
@@ -1633,8 +1634,16 @@ var helpers = {
   },
 
   getEditorEditUpdateBtn: function() {
-    var editBtn = document.getElementById( 'editUpdateBtn' );
-    return editBtn;
+    return document.getElementById( 'editUpdateBtn' );
+
+  },
+
+  getViewEl: function() {
+    return document.getElementById( 'view' );
+  },
+
+  getViewLinks: function() {
+    return document.querySelectorAll( '#view a' );
   },
 
   getSiteName: function() {
@@ -1682,7 +1691,7 @@ module.exports = helpers;
  */
 
 var jsonData = require( './data.js' ),
-    helpers = require( './lib/helpers.js' );
+    error404 = {type:'404',title:'404 Error', content: 'Please try another page'};
 
 
 /**
@@ -1691,7 +1700,10 @@ var jsonData = require( './data.js' ),
  * @namespace
  */
 var model = {
-  // Init function to load data into local store
+  /**
+   * Initializes model and sets local store if empty
+   *
+   */
   init: function() {
     var localStore = model.getLocalStore();
     if( typeof localStore === 'undefined' || localStore === null ||
@@ -1700,7 +1712,6 @@ var model = {
         'vanillaPress',
         JSON.stringify( jsonData )
       );
-      localStore = model.getLocalStore();
     }
   },
 
@@ -1716,16 +1727,15 @@ var model = {
         posts;
 
     // Get posts from local store
-    if ( postType === 'post' ) {
-      posts = data.posts;
-    } else if ( postType === 'page' ) {
-      posts = data.pages;
-    } else if ( postType === 'setting' ) {
-      posts = data.settings;
+    if ( 'posts' === postType ) {
+      return data.posts;
+    } else if ( 'pages' === postType ) {
+      return data.pages;
+    } else if ( 'settings' === postType ) {
+      return data.settings;
     } else {
-      posts =  [{type:'404',title:'404 Error'}];
+      return  [ error404 ];
     }
-    return posts;
   },
 
   /**
@@ -1738,20 +1748,17 @@ var model = {
   getPostBySlugs: function( slugs ) {
     var post;
 
-    if ( slugs.length > 1 &&
-      ( slugs[0] === 'posts' || slugs[0] === 'blog' ) ) {
+    if ( slugs.length > 1 && 'blog' === slugs[0] ) {
       // If blog post
-      post = model.getPostBySlug( slugs[1], 'posts' );
-    } else if ( slugs.length > 1 && slugs[0] === 'settings' ) {
+      return model.getPostBySlug( slugs[1], 'posts' );
+    } else if ( slugs.length > 1 && 'settings' === slugs[0] ) {
       // If setting
-      post = model.getPostBySlug( slugs[1], 'settings' );
+      return model.getPostBySlug( slugs[1], 'settings' );
     } else {
       // If page
-      if( slugs[0] === '') slugs[0] = 'home';
-      post = model.getPostBySlug( slugs[0], 'pages');
+      if( '' === slugs[0] ) slugs[0] = 'home';
+      return model.getPostBySlug( slugs[0], 'pages');
     }
-
-    return post;
   },
 
   /**
@@ -1765,42 +1772,15 @@ var model = {
   getPostBySlug: function( slug, postType ){
     // Get contet from local storage
     var data = model.getLocalStore(),
-        posts,
-        item;
-
-    if ( postType === 'posts' ) {
-      posts = data.posts;
-    } else if ( postType === 'pages' ) {
-      posts = data.pages;
-    } else if ( postType === 'settings' ) {
-      posts = data.settings;
-    } else {
-      posts =  [{type:'404',title:'404 Error'}];
-    }
+        posts = model.getPostsByType ( postType ),
+        post;
 
     // Get the post from store based on the slug
-    item = posts.filter( function( obj ) {
-      return obj.slug == slug;
+    post = posts.filter( function( post ) {
+      return post.slug == slug;
     });
 
-    return item[0];
-  },
-
-  /**
-   * Gets content from local store
-   *
-   * @return store {object} Local storage object with all content
-   */
-  getLocalStore: function() {
-    var localStore = JSON.parse( localStorage.getItem( 'vanillaPress' ) ),
-        store = {};
-
-    if( localStore === null ) {
-      store = localStore;
-    } else {
-      store = localStore[0];
-    }
-    return store;
+    return post[0];
   },
 
   /**
@@ -1809,9 +1789,9 @@ var model = {
    * @return next highest id based on existing posts
    */
   getNewPostId: function() {
-    var newId,
-        localStore = model.getLocalStore(),
+    var localStore = model.getLocalStore(),
         postIds = [],
+        newId,
         highestId;
 
     localStore.posts.forEach(function( post ) {
@@ -1832,25 +1812,18 @@ var model = {
    */
   uniqueifySlug: function( slug ) {
     var slugExists,
-        n = 1;
+        n = 1,
+        uniqueSlug = slug;
 
     // Check if slug exists
     slugExists = model.checkIfSlugExists( slug );
-
-    // If slug exists, get unique string
-    if ( slugExists === true ) {
-      // Append -n to end of url
-      slug = slug + '-' + n;
-      // Keep adding -n++ until get unique slug
-      while ( slugExists === true ) {
-        slug = slug.substring( 0, slug.lastIndexOf( '-' ) );
-        slug = slug + '-' + n;
-        slugExists = model.checkIfSlugExists( slug );
-        n++;
-      }
+    while ( slugExists ) {
+      uniqueSlug = slug + '-' + n;
+      slugExists = model.checkIfSlugExists( uniqueSlug );
+      n++;
     }
 
-    return slug;
+    return uniqueSlug;
   },
 
   /**
@@ -1874,14 +1847,22 @@ var model = {
   },
 
   /**
+   * Gets content from local store
+   *
+   * @return store {object} Local storage object with all content
+   */
+  getLocalStore: function() {
+    return JSON.parse( localStorage.getItem( 'vanillaPress' ) );
+  },
+
+  /**
    * Saves temporary store to local storage.
    *
    * @param store {object} Temporary store to update
    */
   updateLocalStore: function( store ) {
-    var newStore = [ store ];
     // Makes sure to stringify store object before saving
-    localStorage.setItem( 'vanillaPress', JSON.stringify( newStore ) );
+    localStorage.setItem( 'vanillaPress', JSON.stringify( store ) );
   },
 
   /**
@@ -1895,7 +1876,7 @@ var model = {
 
 module.exports = model;
 
-},{"./data.js":9,"./lib/helpers.js":11}],13:[function(require,module,exports){
+},{"./data.js":9}],13:[function(require,module,exports){
 /**
  * The router object takes actions based on the
  * hash in the url (i.e. #content-here)
@@ -1905,7 +1886,8 @@ module.exports = model;
 
 var helpers = require( './lib/helpers.js' ),
     model = require( './model.js' ),
-    view = require( './view.js' );
+    view = require( './view.js' ),
+    error404 = {type:'404',title:'404 Error', content: 'Please try another page'};
 
 /**
  * The main router object.
@@ -1914,40 +1896,44 @@ var helpers = require( './lib/helpers.js' ),
  */
 var router = {
   init: function() {
-    router.setCurrentPost();
-    view.update();
+    router.refreshCurrentPost();
     router.listenPageChange();
   },
 
-  // Add listener to url changes
+  /**
+   * Add listener to url changes
+   *
+   */
   listenPageChange: function() {
     window.addEventListener(
       'hashchange',
-      router.setCurrentPost,
+      router.refreshCurrentPost,
       false
     );
   },
 
-  // Updates the the current post based on url
-  setCurrentPost: function() {
+  /**
+   * Updates the the current post based on url
+   *
+   */
+  refreshCurrentPost: function() {
     var slugs = helpers.getAfterHash(),
         post = model.getPostBySlugs( slugs );
 
-    if( typeof post === 'undefined' ) {
-      // If page does not exist set 404 page
-      view.currentPost = {
-        title: '404',
-        content: '<p>Oops! Please try a different url</p>',
-        slug: '404'
-      };
+    if( post ) {
+      view.setCurrentPost( post );
     } else {
-      view.currentPost = post;
+      // If page does not exist set 404 page
+      view.setCurrentPost( error404 );
     }
 
-    view.update();
+
   },
 
-  // Helper function to update hash based on slug
+  /**
+   * Helper function to update hash based on slug
+   *
+   */
   updateHash: function(slug) {
     window.location.hash = slug;
   }
@@ -1976,53 +1962,47 @@ var helpers = require( './lib/helpers.js' ),
  */
 var view = {
   init: function() {
-    view.listenMainNavLinksUpdatePage();
     view.loadMainHeader();
   },
 
-    currentPost: '',
-
-
-  /**
-   * Listener activate and deactivate main nav.
-   * @function
-  */
-  listenMainNavLinksUpdatePage: function() {
-    var mainNav = document.getElementById( 'mainNav' ),
-        links = mainNav.getElementsByTagName( 'a' );
-    for ( var i = 0, max = links.length; i < max; i++ ) {
-      // Add listener to activate main nav
-      links[i].addEventListener('click',view.mainNavControl,false);
-      // Remove listener that disables main nav
-      links[i].removeEventListener('click',view.disableNav );
-    }
-  },
+  currentPost: '',
 
   /**
-   * Listener to disable the main nav while the
+   * Listener to disable view navigation while
    * editor is open.
    *
    */
-  listenDisableMainNavLinks: function() {
-    var links = helpers.getMainNavLinks();
+  listenDisableViewLinks: function() {
+    var links = helpers.getViewLinks();
     for ( var i = 0, len = links.length; i < len; i++ ) {
       // Add listener to deactivate main nav
-      links[i].removeEventListener('click', view.mainNavControl);
-      // Remove listener to disable main nav
       links[i].addEventListener('click', view.disableNav, false);
     }
   },
 
   /**
-   * Main nav listener to load proper page
+   * Listener to disable links in the view while the
+   * editor is open.
    *
    */
-  mainNavControl: function() {
-    var newPageSlugs = helpers.getAfterHash( this.href ),
-        post = model.getPostBySlugs( newPageSlugs );
-    view.currentPost = post;
-    view.update();
+  listenEnableViewLinks: function() {
+    var links = helpers.getViewLinks();
+    for ( var i = 0, len = links.length; i < len; i++ ) {
+      // Add listener to deactivate main nav
+      links[i].removeEventListener('click', view.disableNav, false);
+    }
   },
+
+
+  /**
+   * Sets the current post and updates the view
+   *
+   * @param post {object} The new current post
+   */
+   setCurrentPost: function( post ) {
+     view.currentPost = post;
+     view.update();
+   },
 
   /**
    * Updates the view based on current post
@@ -2033,7 +2013,7 @@ var view = {
     view.updateContent( view.currentPost.content );
 
     view.removeBlogPosts();
-    if ( view.currentPost.slug === 'blog' ) {
+    if ( 'blog' === view.currentPost.slug ) {
       // Append blog posts to blog page
       view.loadBlogPosts();
     }
@@ -2112,7 +2092,7 @@ var view = {
    *
    */
   loadBlogPosts: function() {
-    var posts = model.getPostsByType( 'post' ),
+    var posts = model.getPostsByType( 'posts' ),
         postsMarkup = document.createElement( 'section' ),
         primaryContentEL;
 

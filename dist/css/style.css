@@ -141,9 +141,6 @@ body {
   font-family: "Montserrat";
   margin: 40px 0 20px;
 }
-#view #mainNav.inactive a {
-  cursor: not-allowed;
-}
 #view #mainNav ul {
   padding: 0;
   margin: 0;
@@ -263,6 +260,9 @@ body {
 #view {
   background: #fff;
   padding: 40px 20px;
+}
+#view .inactive a {
+  cursor: not-allowed;
 }
 #view .container {
   margin: 20px auto 0;
@@ -428,6 +428,13 @@ body {
 #edit .CodeMirror:focus,
 #edit iframe.wysiwyg:focus {
   border-color: #555;
+}
+#edit input:read-only,
+#edit button:read-only,
+#edit textarea:read-only,
+#edit .CodeMirror:read-only,
+#edit iframe.wysiwyg:read-only {
+  color: #ccc;
 }
 #edit textarea, #edit .CodeMirror, #edit .CodeMirror-scroll, #edit iframe.wysiwyg {
   min-height: 300px;

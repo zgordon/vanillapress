@@ -161,7 +161,7 @@ in the main view
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="view.js.html">view.js</a>, <a href="view.js.html#line143">line 143</a>
+        <a href="view.js.html">view.js</a>, <a href="view.js.html#line137">line 137</a>
     </li></ul></dd>
     
 
@@ -243,7 +243,7 @@ in the main view
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="view.js.html">view.js</a>, <a href="view.js.html#line185">line 185</a>
+        <a href="view.js.html">view.js</a>, <a href="view.js.html#line179">line 179</a>
     </li></ul></dd>
     
 
@@ -274,14 +274,14 @@ in the main view
 
     
 
-    <h4 class="name" id=".listenDisableMainNavLinks"><span class="type-signature">(static) </span>listenDisableMainNavLinks<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".listenDisableViewLinks"><span class="type-signature">(static) </span>listenDisableViewLinks<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Listener to disable the main nav while the
+    Listener to disable view navigation while
 editor is open.
 </div>
 
@@ -326,7 +326,7 @@ editor is open.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="view.js.html">view.js</a>, <a href="view.js.html#line47">line 47</a>
+        <a href="view.js.html">view.js</a>, <a href="view.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -357,14 +357,15 @@ editor is open.
 
     
 
-    <h4 class="name" id=".listenMainNavLinksUpdatePage"><span class="type-signature">(static) </span>listenMainNavLinksUpdatePage<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".listenEnableViewLinks"><span class="type-signature">(static) </span>listenEnableViewLinks<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Listener activate and deactivate main nav.
+    Listener to disable links in the view while the
+editor is open.
 </div>
 
 
@@ -408,7 +409,7 @@ editor is open.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="view.js.html">view.js</a>, <a href="view.js.html#line31">line 31</a>
+        <a href="view.js.html">view.js</a>, <a href="view.js.html#line43">line 43</a>
     </li></ul></dd>
     
 
@@ -490,7 +491,7 @@ editor is open.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="view.js.html">view.js</a>, <a href="view.js.html#line155">line 155</a>
+        <a href="view.js.html">view.js</a>, <a href="view.js.html#line149">line 149</a>
     </li></ul></dd>
     
 
@@ -572,89 +573,7 @@ editor is open.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="view.js.html">view.js</a>, <a href="view.js.html#line87">line 87</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".mainNavControl"><span class="type-signature">(static) </span>mainNavControl<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Main nav listener to load proper page
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="view.js.html">view.js</a>, <a href="view.js.html#line61">line 61</a>
+        <a href="view.js.html">view.js</a>, <a href="view.js.html#line81">line 81</a>
     </li></ul></dd>
     
 
@@ -736,7 +655,138 @@ editor is open.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="view.js.html">view.js</a>, <a href="view.js.html#line174">line 174</a>
+        <a href="view.js.html">view.js</a>, <a href="view.js.html#line168">line 168</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".setCurrentPost"><span class="type-signature">(static) </span>setCurrentPost<span class="signature">(post)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Sets the current post and updates the view
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>post</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The new current post</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="view.js.html">view.js</a>, <a href="view.js.html#line57">line 57</a>
     </li></ul></dd>
     
 
@@ -818,7 +868,7 @@ editor is open.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="view.js.html">view.js</a>, <a href="view.js.html#line72">line 72</a>
+        <a href="view.js.html">view.js</a>, <a href="view.js.html#line66">line 66</a>
     </li></ul></dd>
     
 
@@ -949,7 +999,7 @@ editor is open.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="view.js.html">view.js</a>, <a href="view.js.html#line133">line 133</a>
+        <a href="view.js.html">view.js</a>, <a href="view.js.html#line127">line 127</a>
     </li></ul></dd>
     
 
@@ -1080,7 +1130,7 @@ editor is open.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="view.js.html">view.js</a>, <a href="view.js.html#line113">line 113</a>
+        <a href="view.js.html">view.js</a>, <a href="view.js.html#line107">line 107</a>
     </li></ul></dd>
     
 
@@ -1211,7 +1261,7 @@ editor is open.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="view.js.html">view.js</a>, <a href="view.js.html#line103">line 103</a>
+        <a href="view.js.html">view.js</a>, <a href="view.js.html#line97">line 97</a>
     </li></ul></dd>
     
 
@@ -1342,7 +1392,7 @@ editor is open.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="view.js.html">view.js</a>, <a href="view.js.html#line123">line 123</a>
+        <a href="view.js.html">view.js</a>, <a href="view.js.html#line117">line 117</a>
     </li></ul></dd>
     
 
@@ -1390,7 +1440,7 @@ editor is open.
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Feb 03 2016 02:54:36 GMT-0500 (EST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Feb 25 2016 14:52:04 GMT-0500 (EST)
 </footer>
 
 <script> prettyPrint(); </script>

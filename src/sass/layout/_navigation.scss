@@ -102,10 +102,7 @@
   #mainNav {
     margin: 10px;
     font-family: $view-header-secondary;
-    margin: 40px 0 20px;
-    &.inactive a {
-      cursor: not-allowed;
-    }
+    margin: 40px 0 20px;    
 
     ul {
       padding:0;

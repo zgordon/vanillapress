@@ -17,10 +17,10 @@ var helpers = {
     return urlSegments;
   },
 
-  addMenuItems: function( menuItems, contentType ) {
+  addMenuItems: function( menuItems, postType ) {
     menuItems.forEach( function( item ){
 
-      var a = helpers.createLink( item.title, contentType, item.slug );
+      var a = helpers.createLink( item.title, postType, item.slug );
       helpers.addMenuItem( a );
 
     });
@@ -40,9 +40,9 @@ var helpers = {
 
     a.appendChild( aText );
 
-    if ( postType === 'post' ) {
+    if ( 'posts' === postType  ) {
       a.href = '#blog/' + slug;
-    } else if ( postType === 'setting' ) {
+    } else if ( 'settings' === postType ) {
       a.href = '#settings/' + slug;
     } else {
       a.href = '#' + slug;
@@ -64,6 +64,7 @@ var helpers = {
     titleEl.appendChild( titleLink );
 
     contentDiv = document.createElement( 'div' );
+    console.log( post );
     excerpt = post.content;
 
     if ( excerpt.length > 100 ) {
@@ -160,7 +161,7 @@ var helpers = {
   },
 
   slugifyTitle: function( title ) {
-    var slug = title.trim();    
+    var slug = title.trim();
 
     slug = slug.replace(/[^a-zA-Z0-9\s]/g,"");
     slug = slug.toLowerCase();
@@ -180,8 +181,16 @@ var helpers = {
   },
 
   getEditorEditUpdateBtn: function() {
-    var editBtn = document.getElementById( 'editUpdateBtn' );
-    return editBtn;
+    return document.getElementById( 'editUpdateBtn' );
+
+  },
+
+  getViewEl: function() {
+    return document.getElementById( 'view' );
+  },
+
+  getViewLinks: function() {
+    return document.querySelectorAll( '#view a' );
   },
 
   getSiteName: function() {

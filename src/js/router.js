@@ -7,7 +7,8 @@
 
 var helpers = require( './lib/helpers.js' ),
     model = require( './model.js' ),
-    view = require( './view.js' );
+    view = require( './view.js' ),
+    error404 = {type:'404',title:'404 Error', content: 'Please try another page'};
 
 /**
  * The main router object.
@@ -16,40 +17,44 @@ var helpers = require( './lib/helpers.js' ),
  */
 var router = {
   init: function() {
-    router.setCurrentPost();
-    view.update();
+    router.refreshCurrentPost();
     router.listenPageChange();
   },
 
-  // Add listener to url changes
+  /**
+   * Add listener to url changes
+   *
+   */
   listenPageChange: function() {
     window.addEventListener(
       'hashchange',
-      router.setCurrentPost,
+      router.refreshCurrentPost,
       false
     );
   },
 
-  // Updates the the current post based on url
-  setCurrentPost: function() {
+  /**
+   * Updates the the current post based on url
+   *
+   */
+  refreshCurrentPost: function() {
     var slugs = helpers.getAfterHash(),
         post = model.getPostBySlugs( slugs );
 
-    if( typeof post === 'undefined' ) {
-      // If page does not exist set 404 page
-      view.currentPost = {
-        title: '404',
-        content: '<p>Oops! Please try a different url</p>',
-        slug: '404'
-      };
+    if( post ) {
+      view.setCurrentPost( post );
     } else {
-      view.currentPost = post;
+      // If page does not exist set 404 page
+      view.setCurrentPost( error404 );
     }
 
-    view.update();
+
   },
 
-  // Helper function to update hash based on slug
+  /**
+   * Helper function to update hash based on slug
+   *
+   */
   updateHash: function(slug) {
     window.location.hash = slug;
   }
