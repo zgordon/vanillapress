@@ -1,7 +1,7 @@
 /**
  * Main JSON object of posts, pages and settings
  */
-var jsonData = [
+var jsonData =
   {
     posts: [
       {
@@ -108,7 +108,6 @@ var jsonData = [
         content:"A JS Front & Back End"
       }
     ]
-  },
-];
+  };
 
 module.exports = jsonData;

@@ -24,6 +24,9 @@
     &:focus {
       border-color: $editor-dark-link;
     }
+    &:read-only {
+      color: #ccc;
+    }
   }
   textarea, .CodeMirror, .CodeMirror-scroll, iframe.wysiwyg  {
     min-height: 300px;

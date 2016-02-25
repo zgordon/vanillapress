@@ -50,11 +50,17 @@ var editor = {
    * Loads seconday menu
    *
    */
+<<<<<<< HEAD
   listenPrimaryLinks () {
     const urlSegments = h.getAfterHash( this.href ),
     //const currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
           currentPost = urlSegments[0];
     editor.currentPostType = currentPost;
+=======
+  listenPrimaryLinks: function() {
+    var urlSegments = helpers.getAfterHash( this.href );
+    editor.currentPostType = urlSegments[0];
+>>>>>>> v1
     editor.clearMenus();
     editor.showSecondaryMenu();
     event.preventDefault();
@@ -93,9 +99,14 @@ var editor = {
     editor.currentPostType = post.type;
 
     if ( editor.currentPostType !== 'settings' ) {
+<<<<<<< HEAD
       //view.currentPost = post;
       router.updatePage( this.href );
       console.log( view.currentPost );
+=======
+      view.currentPost = post;
+      view.update();
+>>>>>>> v1
     } else {
 
     }
@@ -176,7 +187,17 @@ var editor = {
     }
 
     // Get temp store of posts based on type
+<<<<<<< HEAD
     storePosts = store[ editor.currentPostType ];//
+=======
+    if ( postType === 'posts' ) {
+      storePosts = store.posts;
+    } else if ( postType === 'pages' ) {
+      storePosts = store.pages;
+    } else {
+      storePosts = store.settings;
+    }
+>>>>>>> v1
 
     if ( newPost === true ) {
       // If new post add post to store
@@ -193,6 +214,7 @@ var editor = {
        });
     }
 
+<<<<<<< HEAD
     store[ editor.currentPostType ] = storePosts;
 
     model.updateLocalStore( store );
@@ -201,6 +223,22 @@ var editor = {
     if ( editor.currentPostType === 'posts' ) {
       router.updateHash( 'blog/' + editor.currentPost.slug );
     } else if ( editor.currentPostType === 'pages' ) {
+=======
+    // Add temp store data back
+    if ( postType === 'posts' ) {
+      store.posts = storePosts;
+    } else if ( postType === 'pages' ) {
+      store.pages = storePosts;
+    } else {
+      store.settings = storePosts;
+    }
+    model.updateLocalStore( store );
+
+    // Update url and current post
+    if ( postType === 'posts' ) {
+      router.updateHash( 'blog/' + editor.currentPost.slug );
+    } else if ( postType === 'pages' ) {
+>>>>>>> v1
       router.updateHash( editor.currentPost.slug );
     } else {
 
@@ -326,11 +364,20 @@ var editor = {
    * Displays the edit post panel
    *
    */
+<<<<<<< HEAD
   showEditPanel () {
     let post = editor.currentPost,
         editNav = h.getEditorEditNav(),
         editForm = h.getEditorForm(),
         deleteBtn = h.getDeletePostLink();
+=======
+  showEditPanel: function() {
+    var post = editor.currentPost,
+        editNav = helpers.getEditorEditNav(),
+        editForm = helpers.getEditorForm(),
+        titleField = helpers.getEditorTitleField();
+        deleteBtn = helpers.getDeletePostLink();
+>>>>>>> v1
 
     // Display the edit panel and form
     editor.clearEditForm();
@@ -346,6 +393,11 @@ var editor = {
       false
     );
 
+<<<<<<< HEAD
+=======
+    titleField.removeAttribute( 'readonly', 'readonly' );
+
+>>>>>>> v1
     if ( editor.currentPostType === 'posts' ) {
       deleteBtn.classList.remove( 'hidden' );
       // Add event listener to delete post
@@ -354,6 +406,10 @@ var editor = {
         editor.listenDeletePost,
         false
       );
+    } else if ( editor.currentPostType === 'settings' ) {
+      // Make title input read only
+      titleField.setAttribute( 'readonly', 'readonly' );
+      deleteBtn.classList.add( 'hidden' );
     } else {
       deleteBtn.classList.add( 'hidden' );
     }
@@ -388,21 +444,17 @@ var editor = {
         view.updateContent( wysiwyg.read() );
         editor.currentPost.content = wysiwyg.read();
       });
-    } else {
-      // Live update controls for settings
-      if (  post.slug === 'site-name' ) {
-        wysiwyg.onUpdate(function () {
-          view.updateSiteName( wysiwyg.read() );
-          editor.currentPost.content = wysiwyg.read();
-        });
-      } else if( post.slug == 'site-description' ) {
-        wysiwyg.onUpdate( function () {
-          view.updateSiteDescription( wysiwyg.read() );
-          editor.currentPost.content = wysiwyg.read();
-        });
-      } else {
-
-      }
+    } else if (  post.slug === 'site-name' ) {
+    // Live update controls for settings
+      wysiwyg.onUpdate(function () {
+        view.updateSiteName( wysiwyg.read() );
+        editor.currentPost.content = wysiwyg.read();
+      });
+    } else if( post.slug == 'site-description' ) {
+      wysiwyg.onUpdate( function () {
+        view.updateSiteDescription( wysiwyg.read() );
+        editor.currentPost.content = wysiwyg.read();
+      });
     }
   },
 
@@ -462,10 +514,17 @@ var editor = {
    * Main control for the editor toggle.
    *
    */
+<<<<<<< HEAD
   toggle () {
     let editorEl = h.getEditorEl(),
         toggleEl = h.getEditorToggleEl(),
         mainNav = h.getMainNavEl();
+=======
+  toggle: function() {
+    var editorEl = helpers.getEditorEl(),
+        toggleEl = helpers.getEditorToggleEl(),
+        viewEl = helpers.getViewEl();
+>>>>>>> v1
 
     // Clear menus and load edit panel
     editor.clearMenus();
@@ -477,7 +536,7 @@ var editor = {
     editorEl.classList.toggle('hidden');
     toggleEl.classList.toggle('hidden');
     // Toggle whether view nav is disabled
-    mainNav.classList.toggle('inactive');
+    viewEl.classList.toggle('inactive');
 
     // Take specific actions if opening or closing editor
     if ( toggleEl.classList.contains( 'hidden' ) === false ) {
@@ -489,12 +548,16 @@ var editor = {
         editor.listenSecondaryNavTitle,
         false
       );
-      view.listenDisableMainNavLinks();
+      view.listenDisableViewLinks();
     } else {
       // If closing editor
       if ( view.currentPost.type === 'posts' ) {
+<<<<<<< HEAD
         router.updatePage( 'blog/' + view.currentPost.slug );
         //router.updateHash( 'blog/' + view.currentPost.slug );
+=======
+        router.updateHash( 'blog/' + view.currentPost.slug );
+>>>>>>> v1
       } else {
         if ( editor.currentPost.slug === '_new' ) {
           // If closing a new post editor
@@ -504,7 +567,7 @@ var editor = {
           router.updatePage( view.currentPost.slug );
         }
       }
-      view.listenMainNavLinksUpdatePage();
+      view.listenEnableViewLinks();
     }
 
   },
@@ -531,11 +594,19 @@ var editor = {
     // Add secondary link based on current nav and post type
     if( currentMenu === 'secondary' ) {
       // If on secondary nav
+<<<<<<< HEAD
       navTitleEl = h.getEditorNavTitleEl( currentMenu );
       navTitleEl.innerHTML = postType;
     } else {
       // If editing post
       navTitleLink = h.getEditorNavTitleLink();
+=======
+      var navTitleEl = helpers.getEditorNavTitleEl( currentMenu );
+      navTitleEl.innerHTML = postType;
+    } else {
+      // If editing post
+      var navTitleLink = helpers.getEditorNavTitleLink();
+>>>>>>> v1
       navTitleLink.textContent = postType;
       navTitleLink.addEventListener(
         'click',

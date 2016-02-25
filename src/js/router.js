@@ -9,12 +9,19 @@
  * @exports router
  */
 
+<<<<<<< HEAD
 
 const _ = require( 'underscore' ),
       page = require( 'page' ),
       h = require( './lib/helpers.js' ),
       model = require( './model.js' ),
       view = require( './view.js' );
+=======
+var helpers = require( './lib/helpers.js' ),
+    model = require( './model.js' ),
+    view = require( './view.js' ),
+    error404 = {type:'404',title:'404 Error', content: 'Please try another page'};
+>>>>>>> v1
 
 /**
  * The main router object.
@@ -22,6 +29,7 @@ const _ = require( 'underscore' ),
  * @namespace
  */
 var router = {
+<<<<<<< HEAD
   init () {
     page('/', router.loadPage);
     page('/about', router.loadPage);
@@ -32,6 +40,11 @@ var router = {
     router.setCurrentPost();
     view.update();
     //router.listenPageChange();
+=======
+  init: function() {
+    router.refreshCurrentPost();
+    router.listenPageChange();
+>>>>>>> v1
   },
   updatePage( url ) {
     if( url === 'home' ) url = '/';
@@ -48,6 +61,7 @@ var router = {
       slugs.push( ctx.path.substring(0, ctx.path.length - 1)
                           .replace( '/', '' ));
 
+<<<<<<< HEAD
     }
     post = model.getPostBySlugs( slugs );
     view.currentPost = post;
@@ -67,13 +81,21 @@ var router = {
   },
   // Add listener to url changes
   listenPageChange () {
+=======
+  /**
+   * Add listener to url changes
+   *
+   */
+  listenPageChange: function() {
+>>>>>>> v1
     window.addEventListener(
       'hashchange',
-      router.setCurrentPost,
+      router.refreshCurrentPost,
       false
     );
   },
 
+<<<<<<< HEAD
   // Updates the the current post based on url
   setCurrentPost () {
     const slugs = h.getAfterHash(),
@@ -86,15 +108,36 @@ var router = {
         content: '<p>Oops! Please try a different url</p>',
         slug: '404'
       };
+=======
+  /**
+   * Updates the the current post based on url
+   *
+   */
+  refreshCurrentPost: function() {
+    var slugs = helpers.getAfterHash(),
+        post = model.getPostBySlugs( slugs );
+
+    if( post ) {
+      view.setCurrentPost( post );
+>>>>>>> v1
     } else {
-      view.currentPost = post;
+      // If page does not exist set 404 page
+      view.setCurrentPost( error404 );
     }
 
-    view.update();
+
   },
 
+<<<<<<< HEAD
   // Helper function to update hash based on slug
   updateHash ( slug ) {
+=======
+  /**
+   * Helper function to update hash based on slug
+   *
+   */
+  updateHash: function(slug) {
+>>>>>>> v1
     window.location.hash = slug;
   }
 

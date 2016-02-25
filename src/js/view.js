@@ -20,12 +20,17 @@
  * @namespace
  */
 var view = {
+<<<<<<< HEAD
   init () {
     view.listenMainNavLinksUpdatePage();
+=======
+  init: function() {
+>>>>>>> v1
     view.loadMainHeader();
   },
 
   currentPost: '',
+<<<<<<< HEAD
 
 
   /**
@@ -41,13 +46,28 @@ var view = {
       link.removeEventListener( 'click', view.disableNav );
     });
 
-  },
+=======
 
   /**
-   * Listener to disable the main nav while the
+   * Listener to disable view navigation while
    * editor is open.
    *
    */
+  listenDisableViewLinks: function() {
+    var links = helpers.getViewLinks();
+    for ( var i = 0, len = links.length; i < len; i++ ) {
+      // Add listener to deactivate main nav
+      links[i].addEventListener('click', view.disableNav, false);
+    }
+>>>>>>> v1
+  },
+
+  /**
+   * Listener to disable links in the view while the
+   * editor is open.
+   *
+   */
+<<<<<<< HEAD
   listenDisableMainNavLinks () {
     const links = h.getMainNavLinks();
     _.each( links, ( link ) => {
@@ -56,18 +76,35 @@ var view = {
       // Remove listener to disable main nav
       link.addEventListener('click', view.disableNav, false);
     });
+=======
+  listenEnableViewLinks: function() {
+    var links = helpers.getViewLinks();
+    for ( var i = 0, len = links.length; i < len; i++ ) {
+      // Add listener to deactivate main nav
+      links[i].removeEventListener('click', view.disableNav, false);
+    }
+>>>>>>> v1
   },
 
+
   /**
-   * Main nav listener to load proper page
+   * Sets the current post and updates the view
    *
+   * @param post {object} The new current post
    */
+<<<<<<< HEAD
   mainNavControl () {
     const newPageSlugs = h.getAfterHash( this.href ),
           post = model.getPostBySlugs( newPageSlugs );
     view.currentPost = post;
     view.update();
   },
+=======
+   setCurrentPost: function( post ) {
+     view.currentPost = post;
+     view.update();
+   },
+>>>>>>> v1
 
   /**
    * Updates the view based on current post
@@ -78,7 +115,7 @@ var view = {
     view.updateContent( view.currentPost.content );
 
     view.removeBlogPosts();
-    if ( view.currentPost.slug === 'blog' ) {
+    if ( 'blog' === view.currentPost.slug ) {
       // Append blog posts to blog page
       view.loadBlogPosts();
     }
@@ -156,10 +193,17 @@ var view = {
    * Gets blog posts and appends them to the page.
    *
    */
+<<<<<<< HEAD
   loadBlogPosts () {
     var posts = model.getPostsByType( 'posts' ),
         postsSection = document.createElement( 'section' ),
         primaryContentEL = h.getPrimaryContentEl();
+=======
+  loadBlogPosts: function() {
+    var posts = model.getPostsByType( 'posts' ),
+        postsMarkup = document.createElement( 'section' ),
+        primaryContentEL;
+>>>>>>> v1
 
     postsSection.id = 'blogPosts';
     // Get markup for each post

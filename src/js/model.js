@@ -11,9 +11,14 @@
  *
  */
 
+<<<<<<< HEAD
 const _ = require( 'underscore' ),
       h = require( './lib/helpers.js' ),
       jsonData = require( './data.js' );
+=======
+var jsonData = require( './data.js' ),
+    error404 = {type:'404',title:'404 Error', content: 'Please try another page'};
+>>>>>>> v1
 
 
 /**
@@ -22,15 +27,25 @@ const _ = require( 'underscore' ),
  * @namespace
  */
 var model = {
+<<<<<<< HEAD
   // Init function to load data into local store
   init () {
     let localStore = model.getLocalStore();
     if( _.isNull( localStore ) ) {
+=======
+  /**
+   * Initializes model and sets local store if empty
+   *
+   */
+  init: function() {
+    var localStore = model.getLocalStore();
+    if( typeof localStore === 'undefined' || localStore === null ||
+        localStore === '' ) {
+>>>>>>> v1
       localStorage.setItem(
         'vanillaPress',
         JSON.stringify( jsonData )
       );
-      localStore = model.getLocalStore();
     }
   },
 
@@ -42,9 +57,25 @@ var model = {
    */
   getPostsByType ( postType ) {
     // Get content from local store
+<<<<<<< HEAD
     const data = model.getLocalStore();
     // Return just data.postType ie data.posts
     return data[ postType ];
+=======
+    var data = model.getLocalStore(),
+        posts;
+
+    // Get posts from local store
+    if ( 'posts' === postType ) {
+      return data.posts;
+    } else if ( 'pages' === postType ) {
+      return data.pages;
+    } else if ( 'settings' === postType ) {
+      return data.settings;
+    } else {
+      return  [ error404 ];
+    }
+>>>>>>> v1
   },
 
   /**
@@ -54,22 +85,27 @@ var model = {
    * @return post {object} Single post based on url slugs
    *
    */
+<<<<<<< HEAD
   getPostBySlugs ( slugs ) {
     let post;    
     if ( slugs.length > 1 &&
       ( slugs[0] === 'blog' ) ) {
+=======
+  getPostBySlugs: function( slugs ) {
+    var post;
+
+    if ( slugs.length > 1 && 'blog' === slugs[0] ) {
+>>>>>>> v1
       // If blog post
-      post = model.getPostBySlug( slugs[1], 'posts' );
-    } else if ( slugs.length > 1 && slugs[0] === 'settings' ) {
+      return model.getPostBySlug( slugs[1], 'posts' );
+    } else if ( slugs.length > 1 && 'settings' === slugs[0] ) {
       // If setting
-      post = model.getPostBySlug( slugs[1], 'settings' );
+      return model.getPostBySlug( slugs[1], 'settings' );
     } else {
       // If page
-      if( slugs[0] === '') slugs[0] = 'home';
-      post = model.getPostBySlug( slugs[0], 'pages');
+      if( '' === slugs[0] ) slugs[0] = 'home';
+      return model.getPostBySlug( slugs[0], 'pages');
     }
-
-    return post;
   },
 
   /**
@@ -80,6 +116,7 @@ var model = {
    * @return post {object} Single post based on url slugs
    *
    */
+<<<<<<< HEAD
   getPostBySlug ( slug, postType ) {
     const store = model.getLocalStore();
     let posts,
@@ -89,10 +126,21 @@ var model = {
     posts = store[ postType ];
     // Filter the posts to match the slug
     post = _.filter( posts, (post) => {
+=======
+  getPostBySlug: function( slug, postType ){
+    // Get contet from local storage
+    var data = model.getLocalStore(),
+        posts = model.getPostsByType ( postType ),
+        post;
+
+    // Get the post from store based on the slug
+    post = posts.filter( function( post ) {
+>>>>>>> v1
       return post.slug == slug;
     });
 
     return post[0];
+<<<<<<< HEAD
   },
 
   /**
@@ -112,6 +160,8 @@ var model = {
       newStore = store[0];
     }
     return newStore;
+=======
+>>>>>>> v1
   },
 
   /**
@@ -119,6 +169,7 @@ var model = {
    *
    * @return next highest id based on existing posts
    */
+<<<<<<< HEAD
   getNewPostId () {
     const store = model.getLocalStore();
 
@@ -128,6 +179,20 @@ var model = {
     } );
     // Return new unique id
     return latestPost.id + 1;
+=======
+  getNewPostId: function() {
+    var localStore = model.getLocalStore(),
+        postIds = [],
+        newId,
+        highestId;
+
+    localStore.posts.forEach(function( post ) {
+      postIds.push( Number( post.id ) );
+    });
+    highestId = Math.max.apply( Math, postIds );
+    newId = highestId + 1;
+    return newId;
+>>>>>>> v1
   },
 
   /**
@@ -139,26 +204,24 @@ var model = {
    * @return next highest id based on existing posts
    */
   uniqueifySlug: function( slug ) {
+<<<<<<< HEAD
     let slugExists,
         n = 1;
+=======
+    var slugExists,
+        n = 1,
+        uniqueSlug = slug;
+>>>>>>> v1
 
     // Check if slug exists
     slugExists = model.checkIfSlugExists( slug );
-
-    // If slug exists, get unique string
-    if ( slugExists === true ) {
-      // Append -n to end of url
-      slug = slug + '-' + n;
-      // Keep adding -n++ until get unique slug
-      while ( slugExists === true ) {
-        slug = slug.substring( 0, slug.lastIndexOf( '-' ) );
-        slug = slug + '-' + n;
-        slugExists = model.checkIfSlugExists( slug );
-        n++;
-      }
+    while ( slugExists ) {
+      uniqueSlug = slug + '-' + n;
+      slugExists = model.checkIfSlugExists( uniqueSlug );
+      n++;
     }
 
-    return slug;
+    return uniqueSlug;
   },
 
   /**
@@ -179,14 +242,26 @@ var model = {
   },
 
   /**
+   * Gets content from local store
+   *
+   * @return store {object} Local storage object with all content
+   */
+  getLocalStore: function() {
+    return JSON.parse( localStorage.getItem( 'vanillaPress' ) );
+  },
+
+  /**
    * Saves temporary store to local storage.
    *
    * @param store {object} Temporary store to update
    */
   updateLocalStore: function( store ) {
+<<<<<<< HEAD
     let newStore = [ store ];
+=======
+>>>>>>> v1
     // Makes sure to stringify store object before saving
-    localStorage.setItem( 'vanillaPress', JSON.stringify( newStore ) );
+    localStorage.setItem( 'vanillaPress', JSON.stringify( store ) );
   },
 
   /**
