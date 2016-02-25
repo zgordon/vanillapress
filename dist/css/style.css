@@ -261,7 +261,7 @@ body {
   background: #fff;
   padding: 40px 20px;
 }
-#view .inactive a {
+#view.inactive a {
   cursor: not-allowed;
 }
 #view .container {
