@@ -3417,125 +3417,11 @@ function pubsub (mix) {
 
     init: function () {
 
-<<<<<<< HEAD
       model.init();
       router.init();
       view.init();
       editor.init();
     }
-=======
-},{"./editor.js":10,"./model.js":12,"./router.js":13,"./view.js":14}],9:[function(require,module,exports){
-/**
- * Main JSON object of posts, pages and settings
- */
-var jsonData =
-  {
-    posts: [
-      {
-        id:1,
-        date:"2016-01-09T22:05:09",
-        modified:"2016-01-09T22:05:09",
-        slug:"hello-world",
-        type:"posts",
-        title:"Hello world!",
-        content:"<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p> ",
-      },
-      {
-        id:2,
-        date:"2016-01-10T22:05:09",
-        modified:"2016-01-10T22:05:09",
-        slug:"learning-javascript",
-        type:"posts",
-        title:"Learning JavaScript!",
-        content:"<p>I'm learning JavaScript and super excited!!!</p> ",
-      },
-      {
-        id:3,
-        date:"2016-01-11T22:05:09",
-        modified:"2016-01-11T22:05:09",
-        slug:"rest-api",
-        type:"posts",
-        title:"The REST API!",
-        content:"<p>I've started working with the REST API in WordPress, what fun!</p> ",
-      },
-      {
-        id:4,
-        date:"2016-01-12T22:05:09",
-        modified:"2016-01-12T22:05:09",
-        slug:"json-data",
-        type:"posts",
-        title:"JSON Data!",
-        content:"<p>So, with the REST API it is posible to pull in WordPress data as pure JSON.  Now I'm figuring out what to do with the data</p> ",
-      },
-      {
-        id:5,
-        date:"2016-01-13T22:05:09",
-        modified:"2016-01-13T22:05:09",
-        slug:"javascript-project",
-        type:"posts",
-        title:"JavaScript Project",
-        content:"<p>I've started working with the REST API in WordPress, what fun!</p> ",
-      }
-    ],
-    pages: [
-      {
-        id:40,
-        date:"2016-01-07T22:05:09",
-        modified:"2016-01-07T22:05:09",
-        slug:"home",
-        type:"pages",
-        title:"Home",
-        content:"<p>Welcome!</p><p>Reprehenderit sit sunt nisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
-      },
-      {
-        id:41,
-        date:"2016-01-09T22:05:09",
-        modified:"2016-01-09T22:05:09",
-        slug:"about",
-        type:"pages",
-        title:"About Me",
-        content:"<p>Hi!  I'm me :)</p><p>Sisi excepteur deserunt officia ipsum eu reprehenderits deserunt aliqua incididunt cillum dolore.</p><p>Dolor sit amet, consectetur adipisicing elit. Makingsum Lorem look coolsum.</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
-      },
-      {
-        id:42,
-        date:"2016-01-09T22:05:09",
-        modified:"2016-01-09T22:05:09",
-        slug:"blog",
-        type:"pages",
-        title:"Blog",
-        content:"<p>Welcome to my blog page, please enjoy!</p>",
-      },
-      {
-        id:43,
-        date:"2016-01-19T22:06:09",
-        modified:"2016-01-19T22:06:09",
-        slug:"contact",
-        type:"pages",
-        title:"Contact",
-        content:"<p>Please get in touch!</p><p>Sit temporibus sunt doloremque enim alias pariatur debitis dolorum excepturi fugiat assumenda at, totam delectus, possimus reprehenderit earum aliquid nihil, esse voluptatem.</p>",
-      }
-    ],
-    settings: [
-      {
-        id:991,
-        date:"2016-01-09T22:05:09",
-        modified:"2016-01-09T22:05:09",
-        slug:"site-name",
-        type:"settings",
-        title:"Site Name",
-        content:"VanillaPress"
-      },
-      {
-        id:992,
-        date:"2016-01-09T22:05:09",
-        modified:"2016-01-09T22:05:09",
-        slug:"site-description",
-        type:"settings",
-        title:"Site Description",
-        content:"A JS Front & Back End"
-      }
-    ]
->>>>>>> v1
   };
 
   vanillaPress.init();
@@ -3545,7 +3431,7 @@ var jsonData =
 /**
  * Main JSON object of posts, pages and settings
  */
-var jsonData = [{
+var jsonData = {
   posts: [{
     id: 1,
     date: "2016-01-09T22:05:09",
@@ -3627,7 +3513,7 @@ var jsonData = [{
     slug: "site-name",
     type: "settings",
     title: "Site Name",
-    content: "VanillaPress"
+    content: "VanillaPress V2"
   }, {
     id: 992,
     date: "2016-01-09T22:05:09",
@@ -3637,7 +3523,7 @@ var jsonData = [{
     title: "Site Description",
     content: "A JS Front & Back End"
   }]
-}];
+};
 
 module.exports = jsonData;
 
@@ -3666,21 +3552,10 @@ module.exports = jsonData;
    *
    * @namespace
    */
-<<<<<<< HEAD
   var editor = {
     init() {
       editor.listenEditorToggle();
     },
-=======
-  listenPrimaryLinks: function() {
-    var urlSegments = helpers.getAfterHash( this.href );
-    editor.currentPostType = urlSegments[0];
-    editor.clearMenus();
-    editor.showSecondaryMenu();
-    event.preventDefault();
-  },
-
->>>>>>> v1
 
     visible: 'false',
     currentMenu: 'edit',
@@ -3708,13 +3583,13 @@ module.exports = jsonData;
 
       //const currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
       currentPost = urlSegments[0];
+
       editor.currentPostType = currentPost;
       editor.clearMenus();
       editor.showSecondaryMenu();
       event.preventDefault();
     },
 
-<<<<<<< HEAD
     /**
      * Listener for post type link in editor
      * (i.e. Posts, Pages, Settings).
@@ -3722,15 +3597,9 @@ module.exports = jsonData;
      *
      */
     listenSecondaryNavTitle() {
+      event.preventDefault();
       editor.clearMenus();
       editor.showSecondaryMenu();
-=======
-    if ( editor.currentPostType !== 'settings' ) {
-      view.currentPost = post;
-      view.update();
-    } else {
->>>>>>> v1
-      event.preventDefault();
     },
 
     /**
@@ -3738,31 +3607,22 @@ module.exports = jsonData;
      *
     */
     listenLoadEditForm() {
-      //event.preventDefault();
+      event.preventDefault();
       editor.clearMenus();
-      const slugs = h.getAfterHash(this.href),
+      const url = h.getAfterHash(this.href),
+            slugs = url.slice(3, -1),
             post = model.getPostBySlugs(slugs);
-
-      console.log('url: ' + this.href);
-
-      console.log('slugs: ' + slugs);
-      console.log('post: ' + post);
 
       editor.currentPost = post;
       editor.currentPostType = post.type;
 
-<<<<<<< HEAD
-      if (editor.currentPostType !== 'settings') {
-        //view.currentPost = post;
-        router.updatePage(this.href);
-        console.log(view.currentPost);
-      } else {}
-=======
-    if ( editor.currentPostType !== 'settings' ) {
-      // Clear the view
-      view.clearContent();
-    }
->>>>>>> v1
+      if ('posts' === editor.currentPostType) {
+        router.updatePage('/blog/' + post.slug + '/');
+        view.setCurrentPost(post);
+      } else if ('pages' === editor.currentPostType) {
+        router.updatePage('/' + post.slug + '/');
+        view.setCurrentPost(post);
+      }
 
       editor.showEditPanel();
     },
@@ -3780,7 +3640,7 @@ module.exports = jsonData;
       editor.clearMenus();
       editor.currentPost = post;
 
-      if (editor.currentPostType !== 'settings') {
+      if ('settings' !== editor.currentPostType) {
         // Clear the view
         view.clearContent();
       }
@@ -3813,12 +3673,7 @@ module.exports = jsonData;
           newPost = false,
           storePosts;
 
-<<<<<<< HEAD
       event.preventDefault();
-=======
-      newPost = true;
-      editor.currentPost.type = 'posts';
->>>>>>> v1
 
       // If new post add to local store
       if (editor.currentPost.slug === '_new') {
@@ -3833,26 +3688,14 @@ module.exports = jsonData;
         // Make sure slug is unique
         editor.currentPost.slug = model.uniqueifySlug(editor.currentPost.slug);
 
-<<<<<<< HEAD
         // Get a new post id
         editor.currentPost.id = model.getNewPostId();
-=======
-    // Get temp store of posts based on type
-    if ( postType === 'posts' ) {
-      storePosts = store.posts;
-    } else if ( postType === 'pages' ) {
-      storePosts = store.pages;
-    } else {
-      storePosts = store.settings;
-    }
->>>>>>> v1
 
         // Set the date
         editor.currentPost.date = Date();
         editor.currentPost.modified = Date();
       }
 
-<<<<<<< HEAD
       // Get temp store of posts based on type
       storePosts = store[editor.currentPostType]; //
 
@@ -3870,24 +3713,6 @@ module.exports = jsonData;
           return post;
         });
       }
-=======
-    // Add temp store data back
-    if ( postType === 'posts' ) {
-      store.posts = storePosts;
-    } else if ( postType === 'pages' ) {
-      store.pages = storePosts;
-    } else {
-      store.settings = storePosts;
-    }
-    model.updateLocalStore( store );
-
-    // Update url and current post
-    if ( postType === 'posts' ) {
-      router.updateHash( 'blog/' + editor.currentPost.slug );
-    } else if ( postType === 'pages' ) {
-      router.updateHash( editor.currentPost.slug );
-    } else {
->>>>>>> v1
 
       store[editor.currentPostType] = storePosts;
 
@@ -3898,10 +3723,12 @@ module.exports = jsonData;
         router.updateHash('blog/' + editor.currentPost.slug);
       } else if (editor.currentPostType === 'pages') {
         router.updateHash(editor.currentPost.slug);
-      } else {}
+      }
 
-      view.currentPost = editor.currentPost;
-      view.update();
+      if ('settings' !== editor.currentPostType) {
+        view.currentPost = editor.currentPost;
+        view.update();
+      }
       editor.updateSaveBtnText();
     },
 
@@ -3926,7 +3753,7 @@ module.exports = jsonData;
       //   }
       // }
 
-      // Only procude with delete if confirmation
+      // Only proceed with delete if confirmation
       if (confirmation === true) {
         // Remove item from store
         //storePosts.splice( deleteIdIndex, 1 );
@@ -3945,7 +3772,6 @@ module.exports = jsonData;
       event.preventDefault();
     },
 
-<<<<<<< HEAD
     /**
      * Displays the primary menu.
      *
@@ -3953,51 +3779,9 @@ module.exports = jsonData;
     showPrimaryMenu() {
       let primaryNav = h.getEditorPrimaryNav(),
           primaryLinks = h.getEditorPrimaryNavLinks();
-=======
-  /**
-   * Displays the secondary menu
-   *
-   */
-  showSecondaryMenu: function(){
-    var secondaryNav = helpers.getEditorSecondaryNav(),
-        postType = editor.currentPostType,
-        menuItems = model.getPostsByType( postType ),
-        secondaryUl =  helpers.getEditorSecondaryNavUl(),
-        secondaryLinks = secondaryUl.getElementsByTagName( 'a' ),
-        addNewPostLink = helpers.getEditorAddNewPost(),
-        deletePostLink = helpers.getDeletePostLink();
-
-    // Display secondary menu
-    secondaryNav.classList.add( 'active' );
-    editor.currentMenu = 'secondary';
-    editor.updateNavTitle();
-    helpers.addMenuItems( menuItems, postType );
-
-    // Add listeners to secondary links
-    for ( var i = 0, max = secondaryLinks.length; i < max; i++ ) {
-      secondaryLinks[i].addEventListener(
-        'click',
-        editor.listenLoadEditForm,
-        false);
-    }
-
-    // Check if need to show new post button
-    if ( editor.currentPostType === 'posts' ) {
-      addNewPostLink.classList.remove('hidden');
-      // Add listener to new post link
-      addNewPostLink.addEventListener(
-        'click',
-        editor.listenLoadNewPostForm,
-        false
-      );
-    } else {
-      addNewPostLink.classList.add('hidden');
-    }
->>>>>>> v1
 
       primaryNav.classList.add('active');
 
-<<<<<<< HEAD
       // Add event listeners to primary links
       _.each(primaryLinks, link => {
         link.addEventListener('click', editor.listenPrimaryLinks, false);
@@ -4028,12 +3812,6 @@ module.exports = jsonData;
       _.each(secondaryLinks, link => {
         link.addEventListener('click', editor.listenLoadEditForm, false);
       });
-      // for ( var i = 0, max = secondaryLinks.length; i < max; i++ ) {
-      //   secondaryLinks[i].addEventListener(
-      //     'click',
-      //     editor.listenLoadEditForm,
-      //     false);
-      // }
 
       // Check if need to show new post button
       if (editor.currentPostType === 'posts') {
@@ -4053,6 +3831,7 @@ module.exports = jsonData;
       let post = editor.currentPost,
           editNav = h.getEditorEditNav(),
           editForm = h.getEditorForm(),
+          titleField = h.getEditorTitleField(),
           deleteBtn = h.getDeletePostLink();
 
       // Display the edit panel and form
@@ -4065,10 +3844,16 @@ module.exports = jsonData;
       // Add event listener to update post
       editForm.addEventListener('submit', editor.listenUpdatePost, false);
 
+      titleField.removeAttribute('readonly', 'readonly');
+
       if (editor.currentPostType === 'posts') {
         deleteBtn.classList.remove('hidden');
         // Add event listener to delete post
         deleteBtn.addEventListener('click', editor.listenDeletePost, false);
+      } else if (editor.currentPostType === 'settings') {
+        // Make title input read only
+        titleField.setAttribute('readonly', 'readonly');
+        deleteBtn.classList.add('hidden');
       } else {
         deleteBtn.classList.add('hidden');
       }
@@ -4093,7 +3878,7 @@ module.exports = jsonData;
       wysiwyg = wysiwygEditor(document.getElementById('editContent'));
 
       //  Add listeners to update the view on field changes
-      if (post.type !== 'settings') {
+      if ('settings' !== post.type) {
         // Actions if not editing a setting
         titleField.addEventListener('input', function () {
           editor.currentPost.title = this.value;
@@ -4103,208 +3888,19 @@ module.exports = jsonData;
           view.updateContent(wysiwyg.read());
           editor.currentPost.content = wysiwyg.read();
         });
-      } else {
+      } else if (post.slug === 'site-name') {
         // Live update controls for settings
-        if (post.slug === 'site-name') {
-          wysiwyg.onUpdate(function () {
-            view.updateSiteName(wysiwyg.read());
-            editor.currentPost.content = wysiwyg.read();
-          });
-        } else if (post.slug == 'site-description') {
-          wysiwyg.onUpdate(function () {
-            view.updateSiteDescription(wysiwyg.read());
-            editor.currentPost.content = wysiwyg.read();
-          });
-        } else {}
+        wysiwyg.onUpdate(function () {
+          view.updateSiteName(wysiwyg.read());
+          editor.currentPost.content = wysiwyg.read();
+        });
+      } else if (post.slug == 'site-description') {
+        wysiwyg.onUpdate(function () {
+          view.updateSiteDescription(wysiwyg.read());
+          editor.currentPost.content = wysiwyg.read();
+        });
       }
     },
-=======
-  /**
-   * Displays the edit post panel
-   *
-   */
-  showEditPanel: function() {
-    var post = editor.currentPost,
-        editNav = helpers.getEditorEditNav(),
-        editForm = helpers.getEditorForm(),
-        titleField = helpers.getEditorTitleField();
-        deleteBtn = helpers.getDeletePostLink();
-
-    // Display the edit panel and form
-    editor.clearEditForm();
-    editNav.classList.toggle('active');
-    editor.currentMenu = 'edit';
-    editor.updateNavTitle();
-    editor.fillEditForm();
-
-    // Add event listener to update post
-    editForm.addEventListener(
-      'submit',
-      editor.listenUpdatePost,
-      false
-    );
-
-    titleField.removeAttribute( 'readonly', 'readonly' );
-
-    if ( editor.currentPostType === 'posts' ) {
-      deleteBtn.classList.remove( 'hidden' );
-      // Add event listener to delete post
-      deleteBtn.addEventListener(
-        'click',
-        editor.listenDeletePost,
-        false
-      );
-    } else if ( editor.currentPostType === 'settings' ) {
-      // Make title input read only
-      titleField.setAttribute( 'readonly', 'readonly' );
-      deleteBtn.classList.add( 'hidden' );
-    } else {
-      deleteBtn.classList.add( 'hidden' );
-    }
-  },
-
-  /**
-   * Dynamically fill the edit post form based on the
-   * current post.
-   *
-   */
-  fillEditForm: function() {
-    var post = editor.currentPost,
-        editTitle = document.getElementById('editTitle'),
-        postTitle = helpers.getPostTitle(),
-        titleField = helpers.getEditorTitleField();
-
-    // Update the title and content fields
-    editTitle.value = post.title;
-    editContent.value = post.content;
-
-    // Initialize the wysiwyg editor
-    wysiwyg = wysiwygEditor(document.getElementById('editContent'));
-
-    //  Add listeners to update the view on field changes
-    if ( post.type !== 'settings' ) {
-      // Actions if not editing a setting
-      titleField.addEventListener( 'input', function() {
-        editor.currentPost.title = this.value;
-        view.updateTitle( this.value );
-      }, false);
-      wysiwyg.onUpdate( function() {
-        view.updateContent( wysiwyg.read() );
-        editor.currentPost.content = wysiwyg.read();
-      });
-    } else if (  post.slug === 'site-name' ) {
-    // Live update controls for settings
-      wysiwyg.onUpdate(function () {
-        view.updateSiteName( wysiwyg.read() );
-        editor.currentPost.content = wysiwyg.read();
-      });
-    } else if( post.slug == 'site-description' ) {
-      wysiwyg.onUpdate( function () {
-        view.updateSiteDescription( wysiwyg.read() );
-        editor.currentPost.content = wysiwyg.read();
-      });
-    }
-  },
-
-  /**
-   * Clears the edit form.
-   * Must call before loading data to form.
-   *
-   */
-  clearEditForm: function() {
-    var editTitle = document.getElementById( 'editTitle' ),
-        wysiwyg = helpers.getEditorWysiwyg();
-
-    // Set the edit fields blank
-    editTitle.value = '';
-    editContent.value = '';
-    // Remove the wysiwyg editor
-    if ( wysiwyg !== null ) {
-      wysiwyg.remove();
-    }
-  },
-
-  /**
-   * Clears the current menu.
-   * Must call before loading a menu.
-   *
-   */
-  clearMenus: function(){
-    var navs = helpers.getEditorNavs(),
-        navUl = helpers.getEditorSecondaryNavUl(),
-        navlinks = navUl.getElementsByTagName( 'a' );
-
-    // Remove active class from all navs
-    for ( var j = 0, max = navs.length; j < max; j++ ) {
-      var nav = navs[j];
-      nav.classList.remove( 'active' );
-    }
-
-    // Remove event listeners from all previous nav links
-    for ( var i = 0, navMax = navlinks.length; i < navMax; i++ ) {
-      navlinks[i].removeEventListener(
-        'click',
-        editor.refreshMenu,
-        false
-      );
-    }
-
-    // Remove all list items from secondary nav ul tag
-    while ( navUl.firstChild ) {
-      navUl.removeChild( navUl.firstChild );
-    }
-
-  },
-
-
-  /**
-   * Main control for the editor toggle.
-   *
-   */
-  toggle: function() {
-    var editorEl = helpers.getEditorEl(),
-        toggleEl = helpers.getEditorToggleEl(),
-        viewEl = helpers.getViewEl();
-
-    // Clear menus and load edit panel
-    editor.clearMenus();
-    editor.currentPost = view.currentPost;
-    editor.currentPostType = view.currentPost.type;
-    editor.currentMenu = 'edit';
-
-    // Toggle editor and nav hidden classes
-    editorEl.classList.toggle('hidden');
-    toggleEl.classList.toggle('hidden');
-    // Toggle whether view nav is disabled
-    viewEl.classList.toggle('inactive');
-
-    // Take specific actions if opening or closing editor
-    if ( toggleEl.classList.contains( 'hidden' ) === false ) {
-      // If opening editor
-      var navTitleLink = helpers.getEditorNavTitleLink();
-      editor.showEditPanel();
-      navTitleLink.addEventListener(
-        'click',
-        editor.listenSecondaryNavTitle,
-        false
-      );
-      view.listenDisableViewLinks();
-    } else {
-      // If closing editor
-      if ( view.currentPost.type === 'posts' ) {
-        router.updateHash( 'blog/' + view.currentPost.slug );
-      } else {
-        if ( editor.currentPost.slug === '_new' ) {
-          // If closing a new post editor
-          router.updateHash( 'blog' );
-          router.setCurrentPost();
-        } else {
-          router.updateHash( view.currentPost.slug );
-        }
-      }
-      view.listenEnableViewLinks();
-    }
->>>>>>> v1
 
     /**
      * Clears the edit form.
@@ -4324,7 +3920,6 @@ module.exports = jsonData;
       }
     },
 
-<<<<<<< HEAD
     /**
      * Clears the current menu.
      * Must call before loading a menu.
@@ -4339,40 +3934,6 @@ module.exports = jsonData;
       _.each(navs, nav => {
         nav.classList.remove('active');
       });
-=======
-  /**
-   * Update the editor breadcrumb navigation
-   * (i.e. Admin / Posts, Admin / Pages, Admin / Settings, etc. )
-   *
-   */
-  updateNavTitle: function() {
-    var postType = editor.currentPostType,
-        currentMenu = editor.currentMenu,
-        homeLink = helpers.getEditorHomeLinkEl( currentMenu );
-
-    // Add event listener to Admin home link
-    homeLink.addEventListener(
-      'click',
-      editor.listenAdminHomeLink,
-      false
-    );
-
-    // Add secondary link based on current nav and post type
-    if( currentMenu === 'secondary' ) {
-      // If on secondary nav
-      var navTitleEl = helpers.getEditorNavTitleEl( currentMenu );
-      navTitleEl.innerHTML = postType;
-    } else {
-      // If editing post
-      var navTitleLink = helpers.getEditorNavTitleLink();
-      navTitleLink.textContent = postType;
-      navTitleLink.addEventListener(
-        'click',
-        editor.listenSecondaryNavTitle,
-        false
-      );
-    }
->>>>>>> v1
 
       // Remove event listeners from all previous nav links
       if (!_.isEmpty(navUl)) {
@@ -4394,7 +3955,8 @@ module.exports = jsonData;
     toggle() {
       let editorEl = h.getEditorEl(),
           toggleEl = h.getEditorToggleEl(),
-          mainNav = h.getMainNavEl();
+          viewEl = h.getViewEl(),
+          navTitleLink = h.getEditorNavTitleLink();
 
       // Clear menus and load edit panel
       editor.clearMenus();
@@ -4406,31 +3968,21 @@ module.exports = jsonData;
       editorEl.classList.toggle('hidden');
       toggleEl.classList.toggle('hidden');
       // Toggle whether view nav is disabled
-      mainNav.classList.toggle('inactive');
+      viewEl.classList.toggle('inactive');
 
       // Take specific actions if opening or closing editor
       if (toggleEl.classList.contains('hidden') === false) {
         // If opening editor
-        var navTitleLink = h.getEditorNavTitleLink();
         editor.showEditPanel();
         navTitleLink.addEventListener('click', editor.listenSecondaryNavTitle, false);
-        view.listenDisableMainNavLinks();
+        view.listenDisableViewLinks();
+      } else if (editor.currentPost.slug === '_new') {
+        // If closing a new post editor
+        router.updatePage('blog');
+        //router.setCurrentPost();
       } else {
-        // If closing editor
-        if (view.currentPost.type === 'posts') {
-          router.updatePage('blog/' + view.currentPost.slug);
-          //router.updateHash( 'blog/' + view.currentPost.slug );
-        } else {
-            if (editor.currentPost.slug === '_new') {
-              // If closing a new post editor
-              router.updatePage('blog');
-              //router.setCurrentPost();
-            } else {
-                router.updatePage(view.currentPost.slug);
-              }
-          }
-        view.listenMainNavLinksUpdatePage();
-      }
+          view.listenEnableViewLinks();
+        }
     },
 
     /**
@@ -4456,6 +4008,7 @@ module.exports = jsonData;
       } else {
         // If editing post
         navTitleLink = h.getEditorNavTitleLink();
+
         navTitleLink.textContent = postType;
         navTitleLink.addEventListener('click', editor.listenSecondaryNavTitle, false);
       }
@@ -4503,26 +4056,8 @@ module.exports = jsonData;
     }
   };
 
-<<<<<<< HEAD
   module.exports = editor;
 })();
-=======
-    return urlSegments;
-  },
-
-  addMenuItems: function( menuItems, postType ) {
-    menuItems.forEach( function( item ){
-
-      var a = helpers.createLink( item.title, postType, item.slug );
-      helpers.addMenuItem( a );
-
-    });
-  },
-
-  addMenuItem: function( menuItem ) {
-    var ul = document.querySelector( '#editor nav#secondary ul' ),
-        li = document.createElement( 'li' );
->>>>>>> v1
 
 },{"./lib/helpers.js":16,"./model.js":17,"./router.js":18,"./view.js":19,"spin.js":5,"underscore":6,"wysiwyg":7}],16:[function(require,module,exports){
 (function () {
@@ -4533,19 +4068,9 @@ module.exports = jsonData;
   const _ = require('underscore'),
         h = {
 
-<<<<<<< HEAD
     getAfterHash(url) {
       let urlSegments = [],
           pageUrl;
-=======
-    if ( 'posts' === postType  ) {
-      a.href = '#blog/' + slug;
-    } else if ( 'settings' === postType ) {
-      a.href = '#settings/' + slug;
-    } else {
-      a.href = '#' + slug;
-    }
->>>>>>> v1
 
       url = url || '';
 
@@ -4560,18 +4085,12 @@ module.exports = jsonData;
       return urlSegments;
     },
 
-<<<<<<< HEAD
     addMenuItems(menuItems, postType) {
       _.map(menuItems, item => {
         let link = h.createLink(item.title, postType, item.slug);
         h.addMenuItem(link);
       });
     },
-=======
-    contentDiv = document.createElement( 'div' );
-    console.log( post );
-    excerpt = post.content;
->>>>>>> v1
 
     addMenuItem(menuItem) {
       let ul = document.querySelector('#editor nav#secondary ul'),
@@ -4587,9 +4106,9 @@ module.exports = jsonData;
 
       link.appendChild(linkText);
 
-      if (postType === 'posts') {
+      if ('posts' === postType) {
         link.href = '/blog/' + slug + '/';
-      } else if (postType === 'settings') {
+      } else if ('settings' === postType) {
         link.href = '/settings/' + slug + '/';
       } else {
         link.href = '/' + slug + '/';
@@ -4633,108 +4152,9 @@ module.exports = jsonData;
       return document.getElementById('editorToggle');
     },
 
-<<<<<<< HEAD
     getEditorToggleLink() {
       return document.querySelector('#editorToggle a');
     },
-=======
-    if ( currentMenu === 'edit' ) {
-      nav = helpers.getEditorEditNav();
-    } else if ( currentMenu === 'secondary' ) {
-      nav = helpers.getEditorSecondaryNav();
-    } else {
-      nav = helpers.getEditorPrimaryNav();
-    }
-
-    return nav;
-  },
-
-  getEditorEditNav: function() {
-    return  document.querySelector( '#editor nav#edit' );
-  },
-
-  getEditorHomeLinkEl: function( currentMenu ) {
-    var nav = helpers.getCurrentNavEl( currentMenu );
-    return nav.querySelector( 'h3 .go-home' );
-  },
-
-  getEditorNavTitleEl: function( currentMenu ) {
-    var nav = helpers.getCurrentNavEl( currentMenu );
-    return nav.querySelector( 'h3 span' );
-  },
-
-  getEditorNavTitleLink: function() {
-    var editNav = helpers.getEditorEditNav();
-    return editNav.querySelector( 'h3 span a' );
-  },
-
-  getEditorTitleField: function() {
-    return document.getElementById( 'editTitle' );
-  },
-
-  slugifyTitle: function( title ) {
-    var slug = title.trim();
-
-    slug = slug.replace(/[^a-zA-Z0-9\s]/g,"");
-    slug = slug.toLowerCase();
-    slug = slug.replace(/\s/g,'-');
-
-    return slug;
-  },
-
-  getEditorWysiwyg: function() {
-    var editNav = helpers.getEditorEditNav();
-    return editNav.querySelector( 'form iframe' );
-  },
-
-  getEditorForm: function() {
-    var editNav = helpers.getEditorEditNav();
-    return editNav.querySelector( 'form' );
-  },
-
-  getEditorEditUpdateBtn: function() {
-    return document.getElementById( 'editUpdateBtn' );
-
-  },
-
-  getViewEl: function() {
-    return document.getElementById( 'view' );
-  },
-
-  getViewLinks: function() {
-    return document.querySelectorAll( '#view a' );
-  },
-
-  getSiteName: function() {
-    var siteNameEl = document.getElementById( 'siteName' );
-    return siteNameEl.querySelector( 'a' );
-  },
-
-  getSiteDescription: function() {
-    return document.getElementById( 'siteDesription' );
-  },
-
-  getMainNavEl: function() {
-    var mainNavEl = document.getElementById( 'mainNav' );
-    return mainNavEl;
-  },
-
-  getMainNavLinks: function() {
-    var mainNav = document.getElementById( 'mainNav' ),
-        links = mainNav.getElementsByTagName( 'a' );
-    return links;
-  },
-
-  getPostTitle: function() {
-    var titleEl = document.getElementById( 'pageTitle' );
-    return titleEl;
-  },
-
-  getPrimaryContentEl: function(){
-    var primaryContentEL = document.querySelector( '#view .content .primary' );
-    return primaryContentEL;
-  }
->>>>>>> v1
 
     getEditorNavs() {
       var editorEl = h.getEditorEl();
@@ -4750,21 +4170,15 @@ module.exports = jsonData;
       return primaryNav.getElementsByTagName('a');
     },
 
-<<<<<<< HEAD
     getEditorSecondaryNav() {
       return document.querySelector('#editor nav#secondary');
     },
-=======
-var jsonData = require( './data.js' ),
-    error404 = {type:'404',title:'404 Error', content: 'Please try another page'};
->>>>>>> v1
 
     getEditorSecondaryNavUl() {
       let secondaryNav = h.getEditorSecondaryNav();
       return secondaryNav.querySelector('ul');
     },
 
-<<<<<<< HEAD
     getEditorAddNewPost() {
       return document.querySelector('#editor #addNew a');
     },
@@ -4828,6 +4242,14 @@ var jsonData = require( './data.js' ),
       return document.getElementById('editUpdateBtn');
     },
 
+    getViewEl() {
+      return document.getElementById('view');
+    },
+
+    getViewLinks() {
+      return document.querySelectorAll('#view a');
+    },
+
     getSiteName() {
       let siteName = document.getElementById('siteName');
       return siteName.querySelector('a');
@@ -4863,150 +4285,20 @@ var jsonData = require( './data.js' ),
 (function () {
 
   'use strict';
-=======
-/**
- * Main model object.
- *
- * @namespace
- */
-var model = {
-  /**
-   * Initializes model and sets local store if empty
-   *
-   */
-  init: function() {
-    var localStore = model.getLocalStore();
-    if( typeof localStore === 'undefined' || localStore === null ||
-        localStore === '' ) {
-      localStorage.setItem(
-        'vanillaPress',
-        JSON.stringify( jsonData )
-      );
-    }
-  },
-
-  /**
-   * Gets posts based on post type.
-   *
-   * @param postType {string} The type of content needed (post, page, etc)
-   * @return posts {array} Posts matching post type (Posts, Pages, etc)
-   */
-  getPostsByType: function( postType ) {
-    // Get content from local store
-    var data = model.getLocalStore(),
-        posts;
-
-    // Get posts from local store
-    if ( 'posts' === postType ) {
-      return data.posts;
-    } else if ( 'pages' === postType ) {
-      return data.pages;
-    } else if ( 'settings' === postType ) {
-      return data.settings;
-    } else {
-      return  [ error404 ];
-    }
-  },
-
-  /**
-   * Get a single post based on url slugs
-   *
-   * @param slugs {array} The url slugs for the post
-   * @return post {object} Single post based on url slugs
-   *
-   */
-  getPostBySlugs: function( slugs ) {
-    var post;
-
-    if ( slugs.length > 1 && 'blog' === slugs[0] ) {
-      // If blog post
-      return model.getPostBySlug( slugs[1], 'posts' );
-    } else if ( slugs.length > 1 && 'settings' === slugs[0] ) {
-      // If setting
-      return model.getPostBySlug( slugs[1], 'settings' );
-    } else {
-      // If page
-      if( '' === slugs[0] ) slugs[0] = 'home';
-      return model.getPostBySlug( slugs[0], 'pages');
-    }
-  },
-
-  /**
-   * Get single post slug and post type
-   *
-   * @param slug {string} The url slug for the post
-   * @param postType {string} The post type for the post
-   * @return post {object} Single post based on url slugs
-   *
-   */
-  getPostBySlug: function( slug, postType ){
-    // Get contet from local storage
-    var data = model.getLocalStore(),
-        posts = model.getPostsByType ( postType ),
-        post;
-
-    // Get the post from store based on the slug
-    post = posts.filter( function( post ) {
-      return post.slug == slug;
-    });
-
-    return post[0];
-  },
->>>>>>> v1
 
   /**
    * This file contains methods having to do with
    * getting and setting of data.  Leverages local
    * store.
    *
-<<<<<<< HEAD
    * @exports model
-=======
-   * @return next highest id based on existing posts
-   */
-  getNewPostId: function() {
-    var localStore = model.getLocalStore(),
-        postIds = [],
-        newId,
-        highestId;
-
-    localStore.posts.forEach(function( post ) {
-      postIds.push( Number( post.id ) );
-    });
-    highestId = Math.max.apply( Math, postIds );
-    newId = highestId + 1;
-    return newId;
-  },
-
-  /**
-   * Checks if slug exists.
-   * Adds a number to the end of the slug
-   * until finds a unique slug.
->>>>>>> v1
    *
    */
-<<<<<<< HEAD
 
   const _ = require('underscore'),
         h = require('./lib/helpers.js'),
-        jsonData = require('./data.js');
-=======
-  uniqueifySlug: function( slug ) {
-    var slugExists,
-        n = 1,
-        uniqueSlug = slug;
-
-    // Check if slug exists
-    slugExists = model.checkIfSlugExists( slug );
-    while ( slugExists ) {
-      uniqueSlug = slug + '-' + n;
-      slugExists = model.checkIfSlugExists( uniqueSlug );
-      n++;
-    }
-
-    return uniqueSlug;
-  },
->>>>>>> v1
+        jsonData = require('./data.js'),
+        error404 = { type: '404', title: '404 Error', content: 'Please try another page' };
 
   /**
    * Main model object.
@@ -5014,12 +4306,15 @@ var model = {
    * @namespace
    */
   var model = {
-    // Init function to load data into local store
+
+    /**
+     * Init function to load data into local store
+     *
+     */
     init() {
       let localStore = model.getLocalStore();
       if (_.isNull(localStore)) {
         localStorage.setItem('vanillaPress', JSON.stringify(jsonData));
-        localStore = model.getLocalStore();
       }
     },
 
@@ -5045,22 +4340,19 @@ var model = {
      */
     getPostBySlugs(slugs) {
       let post;
-      if (slugs.length > 1 && slugs[0] === 'blog') {
+      if (slugs.length > 1 && 'blog' === slugs[0]) {
         // If blog post
-        post = model.getPostBySlug(slugs[1], 'posts');
-      } else if (slugs.length > 1 && slugs[0] === 'settings') {
+        return model.getPostBySlug(slugs[1], 'posts');
+      } else if (slugs.length > 1 && 'settings' === slugs[0]) {
         // If setting
-        post = model.getPostBySlug(slugs[1], 'settings');
+        return model.getPostBySlug(slugs[1], 'settings');
       } else {
         // If page
-        if (slugs[0] === '') slugs[0] = 'home';
-        post = model.getPostBySlug(slugs[0], 'pages');
+        if ('' === slugs[0]) slugs[0] = 'home';
+        return model.getPostBySlug(slugs[0], 'pages');
       }
-
-      return post;
     },
 
-<<<<<<< HEAD
     /**
      * Get single post slug and post type
      *
@@ -5071,54 +4363,15 @@ var model = {
      */
     getPostBySlug(slug, postType) {
       const store = model.getLocalStore();
-      let posts, post;
+      let posts = store[postType],
+          post;
 
-      // Get posts from local storage
-      posts = store[postType];
       // Filter the posts to match the slug
       post = _.filter(posts, post => {
         return post.slug == slug;
       });
-=======
-  /**
-   * Gets content from local store
-   *
-   * @return store {object} Local storage object with all content
-   */
-  getLocalStore: function() {
-    return JSON.parse( localStorage.getItem( 'vanillaPress' ) );
-  },
-
-  /**
-   * Saves temporary store to local storage.
-   *
-   * @param store {object} Temporary store to update
-   */
-  updateLocalStore: function( store ) {
-    // Makes sure to stringify store object before saving
-    localStorage.setItem( 'vanillaPress', JSON.stringify( store ) );
-  },
->>>>>>> v1
 
       return post[0];
-    },
-
-    /**
-     * Gets content from local store
-     *
-     * @return store {object} Local storage object with all content
-     */
-    getLocalStore() {
-      const store = JSON.parse(localStorage.getItem('vanillaPress'));
-      let newStore = {};
-
-<<<<<<< HEAD
-      if (_.isNull(store)) {
-        newStore = store;
-      } else {
-        newStore = store[0];
-      }
-      return newStore;
     },
 
     /**
@@ -5147,88 +4400,18 @@ var model = {
      */
     uniqueifySlug: function (slug) {
       let slugExists,
-          n = 1;
+          n = 1,
+          uniqueSlug = slug;
 
       // Check if slug exists
       slugExists = model.checkIfSlugExists(slug);
-=======
-},{"./data.js":9}],13:[function(require,module,exports){
-/**
- * The router object takes actions based on the
- * hash in the url (i.e. #content-here)
- *
- * @exports router
- */
-
-var helpers = require( './lib/helpers.js' ),
-    model = require( './model.js' ),
-    view = require( './view.js' ),
-    error404 = {type:'404',title:'404 Error', content: 'Please try another page'};
-
-/**
- * The main router object.
- *
- * @namespace
- */
-var router = {
-  init: function() {
-    router.refreshCurrentPost();
-    router.listenPageChange();
-  },
-
-  /**
-   * Add listener to url changes
-   *
-   */
-  listenPageChange: function() {
-    window.addEventListener(
-      'hashchange',
-      router.refreshCurrentPost,
-      false
-    );
-  },
-
-  /**
-   * Updates the the current post based on url
-   *
-   */
-  refreshCurrentPost: function() {
-    var slugs = helpers.getAfterHash(),
-        post = model.getPostBySlugs( slugs );
-
-    if( post ) {
-      view.setCurrentPost( post );
-    } else {
-      // If page does not exist set 404 page
-      view.setCurrentPost( error404 );
-    }
-
-
-  },
-
-  /**
-   * Helper function to update hash based on slug
-   *
-   */
-  updateHash: function(slug) {
-    window.location.hash = slug;
-  }
->>>>>>> v1
-
-      // If slug exists, get unique string
-      if (slugExists === true) {
-        // Append -n to end of url
-        slug = slug + '-' + n;
-        // Keep adding -n++ until get unique slug
-        while (slugExists === true) {
-          slug = slug.substring(0, slug.lastIndexOf('-'));
-          slug = slug + '-' + n;
-          slugExists = model.checkIfSlugExists(slug);
-          n++;
-        }
+      while (slugExists) {
+        uniqueSlug = slug + '-' + n;
+        slugExists = model.checkIfSlugExists(uniqueSlug);
+        n++;
       }
 
-      return slug;
+      return uniqueSlug;
     },
 
     /**
@@ -5237,7 +4420,7 @@ var router = {
      * @param slug {string}
      * @return true if slug exists or false if does not exist
      */
-    checkIfSlugExists: function (slug) {
+    checkIfSlugExists(slug) {
       const store = model.getLocalStore();
 
       // Check if filtering posts for slug is empty
@@ -5247,22 +4430,29 @@ var router = {
     },
 
     /**
+     * Gets content from local store
+     *
+     * @return store {object} Local storage object with all content
+     */
+    getLocalStore() {
+      return JSON.parse(localStorage.getItem('vanillaPress'));
+    },
+
+    /**
      * Saves temporary store to local storage.
      *
      * @param store {object} Temporary store to update
      */
-    updateLocalStore: function (store) {
-      let newStore = [store];
+    updateLocalStore(store) {
       // Makes sure to stringify store object before saving
-      localStorage.setItem('vanillaPress', JSON.stringify(newStore));
+      localStorage.setItem('vanillaPress', JSON.stringify(store));
     },
 
-<<<<<<< HEAD
     /**
      * Deletes data from local storage.
      *
      */
-    removeLocalStore: function () {
+    removeLocalStore() {
       localStorage.removeItem('vanillaPress');
     }
   };
@@ -5278,66 +4468,16 @@ var router = {
   /**
    * The router object takes actions based on the
    * hash in the url (i.e. #content-here)
-=======
-/**
- * Main view object
- *
- * @namespace
- */
-var view = {
-  init: function() {
-    view.loadMainHeader();
-  },
-
-  currentPost: '',
-
-  /**
-   * Listener to disable view navigation while
-   * editor is open.
-   *
-   */
-  listenDisableViewLinks: function() {
-    var links = helpers.getViewLinks();
-    for ( var i = 0, len = links.length; i < len; i++ ) {
-      // Add listener to deactivate main nav
-      links[i].addEventListener('click', view.disableNav, false);
-    }
-  },
-
-  /**
-   * Listener to disable links in the view while the
-   * editor is open.
->>>>>>> v1
    *
    * @exports router
    */
-<<<<<<< HEAD
 
   const _ = require('underscore'),
         page = require('page'),
         h = require('./lib/helpers.js'),
         model = require('./model.js'),
-        view = require('./view.js');
-=======
-  listenEnableViewLinks: function() {
-    var links = helpers.getViewLinks();
-    for ( var i = 0, len = links.length; i < len; i++ ) {
-      // Add listener to deactivate main nav
-      links[i].removeEventListener('click', view.disableNav, false);
-    }
-  },
-
-
-  /**
-   * Sets the current post and updates the view
-   *
-   * @param post {object} The new current post
-   */
-   setCurrentPost: function( post ) {
-     view.currentPost = post;
-     view.update();
-   },
->>>>>>> v1
+        view = require('./view.js'),
+        error404 = { type: '404', title: '404 Error', content: 'Please try another page' };
 
   /**
    * The main router object.
@@ -5349,17 +4489,21 @@ var view = {
       page('/', router.loadPage);
       page('/about', router.loadPage);
       page('/contact', router.loadPage);
-      page('/blog', router.loadPage);
+      page('/blog', router.loadBlog);
       page('/blog/:slug', router.loadBlog);
       page.start();
-      router.setCurrentPost();
-      view.update();
-      //router.listenPageChange();
+      router.refreshCurrentPost();
+      router.listenPageChange();
     },
+
     updatePage(url) {
-      if (url === 'home') url = '/';
+      console.log(url);
+      if ('home' === url || '/home/' === url) {
+        url = '/';
+      }
       page(url);
     },
+
     // Loads page based on url
     loadPage(ctx) {
       let slugs = [],
@@ -5371,53 +4515,58 @@ var view = {
         slugs.push(ctx.path.substring(0, ctx.path.length - 1).replace('/', ''));
       }
       post = model.getPostBySlugs(slugs);
-      view.currentPost = post;
-      view.update();
+      view.setCurrentPost(post);
     },
+
     loadBlog(ctx) {
       let slugs = [],
           post;
       // remove the / from the slug
       slugs.push(ctx.path.substring(0, ctx.path.length - 1).replace('/', '').split('/'));
       post = model.getPostBySlugs(slugs[0]);
-      // console.log( slugs );
+      view.setCurrentPost(post);
+    },
+
+    loadBlogPost(ctx) {
+      let slugs = [],
+          post;
+      // remove the / from the slug
+      slugs.push(ctx.path.substring(0, ctx.path.length - 1).replace('/', '').split('/'));
+      post = model.getPostBySlugs(slugs[0]);
       view.currentPost = post;
       view.update();
     },
-    // Add listener to url changes
+    /**
+     * Add listener to url changes
+     *
+     */
     listenPageChange() {
-      window.addEventListener('hashchange', router.setCurrentPost, false);
+      window.addEventListener('hashchange', router.refreshCurrentPost, false);
     },
 
-    // Updates the the current post based on url
-    setCurrentPost() {
+    /**
+     * Updates the the current post based on url
+     *
+     */
+    refreshCurrentPost() {
       const slugs = h.getAfterHash(),
             post = model.getPostBySlugs(slugs);
 
-      if (_.isUndefined(post)) {
-        // If page does not exist set 404 page
-        view.currentPost = {
-          title: '404',
-          content: '<p>Oops! Please try a different url</p>',
-          slug: '404'
-        };
+      if (post) {
+        view.setCurrentPost(post);
       } else {
-        view.currentPost = post;
+        // If page does not exist set 404 page
+        view.setCurrentPost(error404);
       }
-
-      view.update();
     },
 
-<<<<<<< HEAD
-    // Helper function to update hash based on slug
+    /**
+     * Helper function to update hash based on slug
+     *
+     */
     updateHash(slug) {
+      if ('home' === slug) slug = '';
       window.location.hash = slug;
-=======
-    view.removeBlogPosts();
-    if ( 'blog' === view.currentPost.slug ) {
-      // Append blog posts to blog page
-      view.loadBlogPosts();
->>>>>>> v1
     }
 
   };
@@ -5447,57 +4596,44 @@ var view = {
    *
    * @namespace
    */
-<<<<<<< HEAD
   var view = {
     init() {
-      view.listenMainNavLinksUpdatePage();
       view.loadMainHeader();
     },
-=======
-  loadBlogPosts: function() {
-    var posts = model.getPostsByType( 'posts' ),
-        postsMarkup = document.createElement( 'section' ),
-        primaryContentEL;
->>>>>>> v1
 
     currentPost: '',
 
     /**
-     * Listener activate and deactivate main nav.
-     * @function
-    */
-    listenMainNavLinksUpdatePage() {
-      const links = document.querySelectorAll('#mainNav a');
-      _.each(links, link => {
-        // Add listener to activate main nav
-        //      link.addEventListener( 'click', view.mainNavControl, false );
-        // Remove listener that disables main nav
-        link.removeEventListener('click', view.disableNav);
-      });
-    },
-
-    /**
-     * Listener to disable the main nav while the
+     * Listener to disable view navigation while
      * editor is open.
      *
      */
-    listenDisableMainNavLinks() {
-      const links = h.getMainNavLinks();
+    listenDisableViewLinks() {
+      const links = h.getViewLinks();
       _.each(links, link => {
-        // Add listener to deactivate main nav
-        link.removeEventListener('click', view.mainNavControl);
-        // Remove listener to disable main nav
         link.addEventListener('click', view.disableNav, false);
       });
     },
 
     /**
-     * Main nav listener to load proper page
+     * Listener to enable links in the view while the
+     * editor is open.
      *
      */
-    mainNavControl() {
-      const newPageSlugs = h.getAfterHash(this.href),
-            post = model.getPostBySlugs(newPageSlugs);
+    listenEnableViewLinks() {
+      const links = h.getViewLinks();
+      _.each(links, link => {
+        // Add listener to deactivate main nav
+        link.removeEventListener('click', view.disableNav, false);
+      });
+    },
+
+    /**
+     * Sets the current post and updates the view
+     *
+     * @param post {object} The new current post
+     */
+    setCurrentPost(post) {
       view.currentPost = post;
       view.update();
     },
@@ -5511,7 +4647,7 @@ var view = {
       view.updateContent(view.currentPost.content);
 
       view.removeBlogPosts();
-      if (view.currentPost.slug === 'blog') {
+      if ('blog' === view.currentPost.slug) {
         // Append blog posts to blog page
         view.loadBlogPosts();
       }
@@ -5587,18 +4723,17 @@ var view = {
      *
      */
     loadBlogPosts() {
-      var posts = model.getPostsByType('posts'),
-          postsSection = document.createElement('section'),
-          primaryContentEL = h.getPrimaryContentEl();
+      const posts = model.getPostsByType('posts'),
+            postsMarkup = document.createElement('section'),
+            primaryContentEL = h.getPrimaryContentEl();
 
-      postsSection.id = 'blogPosts';
+      postsMarkup.id = 'blogPosts';
       // Get markup for each post
-      //console.log( posts );
       _.each(posts, post => {
-        postsSection.appendChild(h.createPostMarkup(post));
+        postsMarkup.appendChild(h.createPostMarkup(post));
       });
       // Append posts to page
-      primaryContentEL.appendChild(postsSection);
+      primaryContentEL.appendChild(postsMarkup);
     },
 
     /**

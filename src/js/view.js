@@ -20,70 +20,35 @@
  * @namespace
  */
 var view = {
-<<<<<<< HEAD
   init () {
-    view.listenMainNavLinksUpdatePage();
-=======
-  init: function() {
->>>>>>> v1
     view.loadMainHeader();
   },
 
   currentPost: '',
-<<<<<<< HEAD
-
-
-  /**
-   * Listener activate and deactivate main nav.
-   * @function
-  */
-  listenMainNavLinksUpdatePage () {
-    const links = document.querySelectorAll( '#mainNav a' );
-    _.each( links, ( link ) => {
-      // Add listener to activate main nav
-//      link.addEventListener( 'click', view.mainNavControl, false );
-      // Remove listener that disables main nav
-      link.removeEventListener( 'click', view.disableNav );
-    });
-
-=======
 
   /**
    * Listener to disable view navigation while
    * editor is open.
    *
    */
-  listenDisableViewLinks: function() {
-    var links = helpers.getViewLinks();
-    for ( var i = 0, len = links.length; i < len; i++ ) {
-      // Add listener to deactivate main nav
-      links[i].addEventListener('click', view.disableNav, false);
-    }
->>>>>>> v1
+  listenDisableViewLinks () {
+    const links = h.getViewLinks();
+    _.each( links, ( link ) => {
+      link.addEventListener('click', view.disableNav, false);
+    });
   },
 
   /**
-   * Listener to disable links in the view while the
+   * Listener to enable links in the view while the
    * editor is open.
    *
    */
-<<<<<<< HEAD
-  listenDisableMainNavLinks () {
-    const links = h.getMainNavLinks();
+  listenEnableViewLinks () {
+    const links = h.getViewLinks();
     _.each( links, ( link ) => {
       // Add listener to deactivate main nav
-      link.removeEventListener('click', view.mainNavControl);
-      // Remove listener to disable main nav
-      link.addEventListener('click', view.disableNav, false);
+      link.removeEventListener('click', view.disableNav, false);
     });
-=======
-  listenEnableViewLinks: function() {
-    var links = helpers.getViewLinks();
-    for ( var i = 0, len = links.length; i < len; i++ ) {
-      // Add listener to deactivate main nav
-      links[i].removeEventListener('click', view.disableNav, false);
-    }
->>>>>>> v1
   },
 
 
@@ -92,19 +57,10 @@ var view = {
    *
    * @param post {object} The new current post
    */
-<<<<<<< HEAD
-  mainNavControl () {
-    const newPageSlugs = h.getAfterHash( this.href ),
-          post = model.getPostBySlugs( newPageSlugs );
-    view.currentPost = post;
-    view.update();
-  },
-=======
-   setCurrentPost: function( post ) {
+   setCurrentPost ( post ) {
      view.currentPost = post;
      view.update();
    },
->>>>>>> v1
 
   /**
    * Updates the view based on current post
@@ -193,26 +149,18 @@ var view = {
    * Gets blog posts and appends them to the page.
    *
    */
-<<<<<<< HEAD
   loadBlogPosts () {
-    var posts = model.getPostsByType( 'posts' ),
-        postsSection = document.createElement( 'section' ),
-        primaryContentEL = h.getPrimaryContentEl();
-=======
-  loadBlogPosts: function() {
-    var posts = model.getPostsByType( 'posts' ),
-        postsMarkup = document.createElement( 'section' ),
-        primaryContentEL;
->>>>>>> v1
+    const posts = model.getPostsByType( 'posts' ),
+          postsMarkup = document.createElement( 'section' ),
+          primaryContentEL = h.getPrimaryContentEl();
 
-    postsSection.id = 'blogPosts';
+    postsMarkup.id = 'blogPosts';
     // Get markup for each post
-    //console.log( posts );
-    _.each( posts, (post) => {
-      postsSection.appendChild( h.createPostMarkup( post ) );
+    _.each( posts, ( post ) => {
+      postsMarkup.appendChild( h.createPostMarkup( post ) );
     });
     // Append posts to page
-    primaryContentEL.appendChild( postsSection );
+    primaryContentEL.appendChild( postsMarkup );
   },
 
   /**

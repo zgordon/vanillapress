@@ -435,6 +435,7 @@ body {
 #edit .CodeMirror:read-only,
 #edit iframe.wysiwyg:read-only {
   color: #ccc;
+  font-weight: ligher;
 }
 #edit textarea, #edit .CodeMirror, #edit .CodeMirror-scroll, #edit iframe.wysiwyg {
   min-height: 300px;

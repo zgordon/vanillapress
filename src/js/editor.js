@@ -50,17 +50,12 @@ var editor = {
    * Loads seconday menu
    *
    */
-<<<<<<< HEAD
   listenPrimaryLinks () {
     const urlSegments = h.getAfterHash( this.href ),
     //const currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
           currentPost = urlSegments[0];
+
     editor.currentPostType = currentPost;
-=======
-  listenPrimaryLinks: function() {
-    var urlSegments = helpers.getAfterHash( this.href );
-    editor.currentPostType = urlSegments[0];
->>>>>>> v1
     editor.clearMenus();
     editor.showSecondaryMenu();
     event.preventDefault();
@@ -74,9 +69,9 @@ var editor = {
    *
    */
   listenSecondaryNavTitle () {
+    event.preventDefault();
     editor.clearMenus();
     editor.showSecondaryMenu();
-    event.preventDefault();
   },
 
 
@@ -85,30 +80,21 @@ var editor = {
    *
   */
   listenLoadEditForm () {
-    //event.preventDefault();
+    event.preventDefault();
     editor.clearMenus();
-    const slugs = h.getAfterHash( this.href ),
+    const url = h.getAfterHash( this.href ),
+          slugs = url.slice( 3, -1 ),
           post = model.getPostBySlugs( slugs );
-
-    console.log( 'url: ' + this.href );
-
-    console.log( 'slugs: ' + slugs );
-    console.log( 'post: ' + post );
 
     editor.currentPost = post;
     editor.currentPostType = post.type;
 
-    if ( editor.currentPostType !== 'settings' ) {
-<<<<<<< HEAD
-      //view.currentPost = post;
-      router.updatePage( this.href );
-      console.log( view.currentPost );
-=======
-      view.currentPost = post;
-      view.update();
->>>>>>> v1
-    } else {
-
+    if ( 'posts' === editor.currentPostType ) {
+      router.updatePage( '/blog/' + post.slug + '/' );
+      view.setCurrentPost( post );
+    } else if ( 'pages' === editor.currentPostType ) {
+      router.updatePage( '/' + post.slug + '/' );
+      view.setCurrentPost( post );
     }
 
     editor.showEditPanel();
@@ -128,7 +114,7 @@ var editor = {
     editor.clearMenus();
     editor.currentPost = post;
 
-    if ( editor.currentPostType !== 'settings' ) {
+    if ( 'settings' !== editor.currentPostType ) {
       // Clear the view
       view.clearContent();
     }
@@ -187,17 +173,7 @@ var editor = {
     }
 
     // Get temp store of posts based on type
-<<<<<<< HEAD
     storePosts = store[ editor.currentPostType ];//
-=======
-    if ( postType === 'posts' ) {
-      storePosts = store.posts;
-    } else if ( postType === 'pages' ) {
-      storePosts = store.pages;
-    } else {
-      storePosts = store.settings;
-    }
->>>>>>> v1
 
     if ( newPost === true ) {
       // If new post add post to store
@@ -214,7 +190,6 @@ var editor = {
        });
     }
 
-<<<<<<< HEAD
     store[ editor.currentPostType ] = storePosts;
 
     model.updateLocalStore( store );
@@ -223,29 +198,13 @@ var editor = {
     if ( editor.currentPostType === 'posts' ) {
       router.updateHash( 'blog/' + editor.currentPost.slug );
     } else if ( editor.currentPostType === 'pages' ) {
-=======
-    // Add temp store data back
-    if ( postType === 'posts' ) {
-      store.posts = storePosts;
-    } else if ( postType === 'pages' ) {
-      store.pages = storePosts;
-    } else {
-      store.settings = storePosts;
-    }
-    model.updateLocalStore( store );
-
-    // Update url and current post
-    if ( postType === 'posts' ) {
-      router.updateHash( 'blog/' + editor.currentPost.slug );
-    } else if ( postType === 'pages' ) {
->>>>>>> v1
       router.updateHash( editor.currentPost.slug );
-    } else {
-
     }
 
-    view.currentPost = editor.currentPost;
-    view.update();
+    if ( 'settings' !== editor.currentPostType ) {
+      view.currentPost = editor.currentPost;
+      view.update();
+    }
     editor.updateSaveBtnText();
   },
 
@@ -271,7 +230,7 @@ var editor = {
     //   }
     // }
 
-    // Only procude with delete if confirmation
+    // Only proceed with delete if confirmation
     if ( confirmation === true ) {
       // Remove item from store
       //storePosts.splice( deleteIdIndex, 1 );
@@ -338,12 +297,7 @@ var editor = {
         editor.listenLoadEditForm,
         false);
     });
-    // for ( var i = 0, max = secondaryLinks.length; i < max; i++ ) {
-    //   secondaryLinks[i].addEventListener(
-    //     'click',
-    //     editor.listenLoadEditForm,
-    //     false);
-    // }
+
 
     // Check if need to show new post button
     if ( editor.currentPostType === 'posts' ) {
@@ -364,20 +318,12 @@ var editor = {
    * Displays the edit post panel
    *
    */
-<<<<<<< HEAD
   showEditPanel () {
     let post = editor.currentPost,
         editNav = h.getEditorEditNav(),
         editForm = h.getEditorForm(),
+        titleField = h.getEditorTitleField(),
         deleteBtn = h.getDeletePostLink();
-=======
-  showEditPanel: function() {
-    var post = editor.currentPost,
-        editNav = helpers.getEditorEditNav(),
-        editForm = helpers.getEditorForm(),
-        titleField = helpers.getEditorTitleField();
-        deleteBtn = helpers.getDeletePostLink();
->>>>>>> v1
 
     // Display the edit panel and form
     editor.clearEditForm();
@@ -393,11 +339,8 @@ var editor = {
       false
     );
 
-<<<<<<< HEAD
-=======
     titleField.removeAttribute( 'readonly', 'readonly' );
 
->>>>>>> v1
     if ( editor.currentPostType === 'posts' ) {
       deleteBtn.classList.remove( 'hidden' );
       // Add event listener to delete post
@@ -434,7 +377,7 @@ var editor = {
     wysiwyg = wysiwygEditor(document.getElementById('editContent'));
 
     //  Add listeners to update the view on field changes
-    if ( post.type !== 'settings' ) {
+    if ( 'settings' !== post.type ) {
       // Actions if not editing a setting
       titleField.addEventListener( 'input', function() {
         editor.currentPost.title = this.value;
@@ -514,17 +457,11 @@ var editor = {
    * Main control for the editor toggle.
    *
    */
-<<<<<<< HEAD
   toggle () {
     let editorEl = h.getEditorEl(),
         toggleEl = h.getEditorToggleEl(),
-        mainNav = h.getMainNavEl();
-=======
-  toggle: function() {
-    var editorEl = helpers.getEditorEl(),
-        toggleEl = helpers.getEditorToggleEl(),
-        viewEl = helpers.getViewEl();
->>>>>>> v1
+        viewEl = h.getViewEl(),
+        navTitleLink = h.getEditorNavTitleLink();
 
     // Clear menus and load edit panel
     editor.clearMenus();
@@ -541,7 +478,6 @@ var editor = {
     // Take specific actions if opening or closing editor
     if ( toggleEl.classList.contains( 'hidden' ) === false ) {
       // If opening editor
-      var navTitleLink = h.getEditorNavTitleLink();
       editor.showEditPanel();
       navTitleLink.addEventListener(
         'click',
@@ -549,24 +485,11 @@ var editor = {
         false
       );
       view.listenDisableViewLinks();
+    }  else if ( editor.currentPost.slug === '_new' ) {
+        // If closing a new post editor
+        router.updatePage( 'blog' );
+        //router.setCurrentPost();
     } else {
-      // If closing editor
-      if ( view.currentPost.type === 'posts' ) {
-<<<<<<< HEAD
-        router.updatePage( 'blog/' + view.currentPost.slug );
-        //router.updateHash( 'blog/' + view.currentPost.slug );
-=======
-        router.updateHash( 'blog/' + view.currentPost.slug );
->>>>>>> v1
-      } else {
-        if ( editor.currentPost.slug === '_new' ) {
-          // If closing a new post editor
-          router.updatePage( 'blog' );
-          //router.setCurrentPost();
-        } else {
-          router.updatePage( view.currentPost.slug );
-        }
-      }
       view.listenEnableViewLinks();
     }
 
@@ -594,19 +517,12 @@ var editor = {
     // Add secondary link based on current nav and post type
     if( currentMenu === 'secondary' ) {
       // If on secondary nav
-<<<<<<< HEAD
       navTitleEl = h.getEditorNavTitleEl( currentMenu );
       navTitleEl.innerHTML = postType;
     } else {
       // If editing post
       navTitleLink = h.getEditorNavTitleLink();
-=======
-      var navTitleEl = helpers.getEditorNavTitleEl( currentMenu );
-      navTitleEl.innerHTML = postType;
-    } else {
-      // If editing post
-      var navTitleLink = helpers.getEditorNavTitleLink();
->>>>>>> v1
+
       navTitleLink.textContent = postType;
       navTitleLink.addEventListener(
         'click',

@@ -96,7 +96,7 @@ var jsonData =
         slug:"site-name",
         type:"settings",
         title:"Site Name",
-        content:"VanillaPress"
+        content:"VanillaPress V2"
       },
       {
         id:992,

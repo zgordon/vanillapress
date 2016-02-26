@@ -23,21 +23,11 @@ const _ = require( 'underscore' ),
     return urlSegments;
   },
 
-<<<<<<< HEAD
   addMenuItems ( menuItems, postType ) {
      _.map( menuItems, ( item ) => {
        let link = h.createLink( item.title, postType, item.slug );
        h.addMenuItem( link );
      });
-=======
-  addMenuItems: function( menuItems, postType ) {
-    menuItems.forEach( function( item ){
-
-      var a = helpers.createLink( item.title, postType, item.slug );
-      helpers.addMenuItem( a );
-
-    });
->>>>>>> v1
   },
 
   addMenuItem ( menuItem ) {
@@ -52,20 +42,12 @@ const _ = require( 'underscore' ),
     const linkText = document.createTextNode( text );
     let link = document.createElement( 'a' );
 
-
-<<<<<<< HEAD
     link.appendChild( linkText );
 
-    if ( postType === 'posts' ) {
+    if ( 'posts' === postType ) {
       link.href = '/blog/' + slug + '/';
-    } else if ( postType === 'settings' ) {
-      link.href = '/settings/' + slug + '/';
-=======
-    if ( 'posts' === postType  ) {
-      a.href = '#blog/' + slug;
     } else if ( 'settings' === postType ) {
-      a.href = '#settings/' + slug;
->>>>>>> v1
+      link.href = '/settings/' + slug + '/';
     } else {
       link.href = '/' + slug + '/';
     }
@@ -85,8 +67,7 @@ const _ = require( 'underscore' ),
     titleLink.href = '/blog/' + post.slug + '/';
     titleEl.appendChild( titleLink );
 
-    contentDiv = document.createElement( 'div' );
-    console.log( post );
+    contentDiv = document.createElement( 'div' );    
     excerpt = post.content;
 
     if ( excerpt.length > 100 ) {
@@ -181,22 +162,11 @@ const _ = require( 'underscore' ),
     return document.getElementById( 'editTitle' );
   },
 
-<<<<<<< HEAD
   slugifyTitle ( title ) {
     return title.trim()
                 .replace(/[^a-zA-Z0-9\s]/g,"")
                 .toLowerCase()
                 .replace(/\s/g,'-');
-=======
-  slugifyTitle: function( title ) {
-    var slug = title.trim();
-
-    slug = slug.replace(/[^a-zA-Z0-9\s]/g,"");
-    slug = slug.toLowerCase();
-    slug = slug.replace(/\s/g,'-');
-
-    return slug;
->>>>>>> v1
   },
 
   getEditorWysiwyg () {
@@ -209,22 +179,16 @@ const _ = require( 'underscore' ),
     return editNav.querySelector( 'form' );
   },
 
-<<<<<<< HEAD
   getEditorEditUpdateBtn () {
     return document.getElementById( 'editUpdateBtn' );
-=======
-  getEditorEditUpdateBtn: function() {
-    return document.getElementById( 'editUpdateBtn' );
-
   },
 
-  getViewEl: function() {
+  getViewEl () {
     return document.getElementById( 'view' );
   },
 
-  getViewLinks: function() {
+  getViewLinks () {
     return document.querySelectorAll( '#view a' );
->>>>>>> v1
   },
 
   getSiteName () {
