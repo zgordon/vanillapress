@@ -49,7 +49,7 @@ const _ = require( 'underscore' ),
     } else if ( 'settings' === postType ) {
       link.href = '/settings/' + slug + '/';
     } else {
-      link.href = '/' + slug + '/';
+      link.href = '/vanillapress/' + slug + '/';
     }
 
     return link;
