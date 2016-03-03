@@ -53,7 +53,7 @@ var editor = {
   listenPrimaryLinks ( e ) {
     const urlSegments = h.getAfterHash( this.href ),
     //const currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
-          currentPost = urlSegments[0];
+          currentPost = urlSegments[1];
 
     editor.currentPostType = currentPost;
     editor.clearMenus();
@@ -90,10 +90,10 @@ var editor = {
     editor.currentPostType = post.type;
 
     if ( 'posts' === editor.currentPostType ) {
-      router.updatePage( '/blog/' + post.slug + '/' );
+      router.updatePage( '/vanillapress/blog/' + post.slug + '/' );
       view.setCurrentPost( post );
     } else if ( 'pages' === editor.currentPostType ) {
-      router.updatePage( '/' + post.slug + '/' );
+      router.updatePage( '/vanillapress/' + post.slug + '/' );
       view.setCurrentPost( post );
     }
 
@@ -196,9 +196,9 @@ var editor = {
 
     // Update url and current post
     if ( editor.currentPostType === 'posts' ) {
-      router.updateHash( 'blog/' + editor.currentPost.slug );
+      router.updateHash( '/vanillapress/blog/' + editor.currentPost.slug );
     } else if ( editor.currentPostType === 'pages' ) {
-      router.updateHash( editor.currentPost.slug );
+      router.updateHash( '/vanillapress/' + editor.currentPost.slug );
     }
 
     if ( 'settings' !== editor.currentPostType ) {
@@ -239,7 +239,7 @@ var editor = {
 
       // Update current post to empty, show blog posts
       editor.currentPost = {};
-      router.updateHash( 'blog' );
+      router.updateHash( '/vanillapress/blog' );
       view.currentPost = model.getPostBySlug( 'blog', 'pages' );
       view.update();
       editor.clearMenus();
