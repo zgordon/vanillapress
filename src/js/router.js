@@ -24,11 +24,11 @@ const _ = require( 'underscore' ),
  */
 var router = {
   init () {
-    page('/', router.loadPage);
-    page('/about', router.loadPage);
-    page('/contact', router.loadPage);
-    page('/blog', router.loadBlog);
-    page('/blog/:slug', router.loadBlog);
+    page('/vanillapress/', router.loadPage);
+    page('/vanillapress/about', router.loadPage);
+    page('/vanillapress/contact', router.loadPage);
+    page('/vanillapress/blog', router.loadBlog);
+    page('/vanillapress/blog/:slug', router.loadBlog);
     page.start();
     router.refreshCurrentPost();
     router.listenPageChange();
@@ -39,7 +39,7 @@ var router = {
     if( 'home' === url ||
         '/home/' === url )
     {
-      url = '/';
+      url = '/vanillapress/';
     }
     page( url );
   },
@@ -66,7 +66,7 @@ var router = {
     slugs.push( ctx.path.substring(0, ctx.path.length - 1)
                         .replace( '/', '' )
                         .split( '/' ) );
-    post = model.getPostBySlugs( slugs[0] );
+    post = model.getPostBySlugs( slugs[1] );
     view.setCurrentPost( post );
   },
 
@@ -77,7 +77,7 @@ var router = {
     slugs.push( ctx.path.substring(0, ctx.path.length - 1)
                         .replace( '/', '' )
                         .split( '/' ) );
-    post = model.getPostBySlugs( slugs[0] );
+    post = model.getPostBySlugs( slugs[1] );
     view.currentPost = post;
     view.update();
   },
