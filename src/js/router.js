@@ -77,7 +77,7 @@ var router = {
     slugs.push( ctx.path.substring(0, ctx.path.length - 1)
                         .replace( '/', '' )
                         .split( '/' ) );
-    post = model.getPostBySlugs( slugs[1] );
+    post = model.getPostBySlugs( slugs[0] );
     view.currentPost = post;
     view.update();
   },

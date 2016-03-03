@@ -3567,10 +3567,10 @@ module.exports = jsonData;
      * Clears menus and shows primary menu.
      *
      */
-    listenAdminHomeLink() {
+    listenAdminHomeLink(e) {
       editor.clearMenus();
       editor.showPrimaryMenu();
-      event.preventDefault();
+      e.preventDefault();
     },
 
     /**
@@ -3578,16 +3578,16 @@ module.exports = jsonData;
      * Loads seconday menu
      *
      */
-    listenPrimaryLinks() {
+    listenPrimaryLinks(e) {
       const urlSegments = h.getAfterHash(this.href),
 
       //const currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
-      currentPost = urlSegments[0];
+      currentPost = urlSegments[1];
 
       editor.currentPostType = currentPost;
       editor.clearMenus();
       editor.showSecondaryMenu();
-      event.preventDefault();
+      e.preventDefault();
     },
 
     /**
@@ -3596,8 +3596,8 @@ module.exports = jsonData;
      * Loads secondary menu.
      *
      */
-    listenSecondaryNavTitle() {
-      event.preventDefault();
+    listenSecondaryNavTitle(e) {
+      e.preventDefault();
       editor.clearMenus();
       editor.showSecondaryMenu();
     },
@@ -3606,8 +3606,8 @@ module.exports = jsonData;
      * Listener to load the post edit field.
      *
     */
-    listenLoadEditForm() {
-      event.preventDefault();
+    listenLoadEditForm(e) {
+      e.preventDefault();
       editor.clearMenus();
       const url = h.getAfterHash(this.href),
             slugs = url.slice(3, -1),
@@ -3617,10 +3617,10 @@ module.exports = jsonData;
       editor.currentPostType = post.type;
 
       if ('posts' === editor.currentPostType) {
-        router.updatePage('/blog/' + post.slug + '/');
+        router.updatePage('/vanillapress/blog/' + post.slug + '/');
         view.setCurrentPost(post);
       } else if ('pages' === editor.currentPostType) {
-        router.updatePage('/' + post.slug + '/');
+        router.updatePage('/vanillapress/' + post.slug + '/');
         view.setCurrentPost(post);
       }
 
@@ -3631,12 +3631,12 @@ module.exports = jsonData;
      * Listener to the new post field
      *
      */
-    listenLoadNewPostForm() {
+    listenLoadNewPostForm(e) {
       let post = { slug: '_new', title: '', content: '' },
           updateBtn = h.getEditorEditUpdateBtn(),
           deleteBtn = h.getDeletePostLink();
 
-      event.preventDefault();
+      e.preventDefault();
       editor.clearMenus();
       editor.currentPost = post;
 
@@ -3654,11 +3654,11 @@ module.exports = jsonData;
      * Listener for the editor toggle button
      *
      */
-    listenEditorToggle() {
+    listenEditorToggle(e) {
       const editorToggleEl = h.getEditorToggleLink();
       editorToggleEl.addEventListener('click', function () {
         editor.toggle();
-        event.preventDefault();
+        e.preventDefault();
       }, false);
     },
 
@@ -3668,12 +3668,12 @@ module.exports = jsonData;
      *
      * @todo Make sure url slug is unique
      */
-    listenUpdatePost() {
+    listenUpdatePost(e) {
       let store = model.getLocalStore(),
           newPost = false,
           storePosts;
 
-      event.preventDefault();
+      e.preventDefault();
 
       // If new post add to local store
       if (editor.currentPost.slug === '_new') {
@@ -3720,9 +3720,9 @@ module.exports = jsonData;
 
       // Update url and current post
       if (editor.currentPostType === 'posts') {
-        router.updateHash('blog/' + editor.currentPost.slug);
+        router.updateHash('/vanillapress/blog/' + editor.currentPost.slug);
       } else if (editor.currentPostType === 'pages') {
-        router.updateHash(editor.currentPost.slug);
+        router.updateHash('/vanillapress/' + editor.currentPost.slug);
       }
 
       if ('settings' !== editor.currentPostType) {
@@ -3736,7 +3736,7 @@ module.exports = jsonData;
      * Listener to delete post
      *
      */
-    listenDeletePost() {
+    listenDeletePost(e) {
       let store = model.getLocalStore(),
           confirmation = confirm('Are you sure you want to delete this post?'),
           storePosts,
@@ -3762,14 +3762,14 @@ module.exports = jsonData;
 
         // Update current post to empty, show blog posts
         editor.currentPost = {};
-        router.updateHash('blog');
+        router.updateHash('/vanillapress/blog');
         view.currentPost = model.getPostBySlug('blog', 'pages');
         view.update();
         editor.clearMenus();
         editor.showSecondaryMenu();
       }
 
-      event.preventDefault();
+      e.preventDefault();
     },
 
     /**
@@ -4486,11 +4486,11 @@ module.exports = jsonData;
    */
   var router = {
     init() {
-      page('/', router.loadPage);
-      page('/about', router.loadPage);
-      page('/contact', router.loadPage);
-      page('/blog', router.loadBlog);
-      page('/blog/:slug', router.loadBlog);
+      page('/vanillapress/', router.loadPage);
+      page('/vanillapress/about', router.loadPage);
+      page('/vanillapress/contact', router.loadPage);
+      page('/vanillapress/blog', router.loadBlog);
+      page('/vanillapress/blog/:slug', router.loadBlog);
       page.start();
       router.refreshCurrentPost();
       router.listenPageChange();
@@ -4499,7 +4499,7 @@ module.exports = jsonData;
     updatePage(url) {
       console.log(url);
       if ('home' === url || '/home/' === url) {
-        url = '/';
+        url = '/vanillapress/';
       }
       page(url);
     },
@@ -4523,7 +4523,7 @@ module.exports = jsonData;
           post;
       // remove the / from the slug
       slugs.push(ctx.path.substring(0, ctx.path.length - 1).replace('/', '').split('/'));
-      post = model.getPostBySlugs(slugs[0]);
+      post = model.getPostBySlugs(slugs[1]);
       view.setCurrentPost(post);
     },
 
@@ -4751,8 +4751,8 @@ module.exports = jsonData;
      * Prevents main nav from working. Used when editor is open.
      *
      */
-    disableNav() {
-      event.preventDefault();
+    disableNav(e) {
+      e.preventDefault();
     }
   };
   module.exports = view;

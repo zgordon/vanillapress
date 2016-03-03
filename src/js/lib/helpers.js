@@ -45,11 +45,11 @@ const _ = require( 'underscore' ),
     link.appendChild( linkText );
 
     if ( 'posts' === postType ) {
-      link.href = '/vanillapress/blog/' + slug + '/';
+      link.href = '/blog/' + slug + '/';
     } else if ( 'settings' === postType ) {
       link.href = '/settings/' + slug + '/';
     } else {
-      link.href = '/vanillapress/' + slug + '/';
+      link.href = '/' + slug + '/';
     }
 
     return link;
@@ -64,7 +64,7 @@ const _ = require( 'underscore' ),
         excerpt;
 
     titleLink.appendChild( title );
-    titleLink.href = '/vanillapress/blog/' + post.slug + '/';
+    titleLink.href = '/blog/' + post.slug + '/';
     titleEl.appendChild( titleLink );
 
     contentDiv = document.createElement( 'div' );
