@@ -178,8 +178,8 @@ var view = {
    * Prevents main nav from working. Used when editor is open.
    *
    */
-  disableNav () {
-    event.preventDefault();
+  disableNav ( e ) {
+    e.preventDefault();
   }
 };
 module.exports = view;

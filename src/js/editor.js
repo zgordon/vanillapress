@@ -38,10 +38,10 @@ var editor = {
    * Clears menus and shows primary menu.
    *
    */
-  listenAdminHomeLink (){
+  listenAdminHomeLink ( e ) {
     editor.clearMenus();
     editor.showPrimaryMenu();
-    event.preventDefault();
+    e.preventDefault();
   },
 
 
@@ -50,7 +50,7 @@ var editor = {
    * Loads seconday menu
    *
    */
-  listenPrimaryLinks () {
+  listenPrimaryLinks ( e ) {
     const urlSegments = h.getAfterHash( this.href ),
     //const currentPost = urlSegments[0].substring( 0, urlSegments[0].length - 1 );
           currentPost = urlSegments[0];
@@ -58,7 +58,7 @@ var editor = {
     editor.currentPostType = currentPost;
     editor.clearMenus();
     editor.showSecondaryMenu();
-    event.preventDefault();
+    e.preventDefault();
   },
 
 
@@ -68,8 +68,8 @@ var editor = {
    * Loads secondary menu.
    *
    */
-  listenSecondaryNavTitle () {
-    event.preventDefault();
+  listenSecondaryNavTitle ( e ) {
+    e.preventDefault();
     editor.clearMenus();
     editor.showSecondaryMenu();
   },
@@ -79,8 +79,8 @@ var editor = {
    * Listener to load the post edit field.
    *
   */
-  listenLoadEditForm () {
-    event.preventDefault();
+  listenLoadEditForm ( e ) {
+    e.preventDefault();
     editor.clearMenus();
     const url = h.getAfterHash( this.href ),
           slugs = url.slice( 3, -1 ),
@@ -105,12 +105,12 @@ var editor = {
    * Listener to the new post field
    *
    */
-  listenLoadNewPostForm () {
+  listenLoadNewPostForm ( e ) {
     let post = {slug: '_new',title:'',content:''},
         updateBtn = h.getEditorEditUpdateBtn(),
         deleteBtn = h.getDeletePostLink();
 
-    event.preventDefault();
+    e.preventDefault();
     editor.clearMenus();
     editor.currentPost = post;
 
@@ -129,11 +129,11 @@ var editor = {
    * Listener for the editor toggle button
    *
    */
-  listenEditorToggle () {
+  listenEditorToggle ( e ) {
     const editorToggleEl = h.getEditorToggleLink();
     editorToggleEl.addEventListener( 'click', function(){
       editor.toggle();
-      event.preventDefault();
+      e.preventDefault();
     }, false );
   },
 
@@ -144,12 +144,12 @@ var editor = {
    *
    * @todo Make sure url slug is unique
    */
-  listenUpdatePost () {
+  listenUpdatePost ( e ) {
     let store = model.getLocalStore(),
         newPost = false,
         storePosts;
 
-    event.preventDefault();
+    e.preventDefault();
 
     // If new post add to local store
     if( editor.currentPost.slug === '_new' ) {
@@ -213,7 +213,7 @@ var editor = {
    * Listener to delete post
    *
    */
-  listenDeletePost () {
+  listenDeletePost ( e ) {
     let store = model.getLocalStore(),
         confirmation = confirm('Are you sure you want to delete this post?'),
         storePosts,
@@ -246,7 +246,7 @@ var editor = {
       editor.showSecondaryMenu();
     }
 
-    event.preventDefault();
+    e.preventDefault();
   },
 
 
