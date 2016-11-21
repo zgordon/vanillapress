@@ -550,7 +550,7 @@ var editor = {
   updateSaveBtnText () {
 
     let btn = h.getEditorEditUpdateBtn(),
-        finalText = 'Udpate',
+        finalText = 'Update',
         savedText = 'Saved!',
         spinnerOpts = {
           color:'#fff',
